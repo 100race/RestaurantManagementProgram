@@ -7,7 +7,7 @@ import restaurant.food.vo.Ingredient;
 
 public interface SupplyService {
 	public void getByName(Scanner sc);
-	public void InIng(Scanner sc);
-	public void OutIng(Scanner sc);
+	public void refundIng(Scanner sc);
+	public void BuyIng(Scanner sc);
 	public void getAllIng();
 }
