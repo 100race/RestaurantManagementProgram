@@ -1,5 +1,4 @@
 package restaurant.food.vo;
-
 import java.util.ArrayList;
 
 public class Food {
@@ -29,8 +28,8 @@ public class Food {
 	public ArrayList<Ingredient> getIngredient() {
 		return ingredients;
 	}
-	public void setIngredient(ArrayList<Ingredient> ingredient) {
-		this.ingredients = ingredient;
+	public void setIngredient(ArrayList<Ingredient> ingredients) {
+		this.ingredients = ingredients;
 	}
 	
 	@Override
