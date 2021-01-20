@@ -11,6 +11,7 @@ public interface Refrigerator {
 	void addIng(Ingredient ing);
 	ArrayList<Ingredient> searchByName(String name);
 	void updateDue(String name,LocalDate Date);
+	void updateAmount(String name, int amount);
 	void deleteByName(String name);
 	ArrayList<Ingredient> selectAllIng();
 	

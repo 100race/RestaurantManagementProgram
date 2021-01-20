@@ -13,7 +13,12 @@ public class Ingredient {
     private int price;
     private LocalDate due;
    
-    
+	public Ingredient(String name, int amount, int price, LocalDate due) {
+		this.name = name;
+		this.amount = amount;
+		this.price = price;
+		this.due = due;
+	}
 	public String getName() {
 		return name;
 	}

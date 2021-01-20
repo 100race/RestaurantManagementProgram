@@ -11,6 +11,9 @@ public class DaoImpl implements Refrigerator{
 	private ArrayList<Ingredient> ingredients;
 	//private int cnt;
 	
+	public DaoImpl() {
+		ingredients = new ArrayList<Ingredient>(); 
+	}
 	
 	@Override
 	public void addIng(Ingredient ing) {
@@ -30,10 +33,23 @@ public class DaoImpl implements Refrigerator{
 
 	@Override
 	public void updateDue(String name, LocalDate date) {
-		//이름이 같은건 전부 바꾸게됨
+		//이름이 같은건 전부 바꾸기
 		for(int i = 0; i < ingredients.size(); i++) {
 			if(ingredients.get(i).getName().equals(name)){
 				ingredients.get(i).setDue(date);
+			}
+		}
+	}
+
+	
+	@Override
+	public void updateAmount(String name, int newAmount) {
+		//이름이 같은건 전부 바꾸기
+		int oriAmount = 0;
+		for(int i = 0; i < ingredients.size(); i++) {
+			if(ingredients.get(i).getName().equals(name)){
+				oriAmount = ingredients.get(i).getAmount();
+				ingredients.get(i).setAmount(oriAmount+newAmount);
 			}
 		}
 	}
@@ -45,6 +61,8 @@ public class DaoImpl implements Refrigerator{
 				ingredients.remove(i);
 		}
 	}
+	
+
 
 	@Override
 	public ArrayList<Ingredient> selectAllIng() {
