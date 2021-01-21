@@ -68,12 +68,12 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 	public void deleteByName(String name) {
 		// TODO Auto-generated method stub
 //		유통기한만료, 재료 소진시 식자재 삭제
-		for (Ingredient ingredient : this.ingredients) {
-			if (name.equals(ingredient.getName())) {
-				ingredients.remove(name);
+		for (int i =0;  i<ingredients.size(); i++) {
+			if(ingredients.get(i).getName().equals(name))
+				ingredients.remove(i);
 			}
 		}
-	}
+	
 
 	@Override
 	public ArrayList<Ingredient> selectAllIng() {
