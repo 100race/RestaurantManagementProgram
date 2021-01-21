@@ -1,6 +1,9 @@
 package restaurant.food.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
 /**
@@ -9,10 +12,14 @@ import restaurant.food.vo.Ingredient;
  *
  */
 public class DaoImpl implements Dao {
-	private ArrayList<Food> foods;
+	private static ArrayList<Food> foods;
 	
 	public DaoImpl() {
 		foods = new ArrayList<>();
+	}
+	
+	public static ArrayList<Food> getFoods() {
+		return foods;
 	}
 
 	/**
@@ -94,15 +101,52 @@ public class DaoImpl implements Dao {
 	}
 
 	/**
-	 * 음식 인덱스로 음식을 찾아 재료를 수정하는 메소드
-	 * @param  : 찾고자 하는 음식의 idx
+	 * 음식 인덱스로 음식을 찾아 재료를 추가하는 메소드
+	 * @param  : 찾고자 하는 음식의 idx, 추가할 ingredients
+	 * void : 찾은 음식의 재료를 추가, 없으면 sysout출력
+	 */
+	@Override
+	public void insertIng(int idx, Map<String, Integer> ingredient) {
+		Food f = searchByIdx(idx);
+		if(f != null) {
+			f.getIngredient().putAll(ingredient);
+			System.out.println("음식 재료 추가 완료!");
+		}else {
+			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+		}
+	}
+	
+	/**
+	 * 음식 인덱스로 음식을 찾아 재료를 삭제하는 메소드
+	 * @param  : 찾고자 하는 음식의 idx, 삭제할 ingredients
 	 * void : 찾은 음식의 재료를 수정, 없으면 sysout출력
 	 */
 	@Override
-	public void updateIng(int idx, ArrayList<Ingredient> ingredients) {
+	public void deleteIng(int idx, String ingName) {
 		Food f = searchByIdx(idx);
 		if(f != null) {
-			f.setIngredient(ingredients);
+			f.getIngredient().remove(ingName);
+			System.out.println("음식 재료 삭제 완료!");
+		}else {
+			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+		}
+	}
+
+	/**
+	 * 음식 인덱스로 음식을 찾아 재료의 수량을 변경하는 메소드
+	 * @param  : 찾고자 하는 음식의 idx, 변경할 재료의 key, 변경할 value
+	 * void : 찾은 음식의 재료의 수량을 수정, 없으면 sysout출력
+	 */
+	@Override
+	public void changeIngCnt(int idx, String key, int value) {
+		Food f = searchByIdx(idx);
+		if(f != null) {
+			if(value > 0) { //수량이 양수이면
+				f.getIngredient().replace(key, value);
+				System.out.println("음식 재료 수량 변경 완료!");
+			}else {
+				System.out.println("수량이 0 이하입니다!");
+			}
 		}else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
@@ -110,7 +154,7 @@ public class DaoImpl implements Dao {
 
 	/**
 	 * 음식 인덱스로 음식을 찾아 가격을 수정하는 메소드
-	 * @param  : 찾고자 하는 음식의 idx
+	 * @param  : 찾고자 하는 음식의 idx, 변경할 price
 	 * void : 찾은 음식의 가격을 수정, 없으면 sysout출력
 	 */
 	@Override
@@ -123,6 +167,21 @@ public class DaoImpl implements Dao {
 		}
 	}
 
+	/**
+	 * 음식 인덱스로 음식을 찾아 음식 이름을 수정하는 메소드
+	 * @param  : 찾고자 하는 음식의 idx, 변경할 name
+	 * void : 찾은 음식의 이름을 수정, 없으면 sysout출력
+	 */
+	@Override
+	public void updateName(int idx, String name) {
+		Food f = searchByIdx(idx);
+		if(f != null) {
+			f.setFoodName(name);
+		}else {
+			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+		}
+	}
+	
 	/**
 	 * @return : 모든 음식을 반환
 	 */
