@@ -24,11 +24,16 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void buying(Ingredient ing) {
 		// TODO Auto-generated method stub
-//		공급처 재료, totalMoney 차감
+		/*공급처 식자재 차감, totalMoney 차감
+*/
+		System.out.println("공급처냉장고에서 16종 식자재를 1회 구매하였습니다. 식자재 amount 1회 구매량 갯수\r\n" + 
+				"		김:30. 단무지:10, 쌀:50, 햄:10, 계란:20, 면사리:20, 어묵:10, 대파:10, 쑥갓:5, 유부:10\r\n" + 
+				"		떡 : 20, 치즈:5, 돼지고기:10, 밀가루:10, 빵가루:10, 김치:10");
+		sRDao.addIng(ing);
+			
 		
 		
-		
-		}
+		} 
 
 
 	@Override
@@ -122,10 +127,11 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void PrintAllIng() {
 		// TODO Auto-generated method stub
-		System.out.println("냉장고에 있는 모든 식자재 확인하기:확인 입력");
-		ArrayList<Ingredient> ingr = rRDao.selectAllIng();
+		System.out.println("공급처 냉장고에 있는 모든 식자재 확인하기");
+		ArrayList<Ingredient> ingr = sRDao.selectAllIng();
 		System.out.println(ingr);
-		
+//		메소드 1개 가지고 공급처 냉장고와 식당냉장고 바꿔가며 출력하려면?
+
 	}
 
 }
