@@ -1,4 +1,6 @@
 package restaurant.food.vo;
+import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 //날짜 정보 사용
 /*
@@ -7,13 +9,19 @@ import java.time.LocalDate;
 * 기본 포멧인 yyyy-MM-dd 형태의 문자열을 parse() 메소드에 넘길 수 있습니다.
 */
 
-public class Ingredient {
+public class Ingredient implements Serializable{
     private String name;
     private int amount;
     private int price;
     private LocalDate due;
    
-    
+	public Ingredient(String name, int amount, int price, LocalDate due) {
+		this.name = name;
+		this.amount = amount;
+		this.price = price;
+		this.due = due;
+	}
+
 	public String getName() {
 		return name;
 	}
