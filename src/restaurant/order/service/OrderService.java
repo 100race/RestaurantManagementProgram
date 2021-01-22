@@ -1,9 +1,11 @@
-package service;
+package restaurant.order.service;
 
 import java.util.ArrayList;
 
+import restaurant.order.vo.Order;
 
-import vo.Order;
+
+
 
 public interface OrderService {
 	boolean checkIngr(int foodIdx);
