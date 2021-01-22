@@ -31,18 +31,28 @@ public class DaoImpl implements Refrigerator{
 		start();
 	}
 	
+<<<<<<< HEAD
 	public static DaoImpl getInstance() {
 		return daoImpl;
 	}
 	
+=======
+>>>>>>> origin/master
 	/**
 	 * 
 	 * @return 멤버변수로 저장된 ingredients 반환
 	 */
+<<<<<<< HEAD
 	public ArrayList<Ingredient> getIngredients() {
 		return ingredients;
 	}
 	
+=======
+	public static ArrayList<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+>>>>>>> origin/master
 	/**
 	 * 실행 시 파일에서 식자재 리스트 받아와서 ingredients에 초기화
 	 */
@@ -135,9 +145,13 @@ public class DaoImpl implements Refrigerator{
 	}
 	
 	
+<<<<<<< HEAD
 	/**
 	 * 첫 실행시만 파일에 초기화. 이후 주석처리
 	 */
+=======
+	//첫실행시 한번만 초기화 (이후 주석처리)
+>>>>>>> origin/master
 	public void init() { 
 		
 		ArrayList<Ingredient> il = new ArrayList<Ingredient>();

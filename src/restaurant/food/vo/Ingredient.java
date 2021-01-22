@@ -9,6 +9,8 @@ import java.time.LocalDate;
 */
 
 public class Ingredient implements Serializable{
+	
+	private static final long serialVersionUID = 4896343328864682183L;
 	private int idx;
 	private String name;
     private int amount;

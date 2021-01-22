@@ -28,7 +28,7 @@ public class SupplyServiceImpl implements SupplyService{
 		System.out.println("찾을 식자재 이름을 입력하세요");
 		String name = sc.next();
 		ArrayList<Ingredient> list = dao.searchByName(name);
-		if(list == null) {
+		if(list.size() == 0) {
 			System.out.println("식자재가 없습니다.");
 		}
 		else {
