@@ -1,5 +1,9 @@
 package restaurant.food.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +12,7 @@ import restaurant.food.dao.Dao;
 import restaurant.food.dao.DaoImpl;
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
+import restaurant.supplier.SupplyServiceImpl;
 /**
  * 
  * @author Han
@@ -15,9 +20,11 @@ import restaurant.food.vo.Ingredient;
  */
 public class ServiceImpl implements Service {
 	private Dao dao;
+	private SupplyServiceImpl supply_service;
 	
 	public ServiceImpl() {
 		dao = new DaoImpl();
+		supply_service = new SupplyServiceImpl();
 	}
 	
 	/**
@@ -26,31 +33,33 @@ public class ServiceImpl implements Service {
 	 */
 	@Override
 	public void addFood(Scanner sc) {
+		ArrayList<Ingredient> ingredients;
 		System.out.println("========= 음식 등록 =========");
 		System.out.print("음식 이름 : ");
 		String foodName = sc.next();
 		System.out.print("가격 : ");
 		int price = sc.nextInt();
 		boolean flag = true;
-		String IngName = null;
+		String ingName = null;
 		int tempName;
-		int IngCnt;
+		int ingCnt;
 		Map<String, Integer> temp = new HashMap<>();
 		while(flag) {
 			System.out.print("1.재료 입력 2. 입력 종료");
 			int num = sc.nextInt();
 			switch (num) {
 			case 1:
-				//printAllIng 메서드 호출-경주씨 부분(재료 리스트 보여주고 선택)
+				//재료 리스트 보여주고 선택
+				supply_service.getAllIng();
 				System.out.println("재료 번호 : ");
 				tempName = sc.nextInt();
-				//유효성검증
-				//if(tempName == 냉장고_dao.getAllIng.get(tempName).get인덱스){
-					//IngName = 냉장고_dao.getAllIng.get(tempName).getName;
+				//유효성검증 : 냉장고에 있는 재료 번호와 입력받은 재료 번호가 같으면 수량을 받음
+				//if(tempName == restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getIdx()) {
+				//	ingName = restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getName();
 					System.out.println("필요 수량 : ");
-					IngCnt = sc.nextInt();
-					if(IngCnt > 0) {
-						temp.put(IngName, IngCnt);
+					ingCnt = sc.nextInt();
+					if(ingCnt > 0) {
+						temp.put(ingName, ingCnt);
 						System.out.println("재료를 입력하였습니다!");
 					}else {
 						System.out.println("수량이 없습니다!");
@@ -110,7 +119,9 @@ public class ServiceImpl implements Service {
 	 * void : 입력된 idx와 일치하는 음식을 출력
 	 */
 	@Override
-	public void printFoodByIdx(int idx) {
+	public void printFoodByIdx(Scanner sc) {
+		System.out.println("");
+		int idx = sc.nextInt();
 		Food tempFood = this.getFoodByIdx(idx);
 		if(tempFood != null){
 			System.out.println(tempFood);
@@ -152,26 +163,26 @@ public class ServiceImpl implements Service {
 	 */
 	@Override
 	public Map<String, Integer> addIng(Scanner sc) {
-		int tempName, IngCnt;
-		String IngName = null;
+		int tempName, ingCnt;
+		String ingName = null;
 		Map<String, Integer> temp = new HashMap<>();
-		//printAllIng 메서드 호출-경주씨 부분(재료 리스트 보여주고 선택)
+		supply_service.getAllIng();
 		System.out.println("재료 번호 : ");
 		tempName = sc.nextInt();
 		//유효성검증
-		//if(tempName == 냉장고_dao.getAllIng.get(tempName).get인덱스){
-			//IngName = 냉장고_dao.getAllIng.get(tempName).getName;
+		if(tempName == restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getIdx()) {
+			ingName = restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getName();
 			System.out.println("필요 수량 : ");
-			IngCnt = sc.nextInt();
-			if(IngCnt > 0) {
-				temp.put(IngName, IngCnt);
+			ingCnt = sc.nextInt();
+			if(ingCnt > 0) {
+				temp.put(ingName, ingCnt);
 				System.out.println("재료를 입력하였습니다!");
 			}else {
 				System.out.println("수량이 없습니다!");
 			}
-		//}else{
+		}else{
 			System.out.println("없는 재료입니다. 다시 선택해주세요.");
-		//}
+		}
 		return temp;
 	}
 	
@@ -206,13 +217,14 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("재료 삭제할 음식 번호: ");
 		int foodNum = sc.nextInt();
-		//printAllIng 메서드 호출-경주씨 부분(재료 리스트 보여주고 선택)
+		supply_service.getAllIng();
 		System.out.print("삭제할 재료 번호: ");
 		int tempName = sc.nextInt();
 		String ingName = null;
 		//유효성검증
-		//if(tempName == 냉장고_dao.getAllIng.get(tempName).get인덱스){
-			//IngName = 냉장고_dao.getAllIng.get(tempName).getName;
+		if(tempName == restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getIdx()) {
+			ingName = restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getName();
+		}
 		dao.deleteIng(foodNum, ingName);
 	}
 	

@@ -1,11 +1,14 @@
 package restaurant;
 
+import java.util.Scanner;
+
 public class Main {
 	public static int TOTAL_MONEY;
 	
 	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 		Menu menu = new Menu();
-		menu.run_s();
+		menu.run(sc);
 	}
 
 }
