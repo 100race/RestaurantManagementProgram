@@ -40,7 +40,7 @@ public class DaoImpl implements Dao {
 	@Override
 	public Food searchByIdx(int idx) {
 		Food f = new Food();
-		f.setIdx(idx);
+		f.setIdx(idx--);
 		//foods에 f가 존재하면 f의 인덱스를 리턴, 없으면 -1 리턴
 		int index = foods.indexOf(f); 
 		if (index < 0) { //f가 없으면(-1이면)

@@ -10,12 +10,15 @@ import java.time.LocalDate;
 */
 
 public class Ingredient implements Serializable{
-    private String name;
+	private int idx;
+	private String name;
     private int amount;
     private int price;
     private LocalDate due;
+    
    
 	public Ingredient(String name, int amount, int price, LocalDate due) {
+		idx++;
 		this.name = name;
 		this.amount = amount;
 		this.price = price;
@@ -46,9 +49,21 @@ public class Ingredient implements Serializable{
 	public void setDue(LocalDate due) {
 		this.due = due;
 	}
+	
+	public int getIdx() {
+		return idx;
+	}
+
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+
 	@Override
 	public String toString() {
-		return "Ingredient [name=" + name + ", amount=" + amount + ", price=" + price + ", due=" + due + "]";
+		return "Ingredient [idx=" + idx + ", name=" + name + ", amount=" + amount + ", price=" + price + ", due=" + due
+				+ "]";
 	}
+
+	
 	
 }

@@ -50,25 +50,25 @@ public class Menu {
 				food_service.printAllFood();
 				break;
 			case 3:
-				food_service.printFoodByIdx(sc);
-				break;
-			case 4:
 				food_service.changePriceByIdx(sc);
 				break;
-			case 5:
+			case 4:
 				food_service.changeFoodNameByIdx(sc);
 				break;
-			case 6:
+			case 5:
 				food_service.addIngByIdx(sc);
 				break;
-			case 7:
+			case 6:
 				food_service.delIngByIdx(sc);
 				break;
-			case 8:
+			case 7:
 				food_service.delFoodByIdx(sc);
 				break;
-			case 9:
+			case 8:
 				flag = false;
+				break;
+			default:
+				System.out.println("번호를 정확히 입력하세요.");
 				break;
 			}
 		}
