@@ -15,7 +15,7 @@ import vo.Order;
 
 public class OrderDAOImpl implements OrderDAO{
 	
-	public static final String FILE_PATH = "C:\\Users\\Playdata\\Documents\\RestaurantManagementProgram\\src\\restaurant\\files"; //test
+	public static final String FILE_PATH = "src/restaurant/files"; //test
 	private String fileName = FILE_PATH+"/주문내역";
 	ArrayList<Order> ord;
 	
