@@ -22,7 +22,7 @@ public class Menu {
 		boolean flag = true;
 		//service.start(); //시작하면 자동으로 파일 로드
 		while (flag) {
-			System.out.println("1.음식 관리 2.공급처 관리 3.주문 하기 4.종료");
+			System.out.println("1.음식 관리 2.공급처 관리 3.주문 관리 4.종료");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
@@ -46,7 +46,7 @@ public class Menu {
 		boolean flag = true;
 		while(flag) {
 			System.out.println("=============음식 관리============");
-			System.out.println("1.음식 추가하기 2.음식 전체 보기 3.번호로 음식 검색 4.음식 가격 변경하기 5.음식 이름 변경하기 6.기존 음식 재료 추가하기 7.기존 음식 재료 삭제하기 8.음식 삭제 하기 9.종료");
+			System.out.println("1.음식 추가하기 2.음식 전체 보기 3.음식 가격 변경하기 4.음식 이름 변경하기 5.기존 음식 재료 추가하기 6.기존 음식 재료 삭제하기 7.음식 삭제 하기 8.종료");
 			Scanner sc = new Scanner(System.in);
 			int menu = sc.nextInt();
 			switch(menu) {
@@ -83,17 +83,15 @@ public class Menu {
 	
 	public void run_o(Scanner sc) {
 		boolean flag = true;
-		
-		
 		while(flag) {
 			order_service.start();
+			System.out.println("=============주문 관리============");
 			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.종료");
 			int m= sc.nextInt();
-			
 			switch(m) {
 				case 1:	
 						System.out.println("주문음식선택");
-					    //fService.getAllFood(); 
+					    //Service.getAllFood(); 
 						int foodIdx= sc.nextInt();
 						if(order_service.checkIngr(foodIdx)) {
 							System.out.println("주문수량");
