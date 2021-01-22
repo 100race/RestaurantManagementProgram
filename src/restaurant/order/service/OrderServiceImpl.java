@@ -1,12 +1,13 @@
-package service;
+package restaurant.order.service;
 
 
 import java.util.ArrayList;
 
-import dao.OrderDAO;
-import dao.OrderDAOImpl;
-import vo.Food;
-import vo.Order;
+import restaurant.food.vo.Food;
+import restaurant.order.dao.OrderDAO;
+import restaurant.order.dao.OrderDAOImpl;
+import restaurant.order.vo.Order;
+
 
 
 

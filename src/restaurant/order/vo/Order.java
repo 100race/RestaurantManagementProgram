@@ -1,6 +1,8 @@
-package vo;
+package restaurant.order.vo;
 
 import java.io.Serializable;
+
+import restaurant.food.vo.Food;
 
 public class Order implements Serializable {
 

@@ -3,22 +3,26 @@ package restaurant;
 import java.util.Scanner;
 
 import restaurant.food.service.ServiceImpl;
+import restaurant.order.service.OrderServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
+
 
 public class Menu {
 	private SupplyServiceImpl supply_service;
 	private ServiceImpl food_service;
+	private OrderServiceImpl order_service;
 	
 	public Menu() {
 		supply_service = new SupplyServiceImpl();
 		food_service = new ServiceImpl();
+		order_service = new OrderServiceImpl();
 	}
 	
 	public void run(Scanner sc) {// 상위 메뉴
 		boolean flag = true;
 		//service.start(); //시작하면 자동으로 파일 로드
 		while (flag) {
-			System.out.println("1.음식 관리 2.재료 관리 3.종료");
+			System.out.println("1.음식 관리 2.공급처 관리 3.주문 하기 4.종료");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
@@ -28,6 +32,9 @@ public class Menu {
 				//run_s(sc);
 				break;
 			case 3:
+				run_o(sc);
+				break;
+			case 4:
 				flag = false;
 				break;
 			}
@@ -70,6 +77,47 @@ public class Menu {
 			default:
 				System.out.println("번호를 정확히 입력하세요.");
 				break;
+			}
+		}
+	}
+	
+	public void run_o(Scanner sc) {
+		boolean flag = true;
+		
+		
+		while(flag) {
+			order_service.start();
+			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.종료");
+			int m= sc.nextInt();
+			
+			switch(m) {
+				case 1:	
+						System.out.println("주문음식선택");
+					    //fService.getAllFood(); 
+						int foodIdx= sc.nextInt();
+						if(order_service.checkIngr(foodIdx)) {
+							System.out.println("주문수량");
+							int foodAmount=sc.nextInt();
+							order_service.addOrder(foodAmount);
+						} else {
+							System.out.println("재고없음");
+						}
+						order_service.orderSave();
+						break;
+				
+				case 2:
+						order_service.printAllOrder();
+						break;
+						
+				case 3: 
+						System.out.println("취소주문 선택");
+						order_service.printAllOrder();
+						int calcelOrder= sc.nextInt();
+						order_service.finishOrder(calcelOrder);
+						break;
+				case 4:
+						flag=false;
+						break;
 			}
 		}
 	}

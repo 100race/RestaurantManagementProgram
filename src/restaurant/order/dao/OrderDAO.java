@@ -1,8 +1,9 @@
-package dao;
+package restaurant.order.dao;
 
 import java.util.ArrayList;
 
-import vo.Order;
+import restaurant.order.vo.Order;
+
 
 public interface OrderDAO {
 	void insert(Order o);

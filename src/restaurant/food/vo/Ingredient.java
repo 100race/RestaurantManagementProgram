@@ -14,11 +14,7 @@ public class Ingredient implements Serializable{
     private int amount;
     private int price;
     private LocalDate due;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> origin/arlee_restaurantRefger_DAOImpl
    
 	public Ingredient(String name, int amount, int price, LocalDate due) {
 		idx++;
