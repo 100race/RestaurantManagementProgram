@@ -9,7 +9,7 @@ public interface Service {
 	void addFood(Scanner sc);
 	Food getFoodByIdx(int idx);
 	ArrayList<Food> getAllFood();
-	void printFoodByIdx(int idx);
+	void printFoodByIdx(Scanner sc);
 	void printAllFood();
 	void changePriceByIdx(Scanner sc);
 	Map<String, Integer> addIng(Scanner sc);

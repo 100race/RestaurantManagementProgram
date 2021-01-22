@@ -17,8 +17,7 @@ import restaurant.supplier.SupplyServiceImpl;
 public class DaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
-	private ArrayList<Ingredient> ingredients;
-	
+	private static ArrayList<Ingredient> ingredients;
 	
 	public DaoImpl() {
 		ingredients = new ArrayList<Ingredient>(); 
@@ -26,6 +25,11 @@ public class DaoImpl implements Refrigerator{
 		start();
 	}
 	
+	
+	public static ArrayList<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
 	//실행 시 파일에서 리스트 받아옴
 	public void start() {
 		try {

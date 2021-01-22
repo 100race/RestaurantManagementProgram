@@ -1,5 +1,9 @@
 package restaurant.food.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +30,7 @@ public class ServiceImpl implements Service {
 	 */
 	@Override
 	public void addFood(Scanner sc) {
+		ArrayList<Ingredient> ingredients;
 		System.out.println("========= 음식 등록 =========");
 		System.out.print("음식 이름 : ");
 		String foodName = sc.next();
@@ -41,11 +46,15 @@ public class ServiceImpl implements Service {
 			int num = sc.nextInt();
 			switch (num) {
 			case 1:
-				//printAllIng 메서드 호출-경주씨 부분(재료 리스트 보여주고 선택)
+				//재료 리스트 보여주고 선택
+				suppl
+//				ingredients = restaurant.supplier.dao.DaoImpl.getIngredients();
+//				ingredients.g
 				System.out.println("재료 번호 : ");
 				tempName = sc.nextInt();
 				//유효성검증
-				//if(tempName == 냉장고_dao.getAllIng.get(tempName).get인덱스){
+				if(tempName == ingredients.get 
+						//냉장고_dao.getAllIng.get(tempName).get인덱스){
 					//IngName = 냉장고_dao.getAllIng.get(tempName).getName;
 					System.out.println("필요 수량 : ");
 					IngCnt = sc.nextInt();
@@ -110,7 +119,8 @@ public class ServiceImpl implements Service {
 	 * void : 입력된 idx와 일치하는 음식을 출력
 	 */
 	@Override
-	public void printFoodByIdx(int idx) {
+	public void printFoodByIdx(Scanner sc) {
+		int idx = sc.nextInt();
 		Food tempFood = this.getFoodByIdx(idx);
 		if(tempFood != null){
 			System.out.println(tempFood);
