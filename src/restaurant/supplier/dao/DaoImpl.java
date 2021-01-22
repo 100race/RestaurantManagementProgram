@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.Refrigerator;
-import restaurant.supplier.SupplyService;
-import restaurant.supplier.SupplyServiceImpl;
 
 public class DaoImpl implements Refrigerator{
 	

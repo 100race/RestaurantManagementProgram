@@ -1,6 +1,5 @@
 package restaurant.food.vo;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
 //날짜 정보 사용
 /*
@@ -14,6 +13,7 @@ public class Ingredient implements Serializable{
     private int amount;
     private int price;
     private LocalDate due;
+
    
 	public Ingredient(String name, int amount, int price, LocalDate due) {
 		this.name = name;
@@ -21,6 +21,7 @@ public class Ingredient implements Serializable{
 		this.price = price;
 		this.due = due;
 	}
+
 
 	public String getName() {
 		return name;

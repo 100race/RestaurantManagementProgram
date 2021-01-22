@@ -15,6 +15,9 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		private DaoImpl sRDao;
 		
 		public RefrigerratorServiceImpl() {
+			
+			ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
+		
 			this.rRDao = new RestaurantRefrigeratorDaoImpl();
 			this.sRDao = new DaoImpl();
 		}
@@ -22,15 +25,16 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	
 	
 	@Override
-	public void buying(Ingredient ing) {
+	public void buying(Ingredient arr) {
 		// TODO Auto-generated method stub
 		/*공급처 식자재 차감, totalMoney 차감
 */
-		System.out.println("공급처냉장고에서 16종 식자재를 1회 구매하였습니다. 식자재 amount 1회 구매량 갯수\r\n" + 
-				"		김:30. 단무지:10, 쌀:50, 햄:10, 계란:20, 면사리:20, 어묵:10, 대파:10, 쑥갓:5, 유부:10\r\n" + 
-				"		떡 : 20, 치즈:5, 돼지고기:10, 밀가루:10, 빵가루:10, 김치:10");
-		sRDao.addIng(ing);
-			
+		System.out.println("공급처냉장고에서 16종 식자재를 1회 구매하였습니다. \n 식자재 amount 1회 구매량 갯수"+ ); 
+				sRDao.addIng(arr);
+//			김:30. 단무지:10, 쌀:50, 햄:10, 계란:20, 면사리:20, 어묵:10, 
+//			대파:10, 쑥갓:5, 유부, 10 떡 : 20, 치즈:5, 돼지고기:10, 밀가루:10, 빵가루:10, 김치:10
+				
+		
 		
 		
 		} 
@@ -41,12 +45,10 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		// TODO Auto-generated method stub
 		
 /*		기능 정의 필요
-		유통기한 무한?인지 유한인지 정하고 무한이면 유통기한 수정이 굳이 필요x
-		아니면 단순히 유통기한을 변경하고 싶을 때 쓰는 것?
-		개별 유통기한 받을 수 있게 idx는 name으로 특정
-		12시간 단위로 유통기한 체크 
-*/		
-		
+ * 		사올 때 식자재 유통기한 설정, 유통기한 지난 후, 조회만 해서 , 유통기한 지난 재고 리스트입니다.하고 
+ * boolean -> T/F , 삭제후, 다시 사올 때, now date로 3일, 예시로 해서 호출
+ * 		
+ */		
 	}
 
 	@Override
@@ -95,9 +97,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	public void inIng(Scanner sc) {
 		// TODO Auto-generated method stub
 		System.out.println("냉장고에 넣을 식자재를 입력하세요");
-		String name;
-		String inputname;
-		if(rRDao.searchByName(name)) {
+	
 			
 		}
 		
@@ -127,8 +127,8 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void PrintAllIng() {
 		// TODO Auto-generated method stub
-		System.out.println("공급처 냉장고에 있는 모든 식자재 확인하기");
-		ArrayList<Ingredient> ingr = sRDao.selectAllIng();
+		System.out.println("식당 냉장고에 있는 모든 식자재 확인하기");
+		ArrayList<Ingredient> ingr = rRDao.selectAllIng();
 		System.out.println(ingr);
 //		메소드 1개 가지고 공급처 냉장고와 식당냉장고 바꿔가며 출력하려면?
 
