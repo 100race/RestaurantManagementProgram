@@ -1,5 +1,8 @@
 package vo;
-public class Order {
+
+import java.io.Serializable;
+
+public class Order implements Serializable {
 
 	
 	private static int cnt;
