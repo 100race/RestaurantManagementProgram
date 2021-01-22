@@ -1,23 +1,38 @@
-package restaurant.order.vo;
-
-import restaurant.food.vo.Food;
-
+package vo;
 public class Order {
-	public static int NUM;
+
+	
+	private static int cnt;
 	private Food food;
 	private int amount;
+	private int num;
+	
+	public Order() {}
 	
 	public Order(Food food, int amount) {
+		
+		this.num=++cnt;
 		this.food = food;
 		this.amount = amount;
 	}
 	
-	public static int getNUM() {
-		return NUM;
+	
+	public static int getCnt() {
+		return cnt;
 	}
-	public static void setNUM(int nUM) {
-		NUM = nUM;
+
+	public static void setCnt(int cnt) {
+		Order.cnt = cnt;
 	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
 	public Food getFood() {
 		return food;
 	}
@@ -30,11 +45,11 @@ public class Order {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-
 	@Override
 	public String toString() {
-		return "Order [amount=" + amount + "]";
+		return "Order [num= "+num +", food=" + food + ", amount=" + amount + "]";
 	}
 	
 	
-}
+	}
+	
