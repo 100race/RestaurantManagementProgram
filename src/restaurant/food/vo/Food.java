@@ -1,12 +1,20 @@
 package restaurant.food.vo;
-
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Food {
-	private int idx;
+	private int idx = 0;
 	private String foodName;
 	private int price;
-	private ArrayList <Ingredient> ingredients;
+	private Map<String, Integer> ingredients;
+	
+	public Food() {}
+	public Food(String foodName, int price, Map<String, Integer> ingredients) {
+		idx++;
+		this.foodName = foodName;
+		this.price = price;
+		this.ingredients = ingredients;
+	}
 	
 	public int getIdx() {
 		return idx;
@@ -26,11 +34,11 @@ public class Food {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public ArrayList<Ingredient> getIngredient() {
+	public Map<String, Integer> getIngredient() {
 		return ingredients;
 	}
-	public void setIngredient(ArrayList<Ingredient> ingredient) {
-		this.ingredients = ingredient;
+	public void setIngredient(Map<String, Integer> ingredients) {
+		this.ingredients = ingredients;
 	}
 	
 	@Override
