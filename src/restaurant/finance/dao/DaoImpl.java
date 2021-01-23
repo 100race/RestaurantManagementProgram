@@ -1,14 +1,23 @@
 package restaurant.finance.dao;
 
+import java.awt.BufferCapabilities;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import restaurant.finance.vo.Finance;
 import restaurant.food.vo.Ingredient;
@@ -40,6 +49,9 @@ public class DaoImpl implements Dao {
 		return daoImpl;
 	}
 
+	/**
+	 * 금액과 메세지를 받아서 입금한 후 메세지 기록
+	 */
 	@Override
 	public void input(int amount, String message) {
 		int oriAmount = Finance.getTOTAL_MONEY();
@@ -47,6 +59,9 @@ public class DaoImpl implements Dao {
 		financeRecords.add(new Finance(amount, message));
 	}
 
+	/**
+	 * 금액과 메세지를 받아서 출금한 후 메세지 기록
+	 */
 	@Override
 	public void output(int amount, String message) {
 		int oriAmount = Finance.getTOTAL_MONEY();
@@ -60,7 +75,7 @@ public class DaoImpl implements Dao {
 	}
 
 	/**
-	 * 파일 실행시 이전 재정기록 불러오기
+	 * 파일 실행시 이전 입출금기록 불러오기
 	 */
 	@Override
 	public void start() {
@@ -89,20 +104,23 @@ public class DaoImpl implements Dao {
 	
 	
 	/**
-	 * 파일 종료시 파일에 재정기록 저장
+	 * 파일 종료시 파일에 입출금기록 저장
 	 */
 	@Override
 	public void stop() {
 		try {
+			//객체로 써주기
 			FileOutputStream fo = new FileOutputStream(RECORD_FILE_PATH);
 			ObjectOutputStream oo = new ObjectOutputStream(fo);
 			oo.writeObject(financeRecords);
 			
-			fo = new FileOutputStream(MONEY_FILE_PATH);
-			fo.write(Finance.getTOTAL_MONEY());
+			//문자열로 써주기
+			FileWriter fw = new FileWriter(MONEY_FILE_PATH);
+			fw.write(String.valueOf(Finance.getTOTAL_MONEY()));
 			
 			oo.close();
 			fo.close();
+			fw.close();
 			}
 		catch (IOException e) {
 			System.out.println("restaurant.finance DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
@@ -115,23 +133,34 @@ public class DaoImpl implements Dao {
 	 */
 	public void initTotalMoney() {
 		int total =0;
-		File rf = new File(RECORD_FILE_PATH);
+		File rf = new File(MONEY_FILE_PATH);
 		boolean isExists = rf.exists();
-		if(!isExists){
-			Finance.setTOTAL_MONEY(1000000);
-		}else{
+		if(isExists){
 			try {
-				FileInputStream fi = new FileInputStream(MONEY_FILE_PATH);
-				total = fi.read();
-				fi.close();
+//				byte[] b = new byte[1024];
+//				FileInputStream fi = new FileInputStream(MONEY_FILE_PATH);
+//				fi.read(b);				
+//				total = Integer.parseInt(new String(b)); // byte배열이 받아오려는 내용보다 크게 선언되어 쓰레기 값 들어감.
+//				
+//				fi.close();
+				
+				Path path = Paths.get(MONEY_FILE_PATH);
+				List<String> lines = Files.readAllLines(path);
+				total = Integer.parseInt(lines.get(0));
+				
 			} catch (FileNotFoundException e) {
 				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
 				e.printStackTrace();
 			} catch (IOException e) {
 				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
 				e.printStackTrace();
+			} catch (NumberFormatException e) {
+				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
+				e.printStackTrace();
 			}
 			Finance.setTOTAL_MONEY(total);
+		}else{
+			Finance.setTOTAL_MONEY(1000000);
 		}
 			
 		}

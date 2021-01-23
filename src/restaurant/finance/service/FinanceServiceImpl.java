@@ -48,12 +48,16 @@ public class FinanceServiceImpl implements FinanceService{
 			System.out.println("유효한 금액을 다시 입력해주세요");
 			amount = sc.next();
 		}
+		//잔액부족
+		while(Finance.getTOTAL_MONEY() - Integer.parseInt(amount) >=0) {
+			System.out.println("잔액 부족입니다. 다시 입력해주세요");
+			amount = sc.next();
+		}
 		
 		System.out.println("출금 메세지를 입력하세요 (생략 시 기타로 입력)");
 		sc.nextLine(); // 입력버퍼 비우기
 		String message = sc.nextLine();
 		if(message.length()==0) message = "기타"; //공백 입력시 기타
-		
 		daoImpl.output(Integer.parseInt(amount), message);
 		System.out.println("입력되었습니다");
 	}
