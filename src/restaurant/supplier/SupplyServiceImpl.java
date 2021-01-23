@@ -17,10 +17,9 @@ import restaurant.supplier.dao.DaoImpl;
 
 public class SupplyServiceImpl implements SupplyService{
 	
-	private DaoImpl dao;
+	private DaoImpl dao = new DaoImpl(); //한응 수정(food쪽에서 접근하려고 SupplyServiceImpl 생성했더니 dao도 함께 생성되어서 재료 리스트가 2개로 중복 생성됨)
 	
-	public SupplyServiceImpl() {
-		dao = new DaoImpl();
+	public SupplyServiceImpl() {		
 	}
 	
 	@Override

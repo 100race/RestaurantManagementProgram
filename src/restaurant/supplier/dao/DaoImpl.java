@@ -17,7 +17,7 @@ import restaurant.refrigerator.dao.Refrigerator;
 public class DaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
-	private ArrayList<Ingredient> ingredients;
+	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>(); //한응 수정()
 	private static DaoImpl daoImpl = new DaoImpl();
 	
 	/**
@@ -26,33 +26,24 @@ public class DaoImpl implements Refrigerator{
 	 * 생성시 파일에서 리스트를 받아옴
 	 */
 	public DaoImpl() {
-		ingredients = new ArrayList<Ingredient>(); 
-		//init();
+		init();
 		start();
 	}
 	
-<<<<<<< HEAD
 	public static DaoImpl getInstance() {
 		return daoImpl;
 	}
 	
-=======
->>>>>>> origin/master
 	/**
 	 * 
 	 * @return 멤버변수로 저장된 ingredients 반환
 	 */
-<<<<<<< HEAD
-	public ArrayList<Ingredient> getIngredients() {
+
+	public ArrayList<Ingredient> getIngredients() { //selectAllIng()랑 중복됩니다. printAllIng로 출력메소드를 만드는게 어떨지?
 		return ingredients;
 	}
 	
-=======
-	public static ArrayList<Ingredient> getIngredients() {
-		return ingredients;
-	}
 
->>>>>>> origin/master
 	/**
 	 * 실행 시 파일에서 식자재 리스트 받아와서 ingredients에 초기화
 	 */
@@ -144,14 +135,11 @@ public class DaoImpl implements Refrigerator{
 		return ingredients;
 	}
 	
-	
-<<<<<<< HEAD
+
 	/**
 	 * 첫 실행시만 파일에 초기화. 이후 주석처리
 	 */
-=======
-	//첫실행시 한번만 초기화 (이후 주석처리)
->>>>>>> origin/master
+
 	public void init() { 
 		
 		ArrayList<Ingredient> il = new ArrayList<Ingredient>();

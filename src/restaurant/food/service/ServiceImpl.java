@@ -19,15 +19,18 @@ import restaurant.supplier.SupplyServiceImpl;
  *
  */
 public class ServiceImpl implements Service {
-	private Dao dao;
-	private SupplyServiceImpl supply_service;
-	ArrayList<Ingredient> suppList = restaurant.supplier.dao.DaoImpl.getInstance().selectAllIng();
+	private Dao dao = new DaoImpl(); //수정함
+	private SupplyServiceImpl supply_service = new SupplyServiceImpl(); //수정함
+	ArrayList<Ingredient> suppList = restaurant.supplier.dao.DaoImpl.getInstance().getIngredients();
 	
 	public ServiceImpl() {
-		dao = new DaoImpl();
-		supply_service = new SupplyServiceImpl();
 	}
 	
+	
+	public Dao getDao() {
+		return dao;
+	}
+
 	/**
 	 * @param scanner로 음식 이름/가격/재료 이름/재료 수량 입력받음
 	 * void : 입력 받은 Food 객체를 추가함
@@ -55,8 +58,8 @@ public class ServiceImpl implements Service {
 				System.out.println("재료 번호 : ");
 				tempName = sc.nextInt();
 				//유효성검증 : 냉장고에 있는 재료 번호와 입력받은 재료 번호가 같으면 수량을 받음
-				if(tempName == suppList.get(tempName).getIdx()) {
-					ingName = suppList.get(tempName).getName();
+				//if(tempName == suppList.get(tempName).getIdx()) {
+					//ingName = suppList.get(tempName).getName();
 					System.out.println("필요 수량 : ");
 					ingCnt = sc.nextInt();
 					if(ingCnt > 0) {
@@ -65,9 +68,9 @@ public class ServiceImpl implements Service {
 					}else {
 						System.out.println("수량이 없습니다!");
 					}
-				}else{
-					System.out.println("없는 재료입니다. 다시 선택해주세요.");
-				}
+				//}else{
+					//System.out.println("없는 재료입니다. 다시 선택해주세요.");
+				//}
 				break;
 			case 2:
 				flag = false;
@@ -247,8 +250,8 @@ public class ServiceImpl implements Service {
 		System.out.print("이름 변경할 음식 번호: ");
 		int num = sc.nextInt();
 		if(num == this.getFoodByIdx(num).getIdx()) {
-			System.out.print("새로운 음식 이름: ");
-			String name = sc.nextLine();
+			System.out.println("새로운 음식 이름: ");
+			String name = sc.next();
 			if(name != null) {
 				dao.updateName(num, name);
 			}

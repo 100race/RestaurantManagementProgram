@@ -20,11 +20,11 @@ import restaurant.order.vo.Order;
  *
  */
 public class DaoImpl implements Dao {
-	private static ArrayList<Food> foods;
+	private static ArrayList<Food> foods = new ArrayList<>(); //수정함
 	public static final String FOOD_FILE_PATH = "src/restaurant/files/foods.dat";
 	
 	public DaoImpl() {
-		foods = new ArrayList<>();
+		start();
 	}
 	
 	public static ArrayList<Food> getFoods() {
@@ -67,14 +67,12 @@ public class DaoImpl implements Dao {
 	 */
 	@Override
 	public Food searchByIdx(int idx) {
-		Food f = new Food();
-		f.setIdx(idx--);
+		Food f = getFoods().get(idx);
 		//foods에 f가 존재하면 f의 인덱스를 리턴, 없으면 -1 리턴
-		int index = foods.indexOf(f); 
-		if (index < 0) { //f가 없으면(-1이면)
+		if (f == null) { //f가 없으면(-1이면)
 			return null;
 		} else {
-			return foods.get(index); //인덱스에 있는 객체 리턴
+			return f; //인덱스에 있는 객체 리턴
 		}
 	}
 	
@@ -186,10 +184,10 @@ public class DaoImpl implements Dao {
 	 * void : 찾은 음식의 가격을 수정, 없으면 sysout출력
 	 */
 	@Override
-	public void updatePrice(int idx, int price) {
-		Food f = searchByIdx(idx);
-		if(f != null) {
-			f.setPrice(price);
+	public void updatePrice(int num, int price) {
+		int temp = getFoods().get(num).getIdx();
+		if(temp == num) {
+			getFoods().get(num).setPrice(price);
 		}else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
@@ -223,7 +221,7 @@ public class DaoImpl implements Dao {
 	 */
 	public void stop() {
 		try {
-			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH);
+			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH, true); //true : 기존자료에 이어서 쓰기 옵션
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(foods);
 			oos.close();

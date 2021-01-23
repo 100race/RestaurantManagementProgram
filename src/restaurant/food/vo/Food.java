@@ -1,16 +1,22 @@
 package restaurant.food.vo;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Food {
-	private int idx = 0;
+public class Food implements Serializable{
+	/**
+	 * serialVersionUID 버전관리
+	 */
+	private static final long serialVersionUID = 8057832500895502907L;
+	private static int cnt = 0; //추가함
+	private int idx;
 	private String foodName;
 	private int price;
 	private Map<String, Integer> ingredients;
 	
 	public Food() {}
 	public Food(String foodName, int price, Map<String, Integer> ingredients) {
-		idx++;
+		this.idx = cnt++; //추가함
 		this.foodName = foodName;
 		this.price = price;
 		this.ingredients = ingredients;
