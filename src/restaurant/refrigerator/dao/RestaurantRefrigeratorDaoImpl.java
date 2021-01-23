@@ -27,13 +27,13 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 		 */
 		ArrayList<Ingredient> ingredients = new ArrayList<>();
 //      식자재 검색 및 확인
-		for (Ingredient ingredient : this.ingredients) {//안에 찾는 걸 스캔
-			if (name.equals(ingredient.getName())) {
-				ingredients.add(ingredient);
+			for (Ingredient ingredient : this.ingredients) {//안에 찾는 걸 스캔
+				if (name.equals(ingredient.getName())) {
+					ingredients.add(ingredient);
+				}
 			}
+			return ingredients;
 		}
-		return ingredients;
-	}
 
 	@Override
 	public void updateDue(String name, LocalDate Date) {
