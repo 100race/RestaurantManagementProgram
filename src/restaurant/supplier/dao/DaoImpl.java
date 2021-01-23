@@ -1,4 +1,5 @@
 package restaurant.supplier.dao;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.Refrigerator;
 /**
@@ -18,41 +20,31 @@ public class DaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
 	private ArrayList<Ingredient> ingredients;
-	private static DaoImpl daoImpl = new DaoImpl();
+	public static DaoImpl daoImpl = new DaoImpl();
 	
 	/**
 	 * Dao 생성자
 	 * 파일에 객체정보를 넣어주기 위해 init()을 호출
 	 * 생성시 파일에서 리스트를 받아옴
 	 */
-	public DaoImpl() {
+	private DaoImpl() {
 		ingredients = new ArrayList<Ingredient>(); 
 		//init();
 		start();
 	}
 	
-<<<<<<< HEAD
 	public static DaoImpl getInstance() {
 		return daoImpl;
 	}
 	
-=======
->>>>>>> origin/master
 	/**
 	 * 
 	 * @return 멤버변수로 저장된 ingredients 반환
 	 */
-<<<<<<< HEAD
 	public ArrayList<Ingredient> getIngredients() {
 		return ingredients;
 	}
-	
-=======
-	public static ArrayList<Ingredient> getIngredients() {
-		return ingredients;
-	}
 
->>>>>>> origin/master
 	/**
 	 * 실행 시 파일에서 식자재 리스트 받아와서 ingredients에 초기화
 	 */
@@ -145,13 +137,9 @@ public class DaoImpl implements Refrigerator{
 	}
 	
 	
-<<<<<<< HEAD
 	/**
 	 * 첫 실행시만 파일에 초기화. 이후 주석처리
 	 */
-=======
-	//첫실행시 한번만 초기화 (이후 주석처리)
->>>>>>> origin/master
 	public void init() { 
 		
 		ArrayList<Ingredient> il = new ArrayList<Ingredient>();

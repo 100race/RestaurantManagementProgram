@@ -1,19 +1,11 @@
 package restaurant.food.dao;
 
-import java.io.BufferedInputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
-import restaurant.order.vo.Order;
 /**
  * 
  * @author Han
@@ -21,7 +13,6 @@ import restaurant.order.vo.Order;
  */
 public class DaoImpl implements Dao {
 	private static ArrayList<Food> foods;
-	public static final String FOOD_FILE_PATH = "src/restaurant/files/foods.dat";
 	
 	public DaoImpl() {
 		foods = new ArrayList<>();
@@ -31,25 +22,6 @@ public class DaoImpl implements Dao {
 		return foods;
 	}
 
-	/**
-	 * void : FOOD_FILE_PATH를 읽어 foods에 저장
-	 */
-	public void start() {
-		try {
-			FileInputStream fis = new FileInputStream(FOOD_FILE_PATH);
-			ObjectInputStream ons = new ObjectInputStream(fis);
-			foods = (ArrayList<Food>)ons.readObject();
-			ons.close();
-			fis.close();
-		} catch(EOFException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * @param food
 	 * void : Food 객체를 추가함
@@ -216,23 +188,6 @@ public class DaoImpl implements Dao {
 	@Override
 	public ArrayList<Food> getAllFood() {
 		return foods;
-	}
-	
-	/**
-	 * void : foods의 객체를 FOOD_FILE_PATH에 저장
-	 */
-	public void stop() {
-		try {
-			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(foods);
-			oos.close();
-			fos.close();
-			}
-		catch (IOException e) {
-			System.out.println("DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
-			e.printStackTrace();
-		}
 	}
 
 }

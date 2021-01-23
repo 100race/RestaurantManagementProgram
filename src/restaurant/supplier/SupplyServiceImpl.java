@@ -20,7 +20,7 @@ public class SupplyServiceImpl implements SupplyService{
 	private DaoImpl dao;
 	
 	public SupplyServiceImpl() {
-		dao = new DaoImpl();
+		dao = restaurant.supplier.dao.DaoImpl.getInstance();
 	}
 	
 	@Override
@@ -39,12 +39,6 @@ public class SupplyServiceImpl implements SupplyService{
 		
 	}
 	
-	/*
-	 * 입고가 우선 없어서 만들었는데
-	 * 반품을 만들지 말지??
-	 * 만들게 되면 냉장고에서 updateAmount 이용해서 만들어야 할듯
-	 */
-
 	@Override
 	public void refundIng(Scanner sc) {
 		System.out.println("반품할 식자재 이름을 입력하세요");
