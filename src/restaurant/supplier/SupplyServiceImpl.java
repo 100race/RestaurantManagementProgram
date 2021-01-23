@@ -52,7 +52,7 @@ public class SupplyServiceImpl implements SupplyService{
 	
 	 //식자재 구매
 	@Override
-	public void BuyIng(Scanner sc) {
+	public void buyIng(Scanner sc) {
 		System.out.println("구매할 식자재 이름을 입력하세요");
 		String name = sc.next();
 		System.out.println("구매 수량을 입력하세요");

@@ -57,10 +57,10 @@ public class DaoImpl implements Refrigerator{
 			oi.close();
 			fi.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Dao start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Dao start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -168,7 +168,7 @@ public class DaoImpl implements Refrigerator{
 			fo.close();
 			}
 		catch (IOException e) {
-			System.out.println("DaoImpl init() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl init() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		}
 		
@@ -186,7 +186,7 @@ public class DaoImpl implements Refrigerator{
 			fo.close();
 			}
 		catch (IOException e) {
-			System.out.println("DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
 			e.printStackTrace();
 		}
 	}
