@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import restaurant.order.vo.Order; 
 
@@ -40,8 +41,7 @@ public class OrderDAOImpl implements OrderDAO{
 			
 			 in.close();
 		} catch(EOFException e) {
-			e.printStackTrace();
-			
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,40 +101,31 @@ public class OrderDAOImpl implements OrderDAO{
 		ord.add(orders);
 	}
 	
+
 	public void delete(int num) {
 		
 		try {
-			FileInputStream fi = new FileInputStream(fileName);
-			BufferedInputStream bi = new BufferedInputStream(fi);
-			ObjectInputStream in = new ObjectInputStream(bi);
+			FileOutputStream fo = new FileOutputStream(fileName);
+			BufferedOutputStream bo = new BufferedOutputStream(fo);
+			ObjectOutputStream out = new ObjectOutputStream(bo);
+	
+	
 			
-			ArrayList<Order> fileRead = new ArrayList<>();
-			fileRead = (ArrayList<Order>)in.readObject();
-			
-			for(Order rs : fileRead) { 
-				if(rs.getNum()==num) {
-					System.out.println("rs = num" + rs.getNum() + " == " + num);
-					fileRead.remove(rs);
-					ord.remove(rs);
-					break;
+			for(Order rs : ord) {
+				if (rs.getNum()==num) {
+						ord.remove(rs);
+						break;
 				}
 			}
-			orderSave();
+		
+			out.writeObject(ord);
+			out.flush();
+			out.close();
+		
+		} catch(IOException e) {
 			
-			} catch(IOException e) {
-				
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		/*for(Order o : ord) {
-			if(o.getNum()==num) {
-			ord.remove(o);
-				System.out.println("주문취소 완료");
-			} else {
-				System.out.println("주문번호 확인요망");
-			}
-		}*/
+		} 
+
 		
 	}
 
