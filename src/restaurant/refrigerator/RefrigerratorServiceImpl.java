@@ -24,22 +24,10 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		}
 
 
-	private RestaurantRefrigeratorDaoImpl rRDao;
-	private DaoImpl sRDao;
-
-	
-	public RefrigerratorServiceImpl() {
-	
-		ArrayList<String> ingr = new ArrayList<>(); //저장소	
-		
-		this.rRDao = new RestaurantRefrigeratorDaoImpl();
-		this.sRDao = new DaoImpl();
-	}
-	
 
 	
 	@Override
-	public void buying(Ingredient ing) {
+	public void firstBuyIng(Ingredient ing) {
 		// TODO Auto-generated method stub
 		//공급처 식자재 차감, totalMoney 차감
 		 
@@ -58,9 +46,11 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 			
 			int price = ing2.getPrice()*amount;
 			System.out.println(ing2.getPrice());
-			Main.TOTAL_MONEY *= - price;
+			Main.TOTAL_MONEY -= price;
 			//total money차감
+			//잔액 부족 시 구매불가 내용 추가
 			
+
 			
 		//System.out.println(ing2.getAmount());//실제 잔여수량 확인용
 		});

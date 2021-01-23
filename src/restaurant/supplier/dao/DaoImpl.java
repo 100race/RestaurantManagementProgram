@@ -20,7 +20,7 @@ public class DaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
 	private ArrayList<Ingredient> ingredients;
-	p static DaoImpl daoImpl = new DaoImpl();
+	private static DaoImpl daoImpl = new DaoImpl();
 	
 	/**
 	 * Dao 생성자

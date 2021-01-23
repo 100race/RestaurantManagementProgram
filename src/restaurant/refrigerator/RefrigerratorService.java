@@ -7,7 +7,7 @@ import restaurant.food.vo.Ingredient;
 
 public interface RefrigerratorService {
 
-	public void buying(Ingredient ing);//공급처 재료, totalmoney차감
+	public void firstBuyIng(Ingredient ing);//공급처 재료, totalmoney차감
 	public void getByName(Scanner sc); //dao search 호출, void 반환 수정
 	public void editDue(String name, LocalDate Date);//dao updateDAte 호출
 	public void deleteIng(Scanner sc);

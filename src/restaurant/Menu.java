@@ -35,6 +35,7 @@ public class Menu {
 				run_o(sc);
 				break;
 			case 4:
+				restaurant.supplier.dao.DaoImpl.getInstance().stop(); //실행 종료시 파일 저장
 				flag = false;
 				break;
 			}
