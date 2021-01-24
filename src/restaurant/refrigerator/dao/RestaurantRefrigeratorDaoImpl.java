@@ -52,10 +52,10 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 	@Override
 	public void updateAmount(String name, int amount) {
 		// TODO Auto-generated method stub
-//		식자재 수량 수정
+//		식자재 수량 수정,
 		for (Ingredient ingredient : this.ingredients) {
 			if (name.equals(ingredient.getName())) {
-				ingredient.setAmount(amount);//name으로 찾아서 amount 수정
+				ingredient.setAmount(ingredient.getAmount()+amount);//ame으로 찾아서 amount 수정
 			} 
 /*			식자재 amount 1회 구매량 갯수
 			김:30. 단무지:10, 쌀:50, 햄:10, 계란:20, 면사리:20, 어묵:10, 대파:10, 쑥갓:5, 유부:10

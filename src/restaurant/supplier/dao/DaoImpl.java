@@ -1,4 +1,5 @@
 package restaurant.supplier.dao;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.Refrigerator;
 /**
@@ -39,11 +41,17 @@ public class DaoImpl implements Refrigerator{
 	 * 
 	 * @return 멤버변수로 저장된 ingredients 반환
 	 */
+<<<<<<< HEAD
 
 	public ArrayList<Ingredient> getIngredients() { //selectAllIng()랑 중복됩니다. printAllIng로 출력메소드를 만드는게 어떨지?
 		return ingredients;
 	}
 	
+=======
+	public ArrayList<Ingredient> getIngredients() {
+		return ingredients;
+	}
+>>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
 
 	/**
 	 * 실행 시 파일에서 식자재 리스트 받아와서 ingredients에 초기화
@@ -57,10 +65,10 @@ public class DaoImpl implements Refrigerator{
 			oi.close();
 			fi.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Dao start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Dao start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -136,11 +144,18 @@ public class DaoImpl implements Refrigerator{
 		return ingredients;
 	}
 	
+<<<<<<< HEAD
 
 	/**
 	 * 첫 실행시만 파일에 초기화. 이후 주석처리
 	 */
 
+=======
+	
+	/**
+	 * 첫 실행시만 파일에 초기화. 이후 주석처리
+	 */
+>>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
 	public void init() { 
 		
 		ArrayList<Ingredient> il = new ArrayList<Ingredient>();
@@ -169,7 +184,7 @@ public class DaoImpl implements Refrigerator{
 			fo.close();
 			}
 		catch (IOException e) {
-			System.out.println("DaoImpl init() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl init() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		}
 		
@@ -187,7 +202,7 @@ public class DaoImpl implements Refrigerator{
 			fo.close();
 			}
 		catch (IOException e) {
-			System.out.println("DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
+			System.out.println("restaurant.supplier DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
 			e.printStackTrace();
 		}
 	}
