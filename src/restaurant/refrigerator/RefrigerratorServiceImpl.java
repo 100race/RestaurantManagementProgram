@@ -39,44 +39,46 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 		// 식당냉장고 및 totalmoney처리
 		supplyIngredients.stream().forEach(sIng->{
+			
 			int price = sIng.getPrice();
 			String name = sIng.getName();
-			int amount = sIng.getAmount() - 30;//default 9999999개
-			int amount2 = sIng.getAmount() - 9999969;
-
+			int amount = sIng.getAmount()-30;//잔여수량 default 9999999개
+			int amount2 = sIng.getAmount()-9999969; //구매량 30개
+			
+			
 			//System.out.println(amount);
 			//System.out.println(price*amount2+"원");
 
 			if(Main.TOTAL_MONEY - price*amount2>=0) {
-
-				sRDao.updateAmount(name, amount);//공급처 냉장고에서 구매수량 차감
-				System.out.println("공급처 냉장고 잔여수량은"+name+ amount+"개 입니다.");
-
+				//sRDao.updateAmount(name, amount);//공급처 냉장고에서 구매수량 차감
+				System.out.println("공급처 냉장고에서"+name+"식자재 구입하였습니다."+"남은 수량은"+ amount+"개 입니다.");
+				
 
 				Main.TOTAL_MONEY -= price;//total money차감
 				System.out.println(price*amount2+"원 차감하였습니다.");
 			}else {
 				System.out.println("잔액 부족으로 구매 불가.");//잔액 부족 시 구매불가 내용 추가
 			}
-			rRDao.addIng(sIng);
 			//System.out.println(ing2.getAmount());//실제 잔여수량 확인용
-
-
+			//현재 김이 +30개로 더 구매되어짐, 가격차감 안되고 있음.
+			rRDao.addIng(sIng);//식당냉장고에 구매 정보 넣기
+			
 		});
 
-		/* 식당냉장고에 식자재 추가 name,amount 오류 수정하기
+		
 		ArrayList<Ingredient> rRAll = rRDao.selectAllIng();
-		System.out.println("rRall.size:" + rRAll.size());
-		for(Ingredient ing2 : rRAll) {
-			String name = supplyIngredients.get(0).getName();
-			int amount = supplyIngredients.get(0).getAmount();
-
-			ing2.setAmount(30);
-
-			rRDao.updateAmount(name, amount);//식당 냉장고에 공급처 냉장고에서 구매한 식자재와 수량 넣기
+		System.out.println("rRall.size:" + rRAll.size());//수량 확인
+		
+		for(Ingredient ing2 : rRAll) {//람다 범위 외 변수중복으로 foreach문 사용
+			String name = ing2.getName();
+			int amount = ing2.getAmount() - 19999938;//왜 재고가 9999999*2배로 나오는지 확인
+			
+			//ing2.setAmount(-9999969);
+			
+//			rRDao.updateAmount(name, amount);//식당 냉장고에 공급처 냉장고에서 구매한 식자재와 수량 넣기
 			System.out.println("공급처 냉장고에서 "+name+"식자재를 "+ amount+"개 구매하였습니다.");
 		}
-		*/
+
 			
 	}
 		//식자재 amount 1회 구매량 최소 갯수 5~30개->30개로 통일함
@@ -89,8 +91,8 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	public void editDue(String name, LocalDate Date) {
 		rRDao.selectAllIng().stream().forEach(due2->{
 			
-			ArrayList<Ingredient> sRAll2 = sRDao.selectAllIng();
-			LocalDate due = sRAll2.get(0).getDue();	
+			
+			LocalDate due = due2.getDue();	
 			
 			LocalDate supplierDate = due2.getDue();//공급처식자재 유통기한을 가져온다
 			
@@ -102,9 +104,6 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 			
 			due2.setDue(today); //inputDate 금일 사온 날짜로 설정
 
-			
-			/*if(name.equals(rRDao.searchByName(name))) {//식자재 이름 조회해서 일치할 때
-				System.out.println("식자재 남은 유통기한 확인하겠습니다.");				
 					if(expiryDate==supplierDate) {//유통기한 조회 시 기한이 종료된 날짜면
 						System.out.println("유통기한 지난 식자재입니다..");
 						rRDao.deleteByName(name);//식자재 삭제
@@ -118,25 +117,12 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 						System.out.println("식자재 "+due2.getName()+" 남은 유통기한 "+due2.getDue()+" 까지 입니다.");//종료되지 않은 날짜이면
 					}
 					
-			}else {
-				System.out.println("일치하는 식자재 정보가 없습니다.");
-				}	
+		
 
-			
-			//if
-			//날짜 지났을때 로직은??boolean -> T/F
-			//F일 경우
-			//delete 식자재 삭제
-			//System.out.println("유통기한 지난 식자재 리스트 입니다.");
-			//다시 구매 설정 LocalDate.parse("2021-01-21")
-			//else
-			
-
-		/*	기능 정의 
-		* 	사올 때 식자재 유통기한 설정, 유통기한 지난 후, 조회만 해서 , 유통기한 지난 재고 리스트입니다.하고 
+		/*기능 정의 
+		* 사올 때 식자재 유통기한 설정, 유통기한 지난 후, 조회만 해서 , 유통기한 지난 재고 리스트입니다.하고 
 		* boolean -> T/F , 삭제후, 다시 사올 때, now date로 3일, 예시로 해서 호출
-		* 		
-		*/	
+		*/
 		});
 	}
 
