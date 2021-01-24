@@ -3,14 +3,21 @@ package restaurant.order.service;
 
 import java.util.ArrayList;
 
+import restaurant.finance.dao.FinanceDao;
+import restaurant.finance.dao.FinanceDaoImpl;
+import restaurant.finance.vo.Finance;
+import restaurant.food.dao.FoodDao;
+import restaurant.food.dao.FoodDaoImpl;
 import restaurant.food.vo.Food;
 import restaurant.order.dao.OrderDAO;
 import restaurant.order.dao.OrderDAOImpl;
 import restaurant.order.vo.Order;
 
-
-
-
+/**
+ * 
+ * @author SeongJin Park
+ *
+ */
 public class OrderServiceImpl implements OrderService{
 	
 	
@@ -18,43 +25,48 @@ public class OrderServiceImpl implements OrderService{
 	private Food food;
 	private OrderDAO dao; // 주문DAO
 	private Order o;
-	//private foodDAO foodDAO; // 음식 DAO
 	//private refrigeratorDAO // 냉장고 DAO
-	
+	private FoodDao foodDao; // 요리DAO
+	private FinanceDao financeDao; // 입출금DAO
 	
 	
 	public OrderServiceImpl() {
+		
 		dao=new OrderDAOImpl();
+		foodDao=new FoodDaoImpl();
+		financeDao=new FinanceDaoImpl();
+		
 	}
 	
-		/*
+	/*
 	 *@param : foodIdx 주문음식의 index
  	 * 
 	 */
 	@Override
 	public boolean checkIngr(int foodIdx) {
-		boolean flag=true; // false로 변경
-			/*if(foodDao.searchByIdx(foodIdx)!=null) {
+		boolean flag=false; 
+			if(foodDao.searchByIdx(foodIdx)!=null) {
 				this.foodIdx=foodIdx;
 				flag=true;
-			}*/
+			}
+		
 		return flag;
 	}
 	
 	/*
-	 *@param : foodAmount 주문음식의 수량
+	 *@param : food 음식정보
+	 *		   foodAmount 주문음식의 수량
  	 * 
 	 */
 	@Override
 	public void addOrder(int foodAmount) {	
-			//check 호출 식자재가 있는지 판단
-			//있으면 추가하고 update 냉장고
-			// if(food.
-			// refrigeratorDAO	
 			
-			// Food food = foodDao.searchByIdx(foodIdx);
-			this.o = new Order(food, foodAmount); // 테스트용
-			
+			food = foodDao.searchByIdx(foodIdx); // foodIdx로 search
+			this.o = new Order(food, foodAmount); // 주문생성
+			financeDao.input((food.getPrice()*foodAmount), food.getFoodName()); // 매출증가
+			System.out.println("주문메뉴 : " + food.getFoodName() + "  "+foodAmount+"인분");
+			System.out.println("수익 : " + food.getPrice()*foodAmount+"원");
+			System.out.println("총 : " + Finance.getTOTAL_MONEY()+"원");
 			dao.insert(o);
 			
 	}

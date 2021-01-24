@@ -3,7 +3,7 @@ package restaurant;
 
 import java.util.Scanner;
 
-import restaurant.food.service.ServiceImpl;
+import restaurant.food.service.FoodServiceImpl;
 import restaurant.order.service.OrderServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
 import restaurant.finance.service.FinanceServiceImpl;
@@ -13,13 +13,13 @@ public class Menu {
 
 	private FinanceServiceImpl finance_service;
 	private SupplyServiceImpl supply_service;
-	private ServiceImpl food_service;
+	private FoodServiceImpl food_service;
 	private OrderServiceImpl order_service;
 	
 	public Menu() {
 		finance_service = new FinanceServiceImpl();
 		supply_service = new SupplyServiceImpl();
-		food_service = new ServiceImpl();
+		food_service = new FoodServiceImpl();
 		order_service = new OrderServiceImpl();
 	}
 	
@@ -74,7 +74,7 @@ public class Menu {
 				break;
 			case 5:
 				flag = false;
-				restaurant.finance.dao.DaoImpl.getInstance().stop();
+				restaurant.finance.dao.FinanceDaoImpl.getInstance().stop();
 				break;
 			default:
 				System.out.println("번호를 정확히 입력하세요.");
@@ -135,8 +135,10 @@ public class Menu {
 			switch(m) {
 				case 1:	
 						System.out.println("주문음식선택");
-					    //fService.getAllFood(); 
-						int foodIdx= sc.nextInt();
+					    food_service.printAllFood();
+					    
+						int foodIdx = sc.nextInt();
+						
 						if(order_service.checkIngr(foodIdx)) {
 							System.out.println("주문수량");
 							int foodAmount=sc.nextInt();
@@ -182,7 +184,7 @@ public class Menu {
 				supply_service.getAllIng();
 				break;
 			case 4:
-				restaurant.supplier.dao.DaoImpl.getInstance().stop(); //실행 종료시 공급처 파일 저장
+				restaurant.supplier.dao.SupplyDaoImpl.getInstance().stop(); //실행 종료시 공급처 파일 저장
 				return;
 	
 			}

@@ -52,7 +52,7 @@ public class Order implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Order [num= "+num +", food=" + food + ", amount=" + amount + "]";
+		return "Order [num= "+num +", food=" + food.getFoodName() + ", amount=" + amount + "]";
 	}
 	
 	

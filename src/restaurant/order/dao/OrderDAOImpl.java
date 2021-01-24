@@ -15,7 +15,11 @@ import java.util.Iterator;
 import restaurant.order.vo.Order; 
 
 
-
+/**
+ * 
+ * @author SeongJin Park
+ *
+ */
 public class OrderDAOImpl implements OrderDAO{
 	
 	public static final String FILE_PATH = "src/restaurant/files"; //test
@@ -55,7 +59,6 @@ public class OrderDAOImpl implements OrderDAO{
 	
 	
 	public void orderSave() {
-		System.out.println("주문저장");
 		try {
 			
 			FileOutputStream fo = new FileOutputStream(fileName);
