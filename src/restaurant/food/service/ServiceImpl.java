@@ -57,9 +57,16 @@ public class ServiceImpl implements Service {
 				supply_service.getAllIng();
 				System.out.println("재료 번호 : ");
 				tempName = sc.nextInt();
-				//유효성검증 : 냉장고에 있는 재료 번호와 입력받은 재료 번호가 같으면 수량을 받음
-				//if(tempName == suppList.get(tempName).getIdx()) {
-					//ingName = suppList.get(tempName).getName();
+				// 예외처리 : 배열의 길이를 넘어갈경우
+				try { 
+					if(tempName == suppList.get(tempName-1).getIdx());
+				}catch (IndexOutOfBoundsException e) {
+					System.out.println("없는 재료입니다. 다시 선택해주세요");
+					break;
+				}
+				//유효성검증 : 냉장고에 있는 재료와 입력받은 재료가 같으면 수량을 받음
+				if(tempName == suppList.get(tempName-1).getIdx()) {
+					ingName = suppList.get(tempName-1).getName();
 					System.out.println("필요 수량 : ");
 					ingCnt = sc.nextInt();
 					if(ingCnt > 0) {
@@ -68,9 +75,9 @@ public class ServiceImpl implements Service {
 					}else {
 						System.out.println("수량이 없습니다!");
 					}
-				//}else{
-					//System.out.println("없는 재료입니다. 다시 선택해주세요.");
-				//}
+				}else{
+					System.out.println("없는 재료입니다. 다시 선택해주세요.");
+				}
 				break;
 			case 2:
 				flag = false;
@@ -154,13 +161,51 @@ public class ServiceImpl implements Service {
 	@Override
 	public void changePriceByIdx(Scanner sc) {
 		System.out.println("========= 음식 가격 수정 =========");
+		this.printAllFood();
+		System.out.println("========= ========= =========");
 		System.out.print("수정할 음식 번호: ");
 		int num = sc.nextInt();
-		System.out.print("새 가격 : ");
-		int price = sc.nextInt();
-		dao.updatePrice(num, price);
+		try { 
+			if(num == this.getFoodByIdx(num-1).getIdx());
+		}catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+		}
+		if(num == this.getFoodByIdx(num-1).getIdx()) {
+			System.out.print("새 가격 : ");
+			int price = sc.nextInt();
+			if(price > 0) {
+				dao.updatePrice(num, price);
+			}
+		}
 	}
 	
+	/**
+	 * @param : scanner로 변경할 음식 번호/변경할 재료 이름 입력 받음
+	 * void : 입력받은 음식 재료의 수량을 변경
+	 */
+	@Override
+	public void changeFoodNameByIdx(Scanner sc) {
+		System.out.println("========= 음식 이름 변경 =========");
+		this.printAllFood();
+		System.out.println("========= ========= =========");
+		System.out.print("이름 변경할 음식 번호: ");
+		int num = sc.nextInt();
+		try { 
+			if(num == this.getFoodByIdx(num-1).getIdx());
+		}catch (IndexOutOfBoundsException e) {
+			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+		}
+		if(num == this.getFoodByIdx(num-1).getIdx()) {
+			System.out.println("새로운 음식 이름: ");
+			String name = sc.next();
+			if(name != null) {
+				dao.updateName(num-1, name);
+			}
+		}else {
+			System.out.println("번호를 잘못 입력하였습니다.");
+		}
+	}
+
 	/**
 	 * @param : scanner로 재료 이름/재료 수량 입력 받음
 	 * @return : 입력받은 재료를 map으로 반환
@@ -232,34 +277,14 @@ public class ServiceImpl implements Service {
 		int tempName = sc.nextInt();
 		String ingName = null;
 		//유효성검증
+		
 		if(tempName == suppList.get(tempName).getIdx()) {
 			ingName = suppList.get(tempName).getName();
 		}
 		dao.deleteIng(foodNum, ingName);
 	}
 	
-	/**
-	 * @param : scanner로 변경할 음식 번호/변경할 재료 이름 입력 받음
-	 * void : 입력받은 음식 재료의 수량을 변경
-	 */
-	@Override
-	public void changeFoodNameByIdx(Scanner sc) {
-		System.out.println("========= 음식 이름 변경 =========");
-		this.printAllFood();
-		System.out.println("========= ========= =========");
-		System.out.print("이름 변경할 음식 번호: ");
-		int num = sc.nextInt();
-		if(num == this.getFoodByIdx(num).getIdx()) {
-			System.out.println("새로운 음식 이름: ");
-			String name = sc.next();
-			if(name != null) {
-				dao.updateName(num, name);
-			}
-		}else {
-			System.out.println("번호를 잘못 입력하였습니다.");
-		}
-	}
-
+	
 	/**
 	 * @param : scanner로 삭제할 음식 번호 입력 받음
 	 * void : 입력받은 음식을 삭제

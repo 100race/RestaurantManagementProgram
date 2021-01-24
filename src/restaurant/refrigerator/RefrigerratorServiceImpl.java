@@ -19,7 +19,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 			ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
 		
 			this.rRDao = new RestaurantRefrigeratorDaoImpl();
-			this.sRDao = new DaoImpl();
+			this.sRDao = restaurant.supplier.dao.DaoImpl.getInstance();
 		}
 		
 	

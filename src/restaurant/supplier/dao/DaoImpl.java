@@ -17,7 +17,7 @@ import restaurant.refrigerator.dao.Refrigerator;
 public class DaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
-	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>(); //한응 수정()
+	private ArrayList<Ingredient> ingredients; //한응 수정()
 	private static DaoImpl daoImpl = new DaoImpl();
 	
 	/**
@@ -25,8 +25,9 @@ public class DaoImpl implements Refrigerator{
 	 * 파일에 객체정보를 넣어주기 위해 init()을 호출
 	 * 생성시 파일에서 리스트를 받아옴
 	 */
-	public DaoImpl() {
-		init();
+	private DaoImpl() {
+		ingredients = new ArrayList<Ingredient>(); 
+		//init();
 		start();
 	}
 	

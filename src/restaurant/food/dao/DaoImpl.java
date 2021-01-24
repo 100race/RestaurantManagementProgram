@@ -68,8 +68,8 @@ public class DaoImpl implements Dao {
 	@Override
 	public Food searchByIdx(int idx) {
 		Food f = getFoods().get(idx);
-		//foods에 f가 존재하면 f의 인덱스를 리턴, 없으면 -1 리턴
-		if (f == null) { //f가 없으면(-1이면)
+		if (f == null) { 
+			System.out.println("음식이 존재하지 않습니다.");
 			return null;
 		} else {
 			return f; //인덱스에 있는 객체 리턴
@@ -185,9 +185,10 @@ public class DaoImpl implements Dao {
 	 */
 	@Override
 	public void updatePrice(int num, int price) {
-		int temp = getFoods().get(num).getIdx();
-		if(temp == num) {
-			getFoods().get(num).setPrice(price);
+		//예외처리!
+		int temp = getFoods().get(num-1).getIdx();
+		if(temp == num-1) {
+			getFoods().get(num-1).setPrice(price);
 		}else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
