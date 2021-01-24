@@ -14,53 +14,128 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 		private RestaurantRefrigeratorDaoImpl rRDao;
 		private DaoImpl sRDao;
+		private ArrayList<Ingredient> supplyIngredients;
 		
-		public RefrigerratorServiceImpl() {
+		public RefrigerratorServiceImpl(ArrayList<Ingredient> supplyIngredients) {
 			
 			ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
 		
 			this.rRDao = new RestaurantRefrigeratorDaoImpl();
 			this.sRDao = restaurant.supplier.dao.DaoImpl.getInstance();
+			this.supplyIngredients = supplyIngredients;
 		}
 
 
+	/*
+	 공급처 냉장고에서 식자재 이름, 가격 구매하는 식으로
 
-	
+	 */
 	@Override
-	public void firstBuyIng(Ingredient ing) {
+	public void firstBuyIng() {
 		// TODO Auto-generated method stub
-		//공급처 식자재 차감, totalMoney 차감
-		 
-		ArrayList<Ingredient> ingr = new ArrayList<>(); //저장소	
 
-		// 공급처 냉장고에서 식자재를 가져온다
-		sRDao.selectAllIng().stream().forEach(ing2->{
-	
-			System.out.println("공급처 냉장고에서 "+ing2.getName()+"식자재를 "+ "30개 구매하였습니다.");
-			int amount =ing2.getAmount()-30;
-			ing2.setAmount(amount);//공급처 냉장고에서 구매수량 차감
-			System.out.println("공급처 냉장고 잔여수량은"+ing2.getName()+ ing2.getAmount()+"개 입니다.");
-			
-			ing2.setAmount(30);
-			rRDao.addIng(ing2);;//식당 냉장고에 공급처 냉장고에서 구매한 식자재와 수량 넣기
-			
-			int price = ing2.getPrice()*amount;
-			System.out.println(ing2.getPrice());
-			Main.TOTAL_MONEY -= price;
-			//total money차감
-			//잔액 부족 시 구매불가 내용 추가
-			
+		// 식당냉장고 및 totalmoney처리
+		supplyIngredients.stream().forEach(sIng->{
+			int price = sIng.getPrice();
+			String name = sIng.getName();
+			int amount = sIng.getAmount() - 30;//default 9999999개
+			int amount2 = sIng.getAmount() - 9999969;
 
-			
-		//System.out.println(ing2.getAmount());//실제 잔여수량 확인용
+			//System.out.println(amount);
+			//System.out.println(price*amount2+"원");
+
+			if(Main.TOTAL_MONEY - price*amount2>=0) {
+
+				sRDao.updateAmount(name, amount);//공급처 냉장고에서 구매수량 차감
+				System.out.println("공급처 냉장고 잔여수량은"+name+ amount+"개 입니다.");
+
+
+				Main.TOTAL_MONEY -= price;//total money차감
+				System.out.println(price*amount2+"원 차감하였습니다.");
+			}else {
+				System.out.println("잔액 부족으로 구매 불가.");//잔액 부족 시 구매불가 내용 추가
+			}
+			rRDao.addIng(sIng);
+			//System.out.println(ing2.getAmount());//실제 잔여수량 확인용
+
+
 		});
+
+		/* 식당냉장고에 식자재 추가 name,amount 오류 수정하기
+		ArrayList<Ingredient> rRAll = rRDao.selectAllIng();
+		System.out.println("rRall.size:" + rRAll.size());
+		for(Ingredient ing2 : rRAll) {
+			String name = supplyIngredients.get(0).getName();
+			int amount = supplyIngredients.get(0).getAmount();
+
+			ing2.setAmount(30);
+
+			rRDao.updateAmount(name, amount);//식당 냉장고에 공급처 냉장고에서 구매한 식자재와 수량 넣기
+			System.out.println("공급처 냉장고에서 "+name+"식자재를 "+ amount+"개 구매하였습니다.");
+		}
+		*/
 			
 	}
 		//식자재 amount 1회 구매량 최소 갯수 5~30개->30개로 통일함
 		//김:30, 단무지:10, 쌀:50, 햄:10, 계란:20, 면사리:20, 어묵:10, 
 		//대파:10, 쑥갓:5, 유부, 10 떡 : 20, 치즈:5, 돼지고기:10, 밀가루:10, 빵가루:10, 김치:10
 				
-		
+
+
+	@Override
+	public void editDue(String name, LocalDate Date) {
+		rRDao.selectAllIng().stream().forEach(due2->{
+			
+			ArrayList<Ingredient> sRAll2 = sRDao.selectAllIng();
+			LocalDate due = sRAll2.get(0).getDue();	
+			
+			LocalDate supplierDate = due2.getDue();//공급처식자재 유통기한을 가져온다
+			
+			LocalDate today = LocalDate.now();//금일날짜 
+			LocalDate expiryDate = today.plusDays(3); //금일날짜에서 3일 후 종료
+				//System.out.println(expiryDate);
+				
+			//LocalDate searchDate = rRDao.searchByName(name).get(0).getDue();//유통기한 검색 조회할때 가져온 유통기한, if문 이름 검색할 때 나오게 하기 
+			
+			due2.setDue(today); //inputDate 금일 사온 날짜로 설정
+
+			
+			/*if(name.equals(rRDao.searchByName(name))) {//식자재 이름 조회해서 일치할 때
+				System.out.println("식자재 남은 유통기한 확인하겠습니다.");				
+					if(expiryDate==supplierDate) {//유통기한 조회 시 기한이 종료된 날짜면
+						System.out.println("유통기한 지난 식자재입니다..");
+						rRDao.deleteByName(name);//식자재 삭제
+						System.out.println("식자재 폐기처분하였습니다.");
+						int amount = due2.getAmount()-30;
+						rRDao.updateAmount(name, amount);//식자재 재입고
+						System.out.println(due2.getName()+"식자재"+due2.getAmount()+"개 재입고하였습니다.");
+						due2.setDue(today);//금일 사온 날짜로 유통기한 업데이트
+						System.out.println(due2.getName()+"남은 유통기한"+due2.getDue()+"입니다.");
+					}else {
+						System.out.println("식자재 "+due2.getName()+" 남은 유통기한 "+due2.getDue()+" 까지 입니다.");//종료되지 않은 날짜이면
+					}
+					
+			}else {
+				System.out.println("일치하는 식자재 정보가 없습니다.");
+				}	
+
+			
+			//if
+			//날짜 지났을때 로직은??boolean -> T/F
+			//F일 경우
+			//delete 식자재 삭제
+			//System.out.println("유통기한 지난 식자재 리스트 입니다.");
+			//다시 구매 설정 LocalDate.parse("2021-01-21")
+			//else
+			
+
+		/*	기능 정의 
+		* 	사올 때 식자재 유통기한 설정, 유통기한 지난 후, 조회만 해서 , 유통기한 지난 재고 리스트입니다.하고 
+		* boolean -> T/F , 삭제후, 다시 사올 때, now date로 3일, 예시로 해서 호출
+		* 		
+		*/	
+		});
+	}
 
 	@Override
 	public void getByName(Scanner sc) {
@@ -78,24 +153,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		}
 	}
 
-	public void editDue(String name, LocalDate Date) {
-		sRDao.selectAllIng().stream().forEach(ing3->{
-			//구매 시 식자재 유통기한 setDue, nowdate+5일 설정
-			//날짜 조회 ing3.getname()
-			//날짜 지났을때 로직은??boolean -> T/F 
-			//delete 식자재 삭제
-			//System.out.println("유통기한 지난 식자재 리스트 입니다.");
-			//다시 구매 설정 LocalDate.parse("2021-01-21")
-			//nowdate+5일
-		});
-	
-		// TODO Auto-generated method stub
-		/*		기능 정의 
-		* 		사올 때 식자재 유통기한 설정, 유통기한 지난 후, 조회만 해서 , 유통기한 지난 재고 리스트입니다.하고 
-		* boolean -> T/F , 삭제후, 다시 사올 때, now date로 3일, 예시로 해서 호출
-		* 		
-		*/	
-	}
+
 
 	@Override
 	public void deleteIng(Scanner sc) {
@@ -111,13 +169,43 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 	@Override
 	public void inIng(Scanner sc) {
+		sRDao.selectAllIng().stream().forEach(ing4->{
 		// TODO Auto-generated method stub
+		//주문에서 사용시 updateamount, 공급처에서 사올때
+			System.out.println("공급처에서 사올 식자재를 입력해주세요");
+			String name = sc.next();
+			if(ing4 == null) {
+				System.out.println("식자재 없음");
+			}
+			else {
+				ing4.setName(name);//식자재넣기
+				System.out.println("해당 식자재 필요한 수량을 입력해주세요 (식자재 1종당 최소 구매수량 30개 이상)");
+				int amount = sc.nextInt();
+					if(sRDao.searchByName(name).get(0).getAmount()>30) {
+						ing4.setAmount(amount);
+						System.out.println(ing4.getName()+ing4.getAmount()+"개 구매하였습니다.");
+					}
+					else {
+						System.out.println("공급처 식자재 재고가 부족합니다. 구매불가.");
+					}
+		//식당 냉장고에 넣기 기능
+		//식자재 30개 미만 입력시 구매 불가 기능 추가
+		}
+	});	
 		
 	}
 
 	@Override
 	public void outIng(Scanner sc) {
 		// TODO Auto-generated method stub
+		//food에서 주문할 때 식자재 소진
+		System.out.println("음식 준비할 때 필요한 식자재 이름을 입력하세요");
+		String name = sc.next();
+		System.out.println("필요한 식자재 수량은 얼마입니까?");
+		int amount = sc.nextInt();
+		rRDao.updateAmount(name, amount);
+		System.out.println(name+"이"+amount+"소진되었습니다.");
+		
 		
 	}
 
@@ -125,7 +213,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	public void getAllIng() {
 		// TODO Auto-generated method stub
 		ArrayList<Ingredient> ingr = rRDao.selectAllIng();
-		if( ingr == null) {
+		if(ingr == null) {
 			System.out.println("식자재가 없습니다.");
 		}else {
 			for(Ingredient i : ingr) 
@@ -143,7 +231,9 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	}
 
 
+	}
 
 
-}
+
+
 
