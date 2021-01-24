@@ -1,16 +1,16 @@
-package main;
+package restaurant.order.main;
 
 import java.util.Scanner;
 
 import service.OrderService;
 import service.OrderServiceImpl;
 
-public class menu {
+public class Menu {
 
 	int num;
 	private OrderService service; //주문 service
 	//private foodService fService 음식 service
-	public menu() {
+	public Menu() {
 		service=new OrderServiceImpl();
 	}
 	

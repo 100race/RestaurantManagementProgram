@@ -19,14 +19,9 @@ import restaurant.supplier.SupplyServiceImpl;
  *
  */
 public class ServiceImpl implements Service {
-<<<<<<< HEAD
 	private Dao dao = new DaoImpl(); //수정함
 	private SupplyServiceImpl supply_service = new SupplyServiceImpl(); //수정함
 	ArrayList<Ingredient> suppList = restaurant.supplier.dao.DaoImpl.getInstance().getIngredients();
-=======
-	private Dao dao;
-	private SupplyServiceImpl supply_service;
->>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
 	
 	public ServiceImpl() {
 	}
@@ -62,7 +57,6 @@ public class ServiceImpl implements Service {
 				supply_service.getAllIng();
 				System.out.println("재료 번호 : ");
 				tempName = sc.nextInt();
-<<<<<<< HEAD
 				// 예외처리 : 배열의 길이를 넘어갈경우
 				try { 
 					if(tempName == suppList.get(tempName-1).getIdx());
@@ -73,11 +67,6 @@ public class ServiceImpl implements Service {
 				//유효성검증 : 냉장고에 있는 재료와 입력받은 재료가 같으면 수량을 받음
 				if(tempName == suppList.get(tempName-1).getIdx()) {
 					ingName = suppList.get(tempName-1).getName();
-=======
-				//유효성검증 : 냉장고에 있는 재료 번호와 입력받은 재료 번호가 같으면 수량을 받음
-				//if(tempName == restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getIdx()) {
-				//	ingName = restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getName();
->>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
 					System.out.println("필요 수량 : ");
 					ingCnt = sc.nextInt();
 					if(ingCnt > 0) {
@@ -86,9 +75,9 @@ public class ServiceImpl implements Service {
 					}else {
 						System.out.println("수량이 없습니다!");
 					}
-				//}else{
+				}else{
 					System.out.println("없는 재료입니다. 다시 선택해주세요.");
-				//}
+				}
 				break;
 			case 2:
 				flag = false;
@@ -176,16 +165,20 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("수정할 음식 번호: ");
 		int num = sc.nextInt();
-		try { 
-			if(num == this.getFoodByIdx(num-1).getIdx());
-		}catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
-		}
-		if(num == this.getFoodByIdx(num-1).getIdx()) {
-			System.out.print("새 가격 : ");
-			int price = sc.nextInt();
-			if(price > 0) {
-				dao.updatePrice(num, price);
+		if(num > getDao().getAllFood().size() || num <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
+		}else {
+			try { 
+				if(num != this.getFoodByIdx(num-1).getIdx());
+			}catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("없는 번호 입니다. 다시 확인해주세요!!");
+			}
+			if(num == this.getFoodByIdx(num-1).getIdx()) {
+				System.out.print("새 가격 : ");
+				int price = sc.nextInt();
+				if(price > 0) {
+					dao.updatePrice(num-1, price);
+				}
 			}
 		}
 	}
@@ -201,20 +194,25 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("이름 변경할 음식 번호: ");
 		int num = sc.nextInt();
-		try { 
-			if(num == this.getFoodByIdx(num-1).getIdx());
-		}catch (IndexOutOfBoundsException e) {
-			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
-		}
-		if(num == this.getFoodByIdx(num-1).getIdx()) {
-			System.out.println("새로운 음식 이름: ");
-			String name = sc.next();
-			if(name != null) {
-				dao.updateName(num-1, name);
-			}
+		if(num > getDao().getAllFood().size() || num <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
 		}else {
-			System.out.println("번호를 잘못 입력하였습니다.");
+			try { 
+				if(num == this.getFoodByIdx(num-1).getIdx());
+			}catch (IndexOutOfBoundsException e) {
+				System.out.println("없는 번호 입니다. 다시 확인해주세요!");
+			}
+			if(num == this.getFoodByIdx(num-1).getIdx()) {
+				System.out.println("새로운 음식 이름: ");
+				String name = sc.next();
+				if(name != null) {
+					dao.updateName(num-1, name);
+				}
+			}else {
+				System.out.println("번호를 잘못 입력하였습니다.");
+			}
 		}
+		
 	}
 
 	/**
@@ -226,25 +224,30 @@ public class ServiceImpl implements Service {
 		int tempName, ingCnt;
 		String ingName = null;
 		Map<String, Integer> temp = new HashMap<>();
-		supply_service.getAllIng();
+		System.out.println("========= ========= =========");
+		supply_service.getAllIng(); //공급처 재료 리스트 보여줌
 		System.out.println("재료 번호 : ");
 		tempName = sc.nextInt();
-		//유효성검증
-		
-		if(tempName == restaurant.supplier.dao.DaoImpl.getInstance().getIngredients().get(tempName).getIdx()) {
-			ingName = restaurant.supplier.dao.DaoImpl.getInstance().getIngredients().get(tempName).getName();
-			System.out.println("필요 수량 : ");
-			ingCnt = sc.nextInt();
-			if(ingCnt > 0) {
-				temp.put(ingName, ingCnt);
-				System.out.println("재료를 입력하였습니다!");
-			}else {
-				System.out.println("수량이 없습니다!");
+		if(tempName > getDao().getAllFood().size() || tempName <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
+			return null;
+		}else {
+			//유효성검증
+			if(tempName == suppList.get(tempName-1).getIdx()) {
+				ingName = suppList.get(tempName-1).getName();
+				System.out.println("필요 수량 : ");
+				ingCnt = sc.nextInt();
+				if(ingCnt > 0) {
+					temp.put(ingName, ingCnt);
+					System.out.println("재료를 입력하였습니다!");
+				}else {
+					System.out.println("수량이 없습니다!");
+				}
+			}else{
+				System.out.println("없는 재료입니다. 다시 선택해주세요.");
 			}
-		}else{
-			System.out.println("없는 재료입니다. 다시 선택해주세요.");
+			return temp;
 		}
-		return temp;
 	}
 	
 	/**
@@ -259,12 +262,20 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("재료 추가할 음식 번호: ");
 		int num = sc.nextInt();
-		if(num == dao.searchByIdx(num).getIdx()) {
-			temp = this.addIng(sc);
+		if(num > getDao().getAllFood().size() || num <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
 		}else {
-			System.out.println("번호를 잘못 입력하였습니다.");
+			if(num == dao.searchByIdx(num-1).getIdx()) {
+				temp = this.addIng(sc);
+				if(temp == null) { //재료 리스트 밖의 값이면
+					//입력안함
+				}else {
+					dao.insertIng(num-1, temp);
+				}
+			}else {
+				System.out.println("번호를 잘못 입력하였습니다.");
+			}
 		}
-		dao.insertIng(num, temp);
 	}
 
 	/**
@@ -278,25 +289,23 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("재료 삭제할 음식 번호: ");
 		int foodNum = sc.nextInt();
-		supply_service.getAllIng();
-		System.out.print("삭제할 재료 번호: ");
-		int tempName = sc.nextInt();
-		String ingName = null;
-<<<<<<< HEAD
-		//유효성검증
-		
-=======
-//		//유효성검증
-//				if(tempName == restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getIdx()) {
-//					ingName = restaurant.supplier.dao.DaoImpl.getIngredients().get(tempName).getName();
-//				}
-		restaurant.supplier.dao.DaoImpl supplierDaoImpl = restaurant.supplier.dao.DaoImpl.getInstance();
-		ArrayList<Ingredient> suppList = supplierDaoImpl.getIngredients();
->>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
-		if(tempName == suppList.get(tempName).getIdx()) {
-			ingName = suppList.get(tempName).getName();
+		if(foodNum > getDao().getAllFood().size() || foodNum <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
+		}else {
+			Food f = this.getFoodByIdx(foodNum-1);
+			System.out.println("========= ========= =========");
+			for(Map.Entry<String, Integer> a :  f.getIngredient().entrySet()){
+	            System.out.println("재료: "+ a.getKey() + " 수량: " + a.getValue());
+	        }
+			System.out.println("========= ========= =========");
+			System.out.print("삭제할 재료 이름: ");
+			String ingName = sc.next();
+			for(String key : f.getIngredient().keySet()) {
+				if(key.equals(ingName)) { //입력받은 재료랑 음식 재료 리스트랑 같으면
+					dao.deleteIng(foodNum-1, ingName);
+				}
+			}
 		}
-		dao.deleteIng(foodNum, ingName);
 	}
 	
 	
@@ -311,8 +320,12 @@ public class ServiceImpl implements Service {
 		System.out.println("========= ========= =========");
 		System.out.print("삭제할 음식 번호: ");
 		int num = sc.nextInt();
-		if(num == this.getFoodByIdx(num).getIdx()) {
-			dao.deleteByIdx(num);
+		if(num > getDao().getAllFood().size() || num <=0) {
+			System.out.println("입력 번호를 다시 확인해주세요.");
+		}else {
+			if(num == this.getFoodByIdx(num-1).getIdx()) {
+				dao.deleteByIdx(num-1);
+			}
 		}
 	}
 }

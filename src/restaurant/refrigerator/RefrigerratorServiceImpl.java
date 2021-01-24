@@ -22,10 +22,10 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		
 			this.rRDao = new RestaurantRefrigeratorDaoImpl();
 			this.sRDao = restaurant.supplier.dao.DaoImpl.getInstance();
-<<<<<<< HEAD
-=======
+
+
 			this.supplyIngredients = supplyIngredients;
->>>>>>> 68ff3d1016a1b7ad087577c8c9940c7ee992ec23
+
 		}
 
 

@@ -83,11 +83,12 @@ public class Menu {
 		}
 	}
 	
-	public void run_f(Scanner sc) {
+	public void run_f(Scanner sc2) {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("============= 음식 관리 ============");
-			System.out.println("1.음식 추가하기 2.음식 전체 보기 3.번호로 음식 검색 4.음식 가격 변경하기 5.음식 이름 변경하기 6.기존 음식 재료 추가하기 7.기존 음식 재료 삭제하기 8.음식 삭제 하기 9.종료");
+			System.out.println("=============음식 관리============");
+			System.out.println("1.음식 추가하기 2.음식 전체 보기 3.음식 가격 변경하기 4.음식 이름 변경하기 5.기존 음식 재료 추가하기 6.기존 음식 재료 삭제하기 7.음식 삭제 하기 8.종료");
+			Scanner sc = new Scanner(System.in);
 			int menu = sc.nextInt();
 			switch(menu) {
 			case 1:

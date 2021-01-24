@@ -8,7 +8,7 @@ public class Food implements Serializable{
 	 * serialVersionUID 버전관리
 	 */
 	private static final long serialVersionUID = 8057832500895502907L;
-	private static int cnt = 1; //추가함
+	private static int cnt = 6; //추가함
 	private int idx;
 	private String foodName;
 	private int price;

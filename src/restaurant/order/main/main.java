@@ -1,4 +1,4 @@
-package main;
+package restaurant.order.main;
 
 import java.util.Scanner;
 
