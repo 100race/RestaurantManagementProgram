@@ -6,7 +6,7 @@ import java.util.Scanner;
 public interface RefrigerratorService {
 
 	
-	public void firstBuyIng(Scanner sc);//공급처 재료, totalmoney차감
+	public void BuyIng(Scanner sc);//공급처 재료, totalmoney차감
 	public void getByName(Scanner sc); //dao search 호출, void 반환 수정
 	public void editDue(String name, LocalDate Date);//dao updateDAte 호출
 	public void deleteIng(Scanner sc);

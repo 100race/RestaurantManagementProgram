@@ -13,21 +13,16 @@ import restaurant.supplier.dao.SupplyDaoImpl;
 public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 	
-	
-
 		private RestaurantRefrigeratorDaoImpl rRDao;
 		private SupplyDaoImpl sRDao;
 		private ArrayList<Ingredient> supplyIngredients;
 		
-		ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
-	
-
-		
+			
 	public RefrigerratorServiceImpl() {
 		
 		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
 		this.supplyIngredients = supplyIngredients;
-
+		sRDao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 		}
 
 
@@ -38,25 +33,52 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	
 	 */
 	@Override
-	public void firstBuyIng(Scanner sc) {
+	public void BuyIng(Scanner sc) {
 		// TODO Auto-generated method stub
 	
 		System.out.println("구매할 식자재 이름을 입력하세요");
 		String name = sc.next();
-		System.out.println("구매 수량을 입력하세요");
-		int amount = rRDao.searchByName(name).get(0).getAmount(); //99999개
-		int amount2 = (sc.nextInt()); //ex 10개
-		int amount3 = amount - (amount-amount2);
-		int price = rRDao.searchByName(name).get(0).getPrice();
-		if(Finance.getTOTAL_MONEY() - price*amount2 >= 0) {
-			rRDao.updateAmount(name, amount3); //음수처리
-			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
-			System.out.println(amount2+"개 구매 되었습니다");
-			System.out.println("냉장고 재고 확인:"+name+amount3+"개 입니다.");
-		}else{
-			System.out.println("잔액이 부족하여 구매 불가");
-		}	
 		
+		System.out.println("구매 수량을 입력하세요");
+		int amount = (sc.nextInt());
+		
+		ArrayList<Ingredient> rIng = rRDao.searchByName(name);
+		//System.out.println(rIng.toString());
+
+		//공급처식자재 유통기한을 가져온다
+		
+		if(rIng.size() == 0) {
+//		rIng.get(0).setName(name);
+		System.out.println(amount+"개 구매 되었습니다");
+		System.out.println("냉장고 재고 확인:"+name+amount+"개 입니다.");
+		
+		LocalDate today = LocalDate.now();//금일날짜 
+		LocalDate expiryDate = today.plusDays(3); //금일날짜에서 3일 후 종료
+		rRDao.addIng(new Ingredient(name, amount, sRDao.searchByName(name).get(0).getPrice(), expiryDate));
+		System.out.println(rRDao.selectAllIng().get(0));
+		
+		int price = rRDao.selectAllIng().get(0).getPrice();
+		
+			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
+			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+			
+			}else{
+			System.out.println("잔액이 부족하여 구매 불가");	
+			}
+		}else {
+			
+			int price = sRDao.searchByName(name).get(0).getPrice();
+			
+			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
+				Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+				rRDao.updateAmount(name, amount);
+				System.out.println(amount+"개 구매 되었습니다");
+				System.out.println("냉장고 재고 확인:"+name+sRDao.searchByName(name).get(0).getAmount()+"개 입니다.");
+				}else{
+				System.out.println("잔액이 부족하여 구매 불가");
+			}
+		}	
+	}
 		/*
 		 * SupplyService의 buyIng를 써서 공급처개수 차감, 금액관련 처리
 		 * if(저장소에 이미 존재하는 식자재가 없을경우)
@@ -66,8 +88,8 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		 * updateAmount로 개수만 올려줌
 		 * 
 		 */
-	}
-	
+
+
 
 	@Override
 	public void editDue(String name, LocalDate Date) {

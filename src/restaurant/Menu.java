@@ -182,7 +182,7 @@ public void run_r(Scanner sc) {
 
 			switch(menu) {
 				case 1:
-					refrigerator_Service.firstBuyIng(sc);
+					refrigerator_Service.BuyIng(sc);
 					break;
 				case 2: 
 					refrigerator_Service.editDue(toString(), LocalDate);
@@ -195,6 +195,7 @@ public void run_r(Scanner sc) {
 				case 5:
 					refrigerator_Service.getAllIng();
 					break;
+					//refrigerator_Service. //프로그램 종료시 저장
 				case 6:
 					restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance().stop();
 					return;
