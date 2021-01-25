@@ -12,14 +12,14 @@ import java.util.ArrayList;
 
 import restaurant.food.vo.Ingredient;
 
-public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
+public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	
 	
 	public static final String FILE_PATH = "src/restaurant/files/restaurant_ingredients.dat";
 	private static final String MONEY_FILE_PATH = "src/restaurant/files/total_money.dat";	
 	
 	
-	private ArrayList<Ingredient> ingredients; //저장소
+	private static ArrayList<Ingredient> ingredients; //수정
 	
 	private static RestaurantRefrigeratorDaoImpl RestaurantRefrigeratordaoImpl = new RestaurantRefrigeratorDaoImpl();
 	
@@ -65,6 +65,11 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 		stop();
 
 	}
+	
+	public static ArrayList<Ingredient> getIng(){
+		return ingredients;
+	}
+	
 
 	@Override
 	public ArrayList<Ingredient> searchByName(String name) {
@@ -114,16 +119,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 		stop();
 	}
 
-	@Override
-	public void deleteByName(String name) {
-		// TODO Auto-generated method stub
-//		유통기한만료, 재료 소진시 식자재 삭제
-		for (int i =0;  i<ingredients.size(); i++) {
-			if(ingredients.get(i).getName().equals(name))
-				ingredients.remove(i);
-			}
-		stop();
-		}
+
 	
 
 	@Override
@@ -134,26 +130,65 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 	}
 
 
-	public void stop() {
-		try {
-			FileOutputStream fo = new FileOutputStream(FILE_PATH);
-			ObjectOutputStream oo = new ObjectOutputStream(fo);
-			oo.writeObject(ingredients);
-			oo.close();
-			fo.close();
+	@Override
+	public void deleteByIdx(int idx) {
+		// TODO Auto-generated method stub
+//		유통기한만료, 재료 소진시 식자재 삭제
+		/*for (int i =0;  i<ingredients.size(); i++) {
+			if(ingredients.get(i).getName().equals(idx))
+				ingredients.remove(i);
+			}//추가
+			*/
+			Ingredient in = searchByIdx(idx);
+			if (in != null ) {
+				ingredients.remove(in);
+				System.out.println("식자재 폐기 완료하였습니다.");
+				for(int j=idx-1; j<ingredients.size(); j++) {
+					if(j==0) {
+						for(int k=0; k<ingredients.size(); k++) {
+							ingredients.get(k).setIdx(k+1);
+						}
+						break;
+					}else {
+						ingredients.get(j).setIdx(j+1);
+					}//추가
+				}	
+			}else {
+				System.out.println("없는 번호입니다. 다시 확인해주세요");
 			}
-		catch (IOException e) {
-			System.out.println("restaurant.refrigerator DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
-			e.printStackTrace();
+				stop();
+			}
+
+
+
+	
+public void stop() {
+	try {
+		FileOutputStream fo = new FileOutputStream(FILE_PATH);
+		ObjectOutputStream oo = new ObjectOutputStream(fo);
+		oo.writeObject(ingredients);
+		oo.close();
+		fo.close();
 		}
+	catch (IOException e) {
+		System.out.println("restaurant.refrigerator DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
+		e.printStackTrace();
 	}
+}
 
-
+@Override
+public Ingredient searchByIdx(int idx) {
+	Ingredient in = selectAllIng().get(idx);
+	if (in == null) {
+		System.out.println("음식이 존재하지 않습니다.");
+		return null;
+	}else {
+		return in;	
 	}
+}
 
-	
-	
-	
+
+}
 	
 	
 

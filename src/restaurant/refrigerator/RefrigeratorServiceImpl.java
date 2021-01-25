@@ -11,7 +11,7 @@ import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl;
 import restaurant.supplier.dao.SupplyDaoImpl;
 
-public class RefrigerratorServiceImpl implements RefrigerratorService {
+public class RefrigeratorServiceImpl implements RefrigeratorService {
 
 	
 		private RestaurantRefrigeratorDaoImpl rRDao;
@@ -20,7 +20,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		private FinanceDaoImpl fDao;
 		
 			
-	public RefrigerratorServiceImpl() {
+	public RefrigeratorServiceImpl() {
 		
 		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
 		this.supplyIngredients = supplyIngredients;
@@ -119,7 +119,8 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 					if(expiryDate==supplierDate) {//유통기한 조회 시 기한이 종료된 날짜면
 						System.out.println("유통기한 지난 식자재입니다..");
-						rRDao.deleteByName(name);//식자재 삭제
+						int idx = 0;
+						rRDao.deleteByIdx(idx);//식자재 삭제
 						System.out.println("식자재 폐기처분하였습니다.");
 						int amount = due2.getAmount();
 						rRDao.updateAmount(name, amount);//식자재 재입고
@@ -160,11 +161,11 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void deleteIng(Scanner sc) {
 		// TODO Auto-generated method stub
-		System.out.println("폐기할 식자재 이름을 입력하세요");
-		String name = sc.next();
+		System.out.println("폐기할 식자재 번호를 입력하세요");
+		int idx = sc.nextInt();
 		System.out.println("해당 식자재를 폐기하실겁니까?");
-		rRDao.deleteByName(name);
-		System.out.println(name+"이 폐기되었습니다");
+		rRDao.deleteByIdx(idx);
+		System.out.println(idx+"이 폐기되었습니다");
 		
 		
 	}

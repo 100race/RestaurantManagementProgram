@@ -3,7 +3,7 @@ package restaurant.refrigerator;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public interface RefrigerratorService {
+public interface RefrigeratorService {
 
 	
 	public void BuyIng(Scanner sc);//공급처 재료, totalmoney차감

@@ -1,6 +1,8 @@
 package restaurant.food.vo;
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl;
 //날짜 정보 사용
 /*
 * LocalDate 클래스는 public 생성자를 제공하지 않기 때문에 객체를 생성할 때는 now()나, 
@@ -20,7 +22,8 @@ public class Ingredient implements Serializable{
 
    
 	public Ingredient(String name, int amount, int price, LocalDate due) {
-		this.idx = cnt++;
+//		this.idx = cnt++; 변경
+		this.idx = RestaurantRefrigeratorDaoImpl.getIng().size()+1;//인덱스 추가
 		this.name = name;
 		this.amount = amount;
 		this.price = price;

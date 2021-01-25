@@ -7,7 +7,7 @@ import java.util.Scanner;
 import restaurant.finance.service.FinanceServiceImpl;
 import restaurant.food.service.FoodServiceImpl;
 import restaurant.order.service.OrderServiceImpl;
-import restaurant.refrigerator.RefrigerratorServiceImpl;
+import restaurant.refrigerator.RefrigeratorServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
 
 
@@ -18,14 +18,14 @@ public class Menu {
 	private SupplyServiceImpl supply_service;
 	private FoodServiceImpl food_service;
 	private OrderServiceImpl order_service;
-	private RefrigerratorServiceImpl refrigerator_Service;
+	private RefrigeratorServiceImpl refrigerator_Service;
 	
 	public Menu() {
 		finance_service = new FinanceServiceImpl();
 		supply_service = new SupplyServiceImpl();
 		food_service = new FoodServiceImpl();
 		order_service = new OrderServiceImpl();
-		refrigerator_Service = new RefrigerratorServiceImpl();
+		refrigerator_Service = new RefrigeratorServiceImpl();
 	}
 	
 	// 메인 메뉴
