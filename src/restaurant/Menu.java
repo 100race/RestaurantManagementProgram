@@ -31,26 +31,25 @@ public class Menu {
 	// 메인 메뉴
 	public void run(Scanner sc) {
 		boolean flag = true;
-		//service.start(); //시작하면 자동으로 파일 로드
 		while (flag) {
 			System.out.println("============= 메인 메뉴 ============");
-			System.out.println("1.음식 관리 2.공급처 관리 3.주문 하기 4.금전 관리 5.냉장고관리 6.종료");
+			System.out.println("1.요리 관리 2.냉장고 관리 3.주문 관리 4.공급처 관리  5.매출 관리  6.프로그램종료");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
 				run_f(sc);
 				break;
 			case 2:
-				run_s(sc);
+				run_r(sc);
 				break;
 			case 3:
 				run_o(sc);
 				break;
 			case 4:
-				run_fi(sc);
+				run_s(sc);	
 				break;
 			case 5:
-				run_r(sc);
+				run_fi(sc);	
 				break;
 			case 6:
 				flag = false;
@@ -58,14 +57,13 @@ public class Menu {
 				break;
 			}
 		}
-		//service.stop(); //시작하면 자동으로 파일 저장
 	}
 	
 	public void run_fi(Scanner sc) {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("============= 금전 관리 ============");
-			System.out.println("1.현재 총 보유금액 출력 2.입출금내역 출력 3.입금하기 4.출금하기 5.종료");
+			System.out.println("============= 매출 관리 ============");
+			System.out.println("1.현재 총 보유금액 출력 2.입출금내역 출력 3.입금하기 4.출금하기 5.뒤로가기");
 			int menu = sc.nextInt();
 			switch(menu) {
 			case 1:
@@ -93,8 +91,8 @@ public class Menu {
 	public void run_f(Scanner sc2) {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("=============음식 관리============");
-			System.out.println("1.음식 추가하기 2.음식 전체 보기 3.음식 가격 변경하기 4.음식 이름 변경하기 5.기존 음식 재료 추가하기 6.기존 음식 재료 삭제하기 7.음식 삭제 하기 8.종료");
+			System.out.println("=============요리 관리============");
+			System.out.println("1.요리 추가하기 2.요리 전체 보기 3.요리 가격 변경하기 4.요리 이름 변경하기 5.요리 재료 추가하기 6.요리 재료 삭제하기 7.요리 삭제 하기 8.뒤로가기");
 			Scanner sc = new Scanner(System.in);
 			int menu = sc.nextInt();
 			switch(menu) {
@@ -132,12 +130,11 @@ public class Menu {
 	
 	public void run_o(Scanner sc) {
 		boolean flag = true;
-		
-		
+
 		while(flag) {
 			order_service.start();
 			System.out.println("============= 주문 관리 ============");
-			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.종료");
+			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.뒤로가기");
 			int m= sc.nextInt();
 			
 			switch(m) {
@@ -173,15 +170,18 @@ public class Menu {
 			}
 		}
 	}
-public void run_r(Scanner sc) {
+	
+	public void run_r(Scanner sc) {
+		boolean flag = true;
 		
-		while (true) {
+		while (flag) {
 			System.out.println("============= 냉장고 관리 ============");
-			System.out.println("1.식자재 구매 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.종료");
+			System.out.println("1.식자재 구매 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.뒤로가기");
 			int menu = sc.nextInt();
 
 			switch(menu) {
 				case 1:
+					supply_service.getAllIng();
 					refrigerator_Service.BuyIng(sc);
 					break;
 				case 2: 
@@ -190,24 +190,27 @@ public void run_r(Scanner sc) {
 					refrigerator_Service.getByName(sc);
 					break;
 				case 4:
+					refrigerator_Service.getAllIng();
 					refrigerator_Service.deleteIng(sc);
 					break;
 				case 5:
 					refrigerator_Service.getAllIng();
 					break;
-					//refrigerator_Service. //프로그램 종료시 저장
 				case 6:
 					restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance().stop();
-					return;
+					flag=false;
+					break;
 			}
 
 		}
 	}
+	
 	public void run_s(Scanner sc) {
+		boolean flag = true;
 		
-		while(true) {
+		while(flag) {
 			System.out.println("============= 공급처 관리 ============");
-			System.out.println("1.식자재 정보 검색 2.식자재 구매 3.식자재 목록 4.종료");
+			System.out.println("1.식자재 정보 검색 2.식자재 구매 3.식자재 목록 4.뒤로가기");
 			int menu = sc.nextInt();
 			
 			switch(menu) {
@@ -221,8 +224,9 @@ public void run_r(Scanner sc) {
 				supply_service.getAllIng();
 				break;
 			case 4:
-				restaurant.supplier.dao.SupplyDaoImpl.getInstance().save(); //실행 종료시 공급처 파일 저장
-				return;
+				restaurant.supplier.dao.SupplyDaoImpl.getInstance().save();
+				flag=false;
+				break;
 	
 			}
 		}

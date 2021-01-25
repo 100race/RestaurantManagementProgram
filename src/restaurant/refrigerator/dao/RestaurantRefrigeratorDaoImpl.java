@@ -62,6 +62,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 		// TODO Auto-generated method stub
 		ingredients.add(ing);
 //		식자재 입고(name, amount, price, due)
+		stop();
 
 	}
 
@@ -93,6 +94,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 //				default가 2100-01-01
 			}
 		}
+		stop();
 		
 	}
 
@@ -109,6 +111,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 			떡 : 20, 치즈:5, 돼지고기:10, 밀가루:10, 빵가루:10, 김치:10
 */			
 		}
+		stop();
 	}
 
 	@Override
@@ -119,6 +122,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 			if(ingredients.get(i).getName().equals(name))
 				ingredients.remove(i);
 			}
+		stop();
 		}
 	
 
