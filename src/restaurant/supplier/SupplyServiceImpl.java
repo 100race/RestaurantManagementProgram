@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import restaurant.Main;
+import restaurant.finance.vo.Finance;
 import restaurant.food.vo.Ingredient;
 import restaurant.supplier.dao.SupplyDaoImpl;
 
 public class SupplyServiceImpl implements SupplyService{
 	
-	private SupplyDaoImpl dao; //한응 수정(food쪽에서 접근하려고 SupplyServiceImpl 생성했더니 dao도 함께 생성되어서 재료 리스트가 2개로 중복 생성됨)
+	private SupplyDaoImpl dao;
 	
 	public SupplyServiceImpl() {
 		dao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
@@ -58,13 +59,14 @@ public class SupplyServiceImpl implements SupplyService{
 		System.out.println("구매 수량을 입력하세요");
 		int amount = (sc.nextInt());
 		int price = dao.searchByName(name).get(0).getPrice();
-		if(Main.TOTAL_MONEY - price*amount >= 0) {
+		if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
 			dao.updateAmount(name, -amount); //음수처리
-			Main.TOTAL_MONEY -= price;
+			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price*amount);
 			System.out.println(amount+"개 구매 되었습니다");
 		}else{
 			System.out.println("잔액이 부족하여 구매 불가");
 		}
+		save();
 		
 	}
 
@@ -80,9 +82,9 @@ public class SupplyServiceImpl implements SupplyService{
 		
 	}
 	
-	//끝날시 실행, 파일에 데이터 저장
-	public void stop() {
-		dao.stop();
+	//파일에 데이터 저장
+	public void save() {
+		dao.save();
 		}
 	}
 	

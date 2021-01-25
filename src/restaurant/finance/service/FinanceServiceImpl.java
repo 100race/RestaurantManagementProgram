@@ -49,7 +49,7 @@ public class FinanceServiceImpl implements FinanceService{
 			amount = sc.next();
 		}
 		//잔액부족
-		while(Finance.getTOTAL_MONEY() - Integer.parseInt(amount) >=0) {
+		while(Finance.getTOTAL_MONEY() - Integer.parseInt(amount) <0) {
 			System.out.println("잔액 부족입니다. 다시 입력해주세요");
 			amount = sc.next();
 		}

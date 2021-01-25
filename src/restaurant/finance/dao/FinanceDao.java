@@ -15,5 +15,5 @@ public interface FinanceDao {
 	public void output(int amount,String message); //출금 + 기록
 	public ArrayList<Finance> getAllfinanceRecords(); //입출금 기록 확인
 	public void start();//파일 초기화
-	public void stop();//파일 저장
+	public void save();//파일 저장
 }

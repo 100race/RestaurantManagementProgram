@@ -53,6 +53,7 @@ public class FinanceDaoImpl implements FinanceDao {
 		int oriAmount = Finance.getTOTAL_MONEY();
 		Finance.setTOTAL_MONEY(oriAmount+amount);
 		financeRecords.add(new Finance(amount, message));
+		save();
 	}
 
 	/**
@@ -63,6 +64,7 @@ public class FinanceDaoImpl implements FinanceDao {
 		int oriAmount = Finance.getTOTAL_MONEY();
 		Finance.setTOTAL_MONEY(oriAmount-amount);
 		financeRecords.add(new Finance(-amount, message));
+		save();
 	}
 
 	@Override
@@ -100,10 +102,10 @@ public class FinanceDaoImpl implements FinanceDao {
 	
 	
 	/**
-	 * 파일 종료시 파일에 입출금기록 저장
+	 * 파일 종료시, 입출금 시 파일에 입출금기록 저장
 	 */
 	@Override
-	public void stop() {
+	public void save() {
 		try {
 			//객체로 써주기
 			FileOutputStream fo = new FileOutputStream(RECORD_FILE_PATH);
@@ -133,12 +135,6 @@ public class FinanceDaoImpl implements FinanceDao {
 		boolean isExists = rf.exists();
 		if(isExists){
 			try {
-//				byte[] b = new byte[1024];
-//				FileInputStream fi = new FileInputStream(MONEY_FILE_PATH);
-//				fi.read(b);				
-//				total = Integer.parseInt(new String(b)); // byte배열이 받아오려는 내용보다 크게 선언되어 쓰레기 값 들어감.
-//				
-//				fi.close();
 				
 				Path path = Paths.get(MONEY_FILE_PATH);
 				List<String> lines = Files.readAllLines(path);

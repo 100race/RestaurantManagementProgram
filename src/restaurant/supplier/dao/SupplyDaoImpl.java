@@ -1,5 +1,6 @@
 package restaurant.supplier.dao;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,7 +20,7 @@ import restaurant.refrigerator.dao.Refrigerator;
 public class SupplyDaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
-	private ArrayList<Ingredient> ingredients; //한응 수정()
+	private ArrayList<Ingredient> ingredients;
 	private static SupplyDaoImpl daoImpl = new SupplyDaoImpl();
 	
 	/**
@@ -29,8 +30,12 @@ public class SupplyDaoImpl implements Refrigerator{
 	 */
 	private SupplyDaoImpl() {
 		ingredients = new ArrayList<Ingredient>(); 
-		//init();
+		File rf = new File(FILE_PATH);
+		boolean isExists = rf.exists();
+		if(!isExists)
+			init();
 		start();
+		
 	}
 	
 	public static SupplyDaoImpl getInstance() {
@@ -179,9 +184,9 @@ public class SupplyDaoImpl implements Refrigerator{
 	}
 	
 	/**
-	 * 파일 종료시 파일에 식사재 리스트 저장
+	 * 호출시 파일에 식사재 리스트 저장
 	 */
-	public void stop() {
+	public void save() {
 		try {	
 			FileOutputStream fo = new FileOutputStream(FILE_PATH);
 			ObjectOutputStream oo = new ObjectOutputStream(fo);

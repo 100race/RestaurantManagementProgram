@@ -75,7 +75,6 @@ public class Menu {
 				break;
 			case 5:
 				flag = false;
-				restaurant.finance.dao.FinanceDaoImpl.getInstance().stop();
 				break;
 			default:
 				System.out.println("번호를 정확히 입력하세요.");
@@ -185,7 +184,7 @@ public class Menu {
 				supply_service.getAllIng();
 				break;
 			case 4:
-				restaurant.supplier.dao.SupplyDaoImpl.getInstance().stop(); //실행 종료시 공급처 파일 저장
+				restaurant.supplier.dao.SupplyDaoImpl.getInstance().save(); //실행 종료시 공급처 파일 저장
 				return;
 	
 			}
