@@ -1,5 +1,6 @@
 package restaurant.refrigerator.dao;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +15,7 @@ import restaurant.food.vo.Ingredient;
 public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 	
 	
-	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
+	public static final String FILE_PATH = "src/restaurant/files/restaurant_ingredients.dat";
 	private static final String MONEY_FILE_PATH = "src/restaurant/files/total_money.dat";	
 	
 	
@@ -24,8 +25,10 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 	
 	private RestaurantRefrigeratorDaoImpl() {
 		ingredients = new ArrayList<Ingredient>(); 
-		//init();
-		start();
+		File rf = new File(FILE_PATH);
+		boolean isExists = rf.exists();
+		if(isExists)
+			start();
 	}
 	
 	public static RestaurantRefrigeratorDaoImpl getInstance() {
@@ -42,10 +45,10 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 			oi.close();
 			fi.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.refrigerator DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("restaurant.supplier DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
+			System.out.println("restaurant.refrigerator DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -136,7 +139,7 @@ public class RestaurantRefrigeratorDaoImpl implements Refrigerator {
 			fo.close();
 			}
 		catch (IOException e) {
-			System.out.println("restaurant.supplier DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
+			System.out.println("restaurant.refrigerator DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
 			e.printStackTrace();
 		}
 	}

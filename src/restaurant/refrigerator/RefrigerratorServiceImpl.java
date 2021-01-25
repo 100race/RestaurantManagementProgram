@@ -56,6 +56,16 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		}else{
 			System.out.println("잔액이 부족하여 구매 불가");
 		}	
+		
+		/*
+		 * SupplyService의 buyIng를 써서 공급처개수 차감, 금액관련 처리
+		 * if(저장소에 이미 존재하는 식자재가 없을경우)
+		 * 리스트 = daoimple serchByName(name) 
+		 * 식당의 저장소에 이름으로 받아준 것 넘겨줌(냉장고에 사온거 넣어줌)
+		 * else(저장소에 이미 존재하는 식자재 o)
+		 * updateAmount로 개수만 올려줌
+		 * 
+		 */
 	}
 	
 
@@ -119,11 +129,11 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void deleteIng(Scanner sc) {
 		// TODO Auto-generated method stub
-		System.out.println("삭제할 식자재 이름을 입력하세요");
+		System.out.println("폐기할 식자재 이름을 입력하세요");
 		String name = sc.next();
-		System.out.println("해당 식자재를 삭제하실겁니까?");
+		System.out.println("해당 식자재를 폐기하실겁니까?");
 		rRDao.deleteByName(name);
-		System.out.println(name+"이 삭제되었습니다");
+		System.out.println(name+"이 폐기되었습니다");
 		
 		
 	}

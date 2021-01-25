@@ -19,7 +19,7 @@ import restaurant.refrigerator.dao.Refrigerator;
  */
 public class SupplyDaoImpl implements Refrigerator{
 	
-	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
+	public static final String FILE_PATH = "src/restaurant/files/supply_ingredients.dat";
 	private ArrayList<Ingredient> ingredients;
 	private static SupplyDaoImpl daoImpl = new SupplyDaoImpl();
 	
