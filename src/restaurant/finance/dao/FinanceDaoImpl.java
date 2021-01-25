@@ -1,12 +1,11 @@
 package restaurant.finance.dao;
 
 import java.awt.BufferCapabilities;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,13 +13,10 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import restaurant.finance.vo.Finance;
-import restaurant.food.vo.Ingredient;
 
 /**
  * 
@@ -31,21 +27,21 @@ import restaurant.food.vo.Ingredient;
  * 사용시점 : 주문시 , 식자재 구매시
  *
  */
-public class DaoImpl implements Dao {
+public class FinanceDaoImpl implements FinanceDao {
 
 	private static final String RECORD_FILE_PATH = "src/restaurant/files/finance_records.dat";
 	private static final String MONEY_FILE_PATH = "src/restaurant/files/total_money.dat";
 	private ArrayList<Finance> financeRecords;
-	private static DaoImpl daoImpl = new DaoImpl();
+	private static FinanceDaoImpl daoImpl = new FinanceDaoImpl();
 
-	private DaoImpl() {
+	private FinanceDaoImpl() {
 		financeRecords = new ArrayList<Finance>(); 
 		start();
 		initTotalMoney();
 		
 	}
 	
-	public static DaoImpl getInstance() {
+	public static FinanceDaoImpl getInstance() {
 		return daoImpl;
 	}
 

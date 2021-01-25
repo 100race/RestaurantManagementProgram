@@ -22,11 +22,11 @@ import restaurant.order.vo.Order;
  * @author Han
  *
  */
-public class DaoImpl implements Dao {
+public class FoodDaoImpl implements FoodDao {
 	private static ArrayList<Food> foods; // 수정함
 	public static final String FOOD_FILE_PATH = "src/restaurant/files/foods.dat";
 
-	public DaoImpl() {
+	public FoodDaoImpl() {
 		foods = new ArrayList<>();
 		// init();
 		start();
@@ -80,7 +80,7 @@ public class DaoImpl implements Dao {
 	 */
 	@Override
 	public Food searchByIdx(int idx) {
-		Food f = getAllFood().get(idx);
+		Food f = getAllFood().get(idx-1);
 		if (f == null) {
 			System.out.println("음식이 존재하지 않습니다.");
 			return null;

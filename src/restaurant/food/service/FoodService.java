@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 import restaurant.food.vo.Food;
 
-public interface Service {
+public interface FoodService {
 	void addFood(Scanner sc);
 	Food getFoodByIdx(int idx);
 	ArrayList<Food> getAllFood();

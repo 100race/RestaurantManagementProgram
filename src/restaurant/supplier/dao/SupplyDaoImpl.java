@@ -16,24 +16,24 @@ import restaurant.refrigerator.dao.Refrigerator;
  * @author kyoungju
  *
  */
-public class DaoImpl implements Refrigerator{
+public class SupplyDaoImpl implements Refrigerator{
 	
 	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
 	private ArrayList<Ingredient> ingredients; //한응 수정()
-	private static DaoImpl daoImpl = new DaoImpl();
+	private static SupplyDaoImpl daoImpl = new SupplyDaoImpl();
 	
 	/**
 	 * Dao 생성자
 	 * 파일에 객체정보를 넣어주기 위해 init()을 호출
 	 * 생성시 파일에서 리스트를 받아옴
 	 */
-	private DaoImpl() {
+	private SupplyDaoImpl() {
 		ingredients = new ArrayList<Ingredient>(); 
 		//init();
 		start();
 	}
 	
-	public static DaoImpl getInstance() {
+	public static SupplyDaoImpl getInstance() {
 		return daoImpl;
 	}
 	

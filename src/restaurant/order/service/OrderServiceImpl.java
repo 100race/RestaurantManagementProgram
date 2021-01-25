@@ -3,6 +3,7 @@ package restaurant.order.service;
 
 import java.util.ArrayList;
 
+
 import restaurant.finance.dao.FinanceDao;
 import restaurant.finance.dao.FinanceDaoImpl;
 import restaurant.finance.vo.Finance;
@@ -27,14 +28,14 @@ public class OrderServiceImpl implements OrderService{
 	private Order o;
 	//private refrigeratorDAO // 냉장고 DAO
 	private FoodDao foodDao; // 요리DAO
-	private FinanceDao financeDao; // 입출금DAO
+	private FinanceDaoImpl financeDao; // 입출금DAO
 	
 	
 	public OrderServiceImpl() {
 		
 		dao=new OrderDAOImpl();
 		foodDao=new FoodDaoImpl();
-		financeDao=new FinanceDaoImpl();
+		financeDao = restaurant.finance.dao.FinanceDaoImpl.getInstance();
 		
 	}
 	

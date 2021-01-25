@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import restaurant.food.dao.Dao;
-import restaurant.food.dao.DaoImpl;
+import restaurant.food.dao.FoodDao;
+import restaurant.food.dao.FoodDaoImpl;
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
 import restaurant.supplier.SupplyServiceImpl;
@@ -18,16 +18,16 @@ import restaurant.supplier.SupplyServiceImpl;
  * @author Han
  *
  */
-public class ServiceImpl implements Service {
-	private Dao dao = new DaoImpl(); //수정함
+public class FoodServiceImpl implements FoodService {
+	private FoodDao dao = new FoodDaoImpl(); //수정함
 	private SupplyServiceImpl supply_service = new SupplyServiceImpl(); //수정함
-	ArrayList<Ingredient> suppList = restaurant.supplier.dao.DaoImpl.getInstance().getIngredients();
+	ArrayList<Ingredient> suppList = restaurant.supplier.dao.SupplyDaoImpl.getInstance().getIngredients();
 	
-	public ServiceImpl() {
+	public FoodServiceImpl() {
 	}
 	
 	
-	public Dao getDao() {
+	public FoodDao getDao() {
 		return dao;
 	}
 

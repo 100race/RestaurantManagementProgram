@@ -13,14 +13,14 @@ import java.util.Scanner;
 
 import restaurant.Main;
 import restaurant.food.vo.Ingredient;
-import restaurant.supplier.dao.DaoImpl;
+import restaurant.supplier.dao.SupplyDaoImpl;
 
 public class SupplyServiceImpl implements SupplyService{
 	
-	private DaoImpl dao; //한응 수정(food쪽에서 접근하려고 SupplyServiceImpl 생성했더니 dao도 함께 생성되어서 재료 리스트가 2개로 중복 생성됨)
+	private SupplyDaoImpl dao; //한응 수정(food쪽에서 접근하려고 SupplyServiceImpl 생성했더니 dao도 함께 생성되어서 재료 리스트가 2개로 중복 생성됨)
 	
 	public SupplyServiceImpl() {
-		dao = restaurant.supplier.dao.DaoImpl.getInstance();
+		dao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 	}
 	
 	@Override

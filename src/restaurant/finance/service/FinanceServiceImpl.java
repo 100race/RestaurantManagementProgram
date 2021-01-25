@@ -2,14 +2,14 @@ package restaurant.finance.service;
 
 import java.util.Scanner;
 
-import restaurant.finance.dao.DaoImpl;
+import restaurant.finance.dao.FinanceDaoImpl;
 import restaurant.finance.vo.Finance;
 
 public class FinanceServiceImpl implements FinanceService{
-	private DaoImpl daoImpl;
+	private FinanceDaoImpl daoImpl;
 
 	public FinanceServiceImpl() {
-		this.daoImpl = DaoImpl.getInstance(); //싱글톤 객체를 받아온다
+		this.daoImpl = FinanceDaoImpl.getInstance(); //싱글톤 객체를 받아온다
 		}
 
 	/**

@@ -7,13 +7,13 @@ import java.util.Scanner;
 import restaurant.Main;
 import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl;
-import restaurant.supplier.dao.DaoImpl;
+import restaurant.supplier.dao.SupplyDaoImpl;
 
 public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 
 		private RestaurantRefrigeratorDaoImpl rRDao;
-		private DaoImpl sRDao;
+		private SupplyDaoImpl sRDao;
 		private ArrayList<Ingredient> supplyIngredients;
 		
 		public RefrigerratorServiceImpl(ArrayList<Ingredient> supplyIngredients) {
@@ -21,7 +21,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 			ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
 		
 			this.rRDao = new RestaurantRefrigeratorDaoImpl();
-			this.sRDao = restaurant.supplier.dao.DaoImpl.getInstance();
+			this.sRDao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 
 
 			this.supplyIngredients = supplyIngredients;

@@ -6,7 +6,7 @@ import java.util.Map;
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
 
-public interface Dao {
+public interface FoodDao {
 	void insert(Food food);
 	void deleteByIdx(int idx);
 	void deleteByName(String foodName);
