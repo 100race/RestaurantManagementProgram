@@ -114,6 +114,7 @@ public class Menu {
 				food_service.delFoodByIdx(sc);
 				break;
 			case 8:
+				food_service.getDao().stop(); //프로그램 종료시 저장
 				flag = false;
 				break;
 			default:
