@@ -28,7 +28,7 @@ public class FoodDaoImpl implements FoodDao {
 
 	public FoodDaoImpl() {
 		foods = new ArrayList<>();
-		// init();
+		//init();
 		start();
 	}
 	
@@ -119,6 +119,16 @@ public class FoodDaoImpl implements FoodDao {
 		if (f != null) {
 			foods.remove(f);
 			System.out.println("음식 메뉴 삭제 완료!");
+			for(int i=idx-1; i<foods.size(); i++) { //삭제시 삭제한 리스트 이후 idx를 -1씩 감소시켜줌
+				if(i == 0) {
+					for(int j=0; j<foods.size(); j++) {
+						foods.get(j).setIdx(j+1);
+					}
+					break;
+				}else {
+					foods.get(i).setIdx(i+1);
+				}
+			}
 		} else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
@@ -164,10 +174,10 @@ public class FoodDaoImpl implements FoodDao {
 	@Override
 	public void deleteIng(int idx, String ingName) {
 		Food f = searchByIdx(idx);
-		if (f != null) {
+		if (f != null && ingName != null) {
 			f.getIngredient().remove(ingName);
 			System.out.println("음식 재료 삭제 완료!");
-		} else {
+		}else {
 			System.out.println("재료명을 잘못 입력하였습니다.");
 		}
 	}
@@ -207,8 +217,8 @@ public class FoodDaoImpl implements FoodDao {
 //		}else {
 //			System.out.println("없는 번호 입니다. 다시 확인해주세요! 다오부분!");
 //		}
-		if (getAllFood().get(num) != null) {
-			getAllFood().get(num).setPrice(price);
+		if (getAllFood().get(num-1) != null) {
+			getAllFood().get(num-1).setPrice(price);
 		} else {
 			System.out.println("없는 번호입니다. 다시 확인해주세요.");
 		}
@@ -235,7 +245,7 @@ public class FoodDaoImpl implements FoodDao {
 	 */
 	public void stop() {
 		try {
-			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH, true); // true : 기존자료에 이어서 쓰기 옵션
+			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH); // true : 기존자료에 이어서 쓰기 옵션
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(foods);
 			oos.close();
@@ -250,8 +260,6 @@ public class FoodDaoImpl implements FoodDao {
 	 * 첫 실행시만 파일에 초기화. 이후 주석처리
 	 */
 	public void init() {
-
-		ArrayList<Food> fl = new ArrayList<>();
 		Map<String, Integer> il1 = new HashMap<>();
 		il1.put("김", 1);
 		il1.put("단무지", 1);
@@ -281,16 +289,16 @@ public class FoodDaoImpl implements FoodDao {
 		il5.put("계란", 2);
 		il5.put("햄", 2);
 		il5.put("대파", 1);
-		fl.add(new Food("김밥", 3000, il1));
-		fl.add(new Food("우동", 3500, il2));
-		fl.add(new Food("라볶이", 5500, il3));
-		fl.add(new Food("돈까스", 8000, il4));
-		fl.add(new Food("김치볶음밥", 7000, il5));
+		foods.add(new Food("김밥", 3000, il1));
+		foods.add(new Food("우동", 3500, il2));
+		foods.add(new Food("라볶이", 5500, il3));
+		foods.add(new Food("돈까스", 8000, il4));
+		foods.add(new Food("김치볶음밥", 7000, il5));
 
 		try {
 			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(fl);
+			oos.writeObject(foods);
 			oos.close();
 			fos.close();
 		} catch (IOException e) {

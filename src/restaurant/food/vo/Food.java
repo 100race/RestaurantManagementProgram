@@ -3,12 +3,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+import restaurant.food.dao.FoodDaoImpl;
+
 public class Food implements Serializable{
 	/**
 	 * serialVersionUID 버전관리
 	 */
 	private static final long serialVersionUID = 8057832500895502907L;
-	private static int cnt = 6; //추가함
+	private static int cnt = 1; //추가함
 	private int idx;
 	private String foodName;
 	private int price;
@@ -16,7 +18,7 @@ public class Food implements Serializable{
 	
 	public Food() {}
 	public Food(String foodName, int price, Map<String, Integer> ingredients) {
-		this.idx = cnt++; //추가함
+		this.idx = FoodDaoImpl.getFoods().size()+1; //변경함
 		this.foodName = foodName;
 		this.price = price;
 		this.ingredients = ingredients;
