@@ -1,27 +1,31 @@
 package restaurant;
 
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
-
+import restaurant.finance.service.FinanceServiceImpl;
 import restaurant.food.service.FoodServiceImpl;
 import restaurant.order.service.OrderServiceImpl;
+import restaurant.refrigerator.RefrigerratorServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
-import restaurant.finance.service.FinanceServiceImpl;
 
 
 public class Menu {
 
+	private static final LocalDate LocalDate = null;
 	private FinanceServiceImpl finance_service;
 	private SupplyServiceImpl supply_service;
 	private FoodServiceImpl food_service;
 	private OrderServiceImpl order_service;
+	private RefrigerratorServiceImpl refrigerator_Service;
 	
 	public Menu() {
 		finance_service = new FinanceServiceImpl();
 		supply_service = new SupplyServiceImpl();
 		food_service = new FoodServiceImpl();
 		order_service = new OrderServiceImpl();
+		refrigerator_Service = new RefrigerratorServiceImpl();
 	}
 	
 	// 메인 메뉴
@@ -30,7 +34,7 @@ public class Menu {
 		//service.start(); //시작하면 자동으로 파일 로드
 		while (flag) {
 			System.out.println("============= 메인 메뉴 ============");
-			System.out.println("1.음식 관리 2.공급처 관리 3.주문 하기 4.금전 관리 5.종료");
+			System.out.println("1.음식 관리 2.공급처 관리 3.주문 하기 4.금전 관리 5.냉장고관리 6.종료");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
@@ -46,6 +50,9 @@ public class Menu {
 				run_fi(sc);
 				break;
 			case 5:
+				run_r(sc);
+				break;
+			case 6:
 				flag = false;
 				System.out.println("프로그램을 종료합니다.");
 				break;
@@ -167,7 +174,35 @@ public class Menu {
 			}
 		}
 	}
-	
+public void run_r(Scanner sc) {
+		
+		while (true) {
+			System.out.println("============= 냉장고 관리 ============");
+			System.out.println("1.식자재 구매 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.종료");
+			int menu = sc.nextInt();
+
+			switch(menu) {
+				case 1:
+					refrigerator_Service.firstBuyIng(sc);
+					break;
+				case 2: 
+					refrigerator_Service.editDue(toString(), LocalDate);
+				case 3:
+					refrigerator_Service.getByName(sc);
+					break;
+				case 4:
+					refrigerator_Service.deleteIng(sc);
+					break;
+				case 5:
+					refrigerator_Service.getAllIng();
+					break;
+				case 6:
+					restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance().stop();
+					return;
+			}
+
+		}
+	}
 	public void run_s(Scanner sc) {
 		
 		while(true) {
