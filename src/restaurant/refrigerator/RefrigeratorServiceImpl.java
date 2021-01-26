@@ -23,7 +23,6 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 	public RefrigeratorServiceImpl() {
 		
 		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
-		this.supplyIngredients = supplyIngredients;
 		sRDao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 		fDao = restaurant.finance.dao.FinanceDaoImpl.getInstance();
 		}
@@ -67,7 +66,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 		int price = rRDao.selectAllIng().get(0).getPrice();
 		
 			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
-			fDao.input(amount, name+"구매");
+			fDao.input(-amount*price, name+"구매");//-amount 음수 추가*price 곱한 금액
 			//Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
 			
 			}else{
@@ -80,7 +79,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
 				Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
 				rRDao.updateAmount(name, amount);
-				fDao.input(amount, name+"구매");
+				fDao.input(-amount*price, name+"구매");////-amount 음수 추가*price 곱한 금액
 				System.out.println(amount+"개 구매 되었습니다");
 				System.out.println("냉장고 재고 확인:"+name+rRDao.searchByName(name).get(0).getAmount()+"개 입니다.");
 				}else{
