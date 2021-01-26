@@ -62,7 +62,7 @@ public class SupplyServiceImpl implements SupplyService {
 	// 식자재 구매
 	@Override
 	public void buyIng(Scanner sc) {
-		
+
 		System.out.println("구매할 식자재 이름을 입력하세요");
 		String name = sc.next();
 		while (isInteger(name) || name.length() == 0) {
@@ -73,34 +73,26 @@ public class SupplyServiceImpl implements SupplyService {
 		int amount = (sc.nextInt());
 
 		ArrayList<Ingredient> rIng = sdao.searchByName(name);
+		int price = rRDao.selectAllIng().get(0).getPrice();
 
-		if (rIng.size() == 0) {//냉장고에 재고가 없으면 새로 추가
-			int price = rRDao.selectAllIng().get(0).getPrice();
-			if (Finance.getTOTAL_MONEY() - price * amount >= 0) {
-				System.out.println(amount + "개 구매 되었습니다");
+		if (Finance.getTOTAL_MONEY() - price * amount >= 0) {
+			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+			System.out.println(amount + "개 구매 되었습니다");
+			LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일
+			fDao.input(-amount, name + "구매");
+			if (rIng.size() == 0) {// 냉장고에 재고가 없으면 새로 추가
 				System.out.println("냉장고 재고 확인:" + name + amount + "개 입니다.");
-				LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일	
 				rRDao.addIng(new Ingredient(name, amount, sdao.searchByName(name).get(0).getPrice(), expiryDate));
-				fDao.input(amount, name + "구매");
-			} else {
-				System.out.println("잔액이 부족하여 구매 불가");
-			}
-		} else {//냉장고에 재고가 있으면 개수 추가
-			int price = sdao.searchByName(name).get(0).getPrice();
-
-			if (Finance.getTOTAL_MONEY() - price * amount >= 0) {
-				Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+			} else {// 냉장고에 재고가 있으면 개수 추가
 				rRDao.updateAmount(name, amount);
 				sdao.updateAmount(name, -amount);
-				fDao.input(-amount, name + "구매");
-				System.out.println(amount + "개 구매 되었습니다");
-				LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일	
 				rRDao.updateDue(name, expiryDate);
 				System.out.println("냉장고 재고 확인:" + name + rRDao.searchByName(name).get(0).getAmount() + "개 입니다.");
-			} else {
-				System.out.println("잔액이 부족하여 구매 불가");
 			}
+		} else {
+			System.out.println("잔액이 부족하여 구매 불가");
 		}
+
 		save();
 
 	}
