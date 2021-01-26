@@ -47,27 +47,30 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 		System.out.println("구매 수량을 입력하세요");
 		int amount = (sc.nextInt());
 
-		ArrayList<Ingredient> rIng = sRDao.searchByName(name);
-		int price = rRDao.selectAllIng().get(0).getPrice();
+		ArrayList<Ingredient> rIng = rRDao.searchByName(name);
+		// int price = rRDao.selectAllIng().get(0).getPrice();
+		int price = sRDao.searchByName(name).get(0).getPrice();
 
 		if (Finance.getTOTAL_MONEY() - price * amount >= 0) {
 			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
 			System.out.println(amount + "개 구매 되었습니다");
-			LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일
-			fDao.input(-amount, name + "구매");
 			if (rIng.size() == 0) {// 냉장고에 재고가 없으면 새로 추가
+				LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일
+				fDao.input(-amount, name + "구매");
 				System.out.println("냉장고 재고 확인:" + name + amount + "개 입니다.");
 				rRDao.addIng(new Ingredient(name, amount, sRDao.searchByName(name).get(0).getPrice(), expiryDate));
-			} else {// 냉장고에 재고가 있으면 개수 추가
+			} else {
+				LocalDate expiryDate = LocalDate.now().plusDays(3); // 유통기한 3일
+				fDao.input(-amount, name + "구매");
 				rRDao.updateAmount(name, amount);
 				sRDao.updateAmount(name, -amount);
 				rRDao.updateDue(name, expiryDate);
 				System.out.println("냉장고 재고 확인:" + name + rRDao.searchByName(name).get(0).getAmount() + "개 입니다.");
 			}
-		} else {
+		} else {// 냉장고에 재고가 있으면 개수 추가
 			System.out.println("잔액이 부족하여 구매 불가");
-		}
-
+				
+			}
 		
 	}
 		/*
