@@ -134,24 +134,26 @@ public class Menu {
 		while(flag) {
 			order_service.start();
 			System.out.println("============= [주문 관리] ============");
-			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.뒤로가기");
+			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.주문완료 5.뒤로가기");
 			int m= sc.nextInt();
 			
 			switch(m) {
 				case 1:	
 						System.out.println("주문음식선택");
 					    food_service.printAllFood();
-					    
 						int foodIdx = sc.nextInt();
 						
-						if(order_service.checkIngr(foodIdx)) {
+						if(order_service.checkIngr(foodIdx)) { // 메뉴 체크
+							
 							System.out.println("주문수량");
 							int foodAmount=sc.nextInt();
-							order_service.addOrder(foodAmount);
-						} else {
-							System.out.println("재고없음");
+							if(order_service.checkOrder(foodAmount)) { //수량 체크
+								order_service.addOrder(foodAmount);
+							} else {
+								System.out.println("재고확인 필요 ");
+							}
+							order_service.orderSave();
 						}
-						order_service.orderSave();
 						break;
 				
 				case 2:
@@ -159,12 +161,28 @@ public class Menu {
 						break;
 						
 				case 3: 
-						System.out.println("취소주문 선택");
-						order_service.printAllOrder();
-						int calcelOrder= sc.nextInt();
+						if(order_service.getAllOrder().size()!=0) {
+							System.out.println("취소주문 선택");
+							order_service.printAllOrder();
+							int calcelOrder= sc.nextInt();
 						order_service.finishOrder(calcelOrder);
+						} else {
+							System.out.println("주문이 없습니다.");
+						}
 						break;
 				case 4:
+						
+						if(order_service.getAllOrder().size()!=0){
+						
+							System.out.println("주문완료 선택");
+							order_service.printAllOrder();
+							int completeOrder= sc.nextInt();
+						order_service.completeOrder(completeOrder);
+						} else {
+							System.out.println("주문이 없습니다.");
+						} 
+						break;
+				case 5:
 						flag=false;
 						break;
 			}
