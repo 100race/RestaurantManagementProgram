@@ -38,8 +38,8 @@ public class FoodServiceImpl implements FoodService {
 	@Override
 	public void addFood(Scanner sc) {
 		ArrayList<Ingredient> ingredients;
-		System.out.println("========= 음식 등록 =========");
-		System.out.print("음식 이름 : ");
+		System.out.println("========= 요리 등록 =========");
+		System.out.print("요리 이름 : ");
 		String foodName = sc.next();
 		System.out.print("가격 : ");
 		int price = sc.nextInt();
@@ -119,7 +119,7 @@ public class FoodServiceImpl implements FoodService {
 		if(foods != null) {
 			return dao.getAllFood();
 		}else {
-			System.out.println("음식이 하나도 없습니다.");
+			System.out.println("등록된 요리가 하나도 없습니다.");
 		}
 		return null;
 	}
@@ -137,7 +137,7 @@ public class FoodServiceImpl implements FoodService {
 		if(tempFood != null){
 			System.out.println(tempFood);
 		}else {
-			System.out.println("해당하는 음식이 없습니다.");
+			System.out.println("해당하는 요리가 없습니다.");
 		}
 	}
 
@@ -160,10 +160,10 @@ public class FoodServiceImpl implements FoodService {
 	 */
 	@Override
 	public void changePriceByIdx(Scanner sc) {
-		System.out.println("========= 음식 가격 수정 =========");
+		System.out.println("========= 요리 가격 수정 =========");
 		this.printAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("수정할 음식 번호: ");
+		System.out.print("수정할 요리 번호: ");
 		int num = sc.nextInt();
 		if(num > getDao().getAllFood().size() || num <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");
@@ -189,10 +189,10 @@ public class FoodServiceImpl implements FoodService {
 	 */
 	@Override
 	public void changeFoodNameByIdx(Scanner sc) {
-		System.out.println("========= 음식 이름 변경 =========");
+		System.out.println("========= 요리 이름 변경 =========");
 		this.printAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("이름 변경할 음식 번호: ");
+		System.out.print("이름 변경할 요리 번호: ");
 		int num = sc.nextInt();
 		if(num > getDao().getAllFood().size() || num <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");
@@ -203,7 +203,7 @@ public class FoodServiceImpl implements FoodService {
 				System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 			}
 			if(num == this.getFoodByIdx(num).getIdx()) {
-				System.out.println("새로운 음식 이름: ");
+				System.out.println("새로운 요리 이름: ");
 				String name = sc.next();
 				if(name != null) {
 					dao.updateName(num, name);
@@ -257,10 +257,10 @@ public class FoodServiceImpl implements FoodService {
 	@Override
 	public void addIngByIdx(Scanner sc) {
 		Map<String, Integer> temp = null;
-		System.out.println("========= 음식 재료 추가 =========");
+		System.out.println("========= 요리 재료 추가 =========");
 		this.printAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("재료 추가할 음식 번호: ");
+		System.out.print("재료 추가할 요리 번호: ");
 		int num = sc.nextInt();
 		if(num > getDao().getAllFood().size() || num <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");
@@ -284,10 +284,10 @@ public class FoodServiceImpl implements FoodService {
 	 */
 	@Override
 	public void delIngByIdx(Scanner sc) {
-		System.out.println("========= 음식 재료 삭제 =========");
+		System.out.println("========= 요리 재료 삭제 =========");
 		this.printAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("재료 삭제할 음식 번호: ");
+		System.out.print("재료 삭제할 요리 번호: ");
 		int foodNum = sc.nextInt();
 		if(foodNum > getDao().getAllFood().size() || foodNum <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");
@@ -317,10 +317,10 @@ public class FoodServiceImpl implements FoodService {
 	 */
 	@Override
 	public void delFoodByIdx(Scanner sc) {
-		System.out.println("========= 음식 삭제 =========");
+		System.out.println("========= 요리 삭제 =========");
 		this.printAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("삭제할 음식 번호: ");
+		System.out.print("삭제할 요리 번호: ");
 		int num = sc.nextInt();
 		if(num > getDao().getAllFood().size() || num <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");

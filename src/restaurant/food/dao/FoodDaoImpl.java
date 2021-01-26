@@ -69,7 +69,7 @@ public class FoodDaoImpl implements FoodDao {
 	@Override
 	public void insert(Food food) {
 		foods.add(food);
-		System.out.println("음식 메뉴 추가 완료!");
+		System.out.println("요리 추가 완료!");
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class FoodDaoImpl implements FoodDao {
 	public Food searchByIdx(int idx) {
 		Food f = getAllFood().get(idx-1);
 		if (f == null) {
-			System.out.println("음식이 존재하지 않습니다.");
+			System.out.println("요리가 존재하지 않습니다.");
 			return null;
 		} else {
 			return f; // 인덱스에 있는 객체 리턴
@@ -118,7 +118,7 @@ public class FoodDaoImpl implements FoodDao {
 		Food f = searchByIdx(idx);
 		if (f != null) {
 			foods.remove(f);
-			System.out.println("음식 메뉴 삭제 완료!");
+			System.out.println("요리 삭제 완료!");
 			for(int i=idx-1; i<foods.size(); i++) { //삭제시 삭제한 리스트 이후 idx를 -1씩 감소시켜줌
 				if(i == 0) {
 					for(int j=0; j<foods.size(); j++) {
@@ -144,7 +144,7 @@ public class FoodDaoImpl implements FoodDao {
 		Food f = searchByName(name);
 		if (f != null) {
 			foods.remove(f);
-			System.out.println("음식 메뉴 삭제 완료!");
+			System.out.println("요리 삭제 완료!");
 		} else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
@@ -160,7 +160,7 @@ public class FoodDaoImpl implements FoodDao {
 		Food f = searchByIdx(idx);
 		if (f != null) {
 			f.getIngredient().putAll(ingredient);
-			System.out.println("음식 재료 추가 완료!");
+			System.out.println("요리 재료 추가 완료!");
 		} else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
@@ -176,7 +176,7 @@ public class FoodDaoImpl implements FoodDao {
 		Food f = searchByIdx(idx);
 		if (f != null && ingName != null) {
 			f.getIngredient().remove(ingName);
-			System.out.println("음식 재료 삭제 완료!");
+			System.out.println("요리 재료 삭제 완료!");
 		}else {
 			System.out.println("재료명을 잘못 입력하였습니다.");
 		}
@@ -194,7 +194,7 @@ public class FoodDaoImpl implements FoodDao {
 		if (f != null) {
 			if (value > 0) { // 수량이 양수이면
 				f.getIngredient().replace(key, value);
-				System.out.println("음식 재료 수량 변경 완료!");
+				System.out.println("요리 재료 수량 변경 완료!");
 			} else {
 				System.out.println("수량이 0 이하입니다!");
 			}
