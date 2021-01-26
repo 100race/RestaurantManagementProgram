@@ -15,5 +15,6 @@ public interface OrderService {
 	void finishOrder(int num);
 	void start();
 	void orderSave();
+	void completeOrder(int num);
 	
 }

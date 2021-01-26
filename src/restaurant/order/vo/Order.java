@@ -52,7 +52,8 @@ public class Order implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Order [num= "+num +", food=" + food.getFoodName() + ", amount=" + amount + "]";
+
+		return " [ 주문번호  " + num + " | 요리 : " + food.getFoodName() + " | 수량 :" + amount + "]";
 	}
 	
 	

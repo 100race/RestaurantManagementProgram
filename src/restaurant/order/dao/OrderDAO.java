@@ -11,4 +11,5 @@ public interface OrderDAO {
 	ArrayList<Order> getAllOrder();
 	void orderSave();
 	void start();
+	void complete(int num);
 }
