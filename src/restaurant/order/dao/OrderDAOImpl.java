@@ -139,6 +139,33 @@ public class OrderDAOImpl implements OrderDAO{
 		
 		return ord;
 	}
+
+	@Override
+	public void complete(int num) {
+		// TODO Auto-generated method stub
+		try {
+			FileOutputStream fo = new FileOutputStream(fileName);
+			BufferedOutputStream bo = new BufferedOutputStream(fo);
+			ObjectOutputStream out = new ObjectOutputStream(bo);
+	
+	
+			
+			for(Order rs : ord) {
+				if (rs.getNum()==num) {
+						ord.remove(rs);
+						break;
+				}
+			}
+		
+			out.writeObject(ord);
+			out.flush();
+			out.close();
+		
+		} catch(IOException e) {
+			
+		} 
+		
+	}
 	
 	
 	
