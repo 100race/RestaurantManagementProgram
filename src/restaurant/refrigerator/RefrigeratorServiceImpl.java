@@ -5,29 +5,27 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import restaurant.finance.dao.FinanceDaoImpl;
 import restaurant.finance.vo.Finance;
 import restaurant.food.vo.Ingredient;
 import restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl;
 import restaurant.supplier.dao.SupplyDaoImpl;
 
-public class RefrigerratorServiceImpl implements RefrigerratorService {
+public class RefrigeratorServiceImpl implements RefrigeratorService {
 
 	
-	
-
 		private RestaurantRefrigeratorDaoImpl rRDao;
 		private SupplyDaoImpl sRDao;
 		private ArrayList<Ingredient> supplyIngredients;
+		private FinanceDaoImpl fDao;
 		
-		ArrayList<Ingredient> arr = new ArrayList<>(); //저장소
-	
-
-		
-	public RefrigerratorServiceImpl() {
+			
+	public RefrigeratorServiceImpl() {
 		
 		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
 		this.supplyIngredients = supplyIngredients;
-
+		sRDao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
+		fDao = restaurant.finance.dao.FinanceDaoImpl.getInstance();
 		}
 
 
@@ -38,26 +36,69 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	
 	 */
 	@Override
-	public void firstBuyIng(Scanner sc) {
+	public void BuyIng(Scanner sc) {
 		// TODO Auto-generated method stub
 	
+		
 		System.out.println("구매할 식자재 이름을 입력하세요");
 		String name = sc.next();
+		while(isInteger(name) || name.length()==0) { 
+			System.out.println("유효한 이름을 다시 입력해주세요");
+			name = sc.next();
+		}
+		
 		System.out.println("구매 수량을 입력하세요");
-		int amount = rRDao.searchByName(name).get(0).getAmount(); //99999개
-		int amount2 = (sc.nextInt()); //ex 10개
-		int amount3 = amount - (amount-amount2);
-		int price = rRDao.searchByName(name).get(0).getPrice();
-		if(Finance.getTOTAL_MONEY() - price*amount2 >= 0) {
-			rRDao.updateAmount(name, amount3); //음수처리
-			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
-			System.out.println(amount2+"개 구매 되었습니다");
-			System.out.println("냉장고 재고 확인:"+name+amount3+"개 입니다.");
-		}else{
-			System.out.println("잔액이 부족하여 구매 불가");
+		int amount = (sc.nextInt());
+		
+		ArrayList<Ingredient> rIng = rRDao.searchByName(name);
+
+		//공급처식자재 유통기한을 가져온다
+		
+		if(rIng.size() == 0) {
+//		rIng.get(0).setName(name);
+		System.out.println(amount+"개 구매 되었습니다");
+		System.out.println("냉장고 재고 확인:"+name+amount+"개 입니다.");
+		
+		LocalDate today = LocalDate.now();//금일날짜 
+		LocalDate expiryDate = today.plusDays(3); //금일날짜에서 3일 후 종료
+		rRDao.addIng(new Ingredient(name, amount, sRDao.searchByName(name).get(0).getPrice(), expiryDate));
+		System.out.println(rRDao.selectAllIng().get(0));
+		
+		int price = rRDao.selectAllIng().get(0).getPrice();
+		
+			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
+			fDao.input(amount, name+"구매");
+			//Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+			
+			}else{
+			System.out.println("잔액이 부족하여 구매 불가");	
+			}
+		}else {
+			
+			int price = sRDao.searchByName(name).get(0).getPrice();
+			
+			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
+				Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
+				rRDao.updateAmount(name, amount);
+				fDao.input(amount, name+"구매");
+				System.out.println(amount+"개 구매 되었습니다");
+				System.out.println("냉장고 재고 확인:"+name+rRDao.searchByName(name).get(0).getAmount()+"개 입니다.");
+				}else{
+				System.out.println("잔액이 부족하여 구매 불가");
+			}
 		}	
 	}
-	
+		/*
+		 * SupplyService의 buyIng를 써서 공급처개수 차감, 금액관련 처리
+		 * if(저장소에 이미 존재하는 식자재가 없을경우)
+		 * 리스트 = daoimple serchByName(name) 
+		 * 식당의 저장소에 이름으로 받아준 것 넘겨줌(냉장고에 사온거 넣어줌)
+		 * else(저장소에 이미 존재하는 식자재 o)
+		 * updateAmount로 개수만 올려줌
+		 * 
+		 */
+
+
 
 	@Override
 	public void editDue(String name, LocalDate Date) {
@@ -78,7 +119,8 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 
 					if(expiryDate==supplierDate) {//유통기한 조회 시 기한이 종료된 날짜면
 						System.out.println("유통기한 지난 식자재입니다..");
-						rRDao.deleteByName(name);//식자재 삭제
+						int idx = 0;
+						rRDao.deleteByIdx(idx);//식자재 삭제
 						System.out.println("식자재 폐기처분하였습니다.");
 						int amount = due2.getAmount();
 						rRDao.updateAmount(name, amount);//식자재 재입고
@@ -119,11 +161,11 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	@Override
 	public void deleteIng(Scanner sc) {
 		// TODO Auto-generated method stub
-		System.out.println("삭제할 식자재 이름을 입력하세요");
-		String name = sc.next();
-		System.out.println("해당 식자재를 삭제하실겁니까?");
-		rRDao.deleteByName(name);
-		System.out.println(name+"이 삭제되었습니다");
+		System.out.println("폐기할 식자재 번호를 입력하세요");
+		int idx = sc.nextInt();
+		System.out.println("해당 식자재를 폐기하실겁니까?");
+		rRDao.deleteByIdx(idx);
+		System.out.println(idx+"이 폐기되었습니다");
 		
 		
 	}
@@ -168,6 +210,7 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 		System.out.println(name+"이"+amount+"소진되었습니다.");
 		
 		
+		
 	}
 
 	@Override
@@ -197,6 +240,20 @@ public class RefrigerratorServiceImpl implements RefrigerratorService {
 	public void stop() {
 		rRDao.stop();
 		}
+	
+
+	/*
+	 * 유효성체크
+	 */
+	public boolean isInteger(String s) {
+	try{
+		Integer.parseInt(s);
+		return true;
+	}catch(NumberFormatException e) {
+		return false;
+	}
+	
+}
 	}
 
 

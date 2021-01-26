@@ -23,7 +23,7 @@ import restaurant.order.vo.Order;
 public class OrderDAOImpl implements OrderDAO{
 	
 	public static final String FILE_PATH = "src/restaurant/files"; //test
-	private String fileName = FILE_PATH+"/주문내역";
+	private String fileName = FILE_PATH+"/order_list";
 	ArrayList<Order> ord;
 	
 	public OrderDAOImpl() {

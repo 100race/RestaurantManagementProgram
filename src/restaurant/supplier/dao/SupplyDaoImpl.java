@@ -11,15 +11,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import restaurant.food.vo.Ingredient;
-import restaurant.refrigerator.dao.Refrigerator;
+import restaurant.refrigerator.dao.RefrigeratorDao;
 /**
  * 
  * @author kyoungju
  *
  */
-public class SupplyDaoImpl implements Refrigerator{
+public class SupplyDaoImpl implements RefrigeratorDao{
 	
-	public static final String FILE_PATH = "src/restaurant/files/ingredients.dat";
+	public static final String FILE_PATH = "src/restaurant/files/supply_ingredients.dat";
 	private ArrayList<Ingredient> ingredients;
 	private static SupplyDaoImpl daoImpl = new SupplyDaoImpl();
 	
@@ -198,6 +198,18 @@ public class SupplyDaoImpl implements Refrigerator{
 			System.out.println("restaurant.supplier DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Ingredient searchByIdx(int idx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteByIdx(int idx) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	
