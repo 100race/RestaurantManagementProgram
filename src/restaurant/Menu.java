@@ -176,7 +176,7 @@ public class Menu {
 		
 		while (flag) {
 			System.out.println("============= 냉장고 관리 ============");
-			System.out.println("1.식자재 구매 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.뒤로가기");
+			System.out.println("1.식자재 입고 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.뒤로가기");
 			int menu = sc.nextInt();
 
 			switch(menu) {

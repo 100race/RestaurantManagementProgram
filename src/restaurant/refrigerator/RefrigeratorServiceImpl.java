@@ -62,7 +62,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 		LocalDate today = LocalDate.now();//금일날짜 
 		LocalDate expiryDate = today.plusDays(3); //금일날짜에서 3일 후 종료
 		rRDao.addIng(new Ingredient(name, amount, sRDao.searchByName(name).get(0).getPrice(), expiryDate));
-		System.out.println(rRDao.selectAllIng().get(0));
+		
 		
 		int price = rRDao.selectAllIng().get(0).getPrice();
 		
@@ -80,7 +80,8 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 			if(Finance.getTOTAL_MONEY() - price*amount >= 0) {
 				Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
 				rRDao.updateAmount(name, amount);
-				fDao.input(amount, name+"구매");
+				sRDao.updateAmount(name, -amount);
+				fDao.input(-amount, name+"구매");
 				System.out.println(amount+"개 구매 되었습니다");
 				System.out.println("냉장고 재고 확인:"+name+rRDao.searchByName(name).get(0).getAmount()+"개 입니다.");
 				}else{
@@ -163,7 +164,6 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 		// TODO Auto-generated method stub
 		System.out.println("폐기할 식자재 번호를 입력하세요");
 		int idx = sc.nextInt();
-		System.out.println("해당 식자재를 폐기하실겁니까?");
 		rRDao.deleteByIdx(idx);
 		System.out.println(idx+"이 폐기되었습니다");
 		
