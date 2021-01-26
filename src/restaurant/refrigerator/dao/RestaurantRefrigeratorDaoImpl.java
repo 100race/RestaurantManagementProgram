@@ -178,7 +178,7 @@ public void stop() {
 
 
 public Ingredient searchByIdx(int idx) {
-	Ingredient in = selectAllIng().get(idx);
+	Ingredient in = selectAllIng().get(idx-1);
 	if (in == null) {
 		System.out.println("음식이 존재하지 않습니다.");
 		return null;
