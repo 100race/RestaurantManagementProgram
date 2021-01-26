@@ -51,7 +51,7 @@ public class Food implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "[요리번호 : " + idx + " | 요리 명 : " + foodName + " | 가격 :" + price + "원 | 재료:" + ingredients + "]";
+		return " [요리  " + idx + " | 요리 명 : " + foodName + " | 가격 :" + price + "원 | 재료:" + ingredients + " ]";
 		//return "Food [idx=" + idx + ", foodName=" + foodName + ", price=" + price + ", ingredient=" + ingredients + "]";
 	}
 	

@@ -32,8 +32,8 @@ public class Menu {
 	public void run(Scanner sc) {
 		boolean flag = true;
 		while (flag) {
-			System.out.println("============= 메인 메뉴 ============");
-			System.out.println("1.요리 관리 2.냉장고 관리 3.주문 관리 4.공급처 관리  5.매출 관리  6.프로그램종료");
+			System.out.println("============= [메인 메뉴] ============");
+			System.out.println("[1 요리 관리] [2 냉장고 관리] [3 주문 관리]  [4 공급처 관리]  [5 매출 관리] [6 프로그램종료]");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
@@ -62,7 +62,7 @@ public class Menu {
 	public void run_fi(Scanner sc) {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("============= 매출 관리 ============");
+			System.out.println("============= [매출 관리] ============");
 			System.out.println("1.현재 총 보유금액 출력 2.입출금내역 출력 3.입금하기 4.출금하기 5.뒤로가기");
 			int menu = sc.nextInt();
 			switch(menu) {
@@ -91,7 +91,7 @@ public class Menu {
 	public void run_f(Scanner sc2) {
 		boolean flag = true;
 		while(flag) {
-			System.out.println("=============요리 관리============");
+			System.out.println("============= [요리 관리] ============");
 			System.out.println("1.요리 추가하기 2.요리 전체 보기 3.요리 가격 변경하기 4.요리 이름 변경하기 5.요리 재료 추가하기 6.요리 재료 삭제하기 7.요리 삭제 하기 8.뒤로가기");
 			Scanner sc = new Scanner(System.in);
 			int menu = sc.nextInt();
@@ -133,7 +133,7 @@ public class Menu {
 
 		while(flag) {
 			order_service.start();
-			System.out.println("============= 주문 관리 ============");
+			System.out.println("============= [주문 관리] ============");
 			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.뒤로가기");
 			int m= sc.nextInt();
 			
@@ -175,7 +175,7 @@ public class Menu {
 		boolean flag = true;
 		
 		while (flag) {
-			System.out.println("============= 냉장고 관리 ============");
+			System.out.println("============= [냉장고 관리] ============");
 			System.out.println("1.식자재 입고 2.유통기한 확인 3.식자재 정보 검색 4.식자재 폐기 5.식자재 목록 6.뒤로가기");
 			int menu = sc.nextInt();
 
@@ -209,7 +209,7 @@ public class Menu {
 		boolean flag = true;
 		
 		while(flag) {
-			System.out.println("============= 공급처 관리 ============");
+			System.out.println("============= [공급처 관리] ============");
 			System.out.println("1.식자재 정보 검색 2.식자재 구매 3.식자재 목록 4.뒤로가기");
 			int menu = sc.nextInt();
 			
@@ -218,6 +218,7 @@ public class Menu {
 				supply_service.getByName(sc);
 				break;
 			case 2:
+				supply_service.getAllIng();
 				supply_service.buyIng(sc);
 				break;
 			case 3:

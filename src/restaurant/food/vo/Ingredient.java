@@ -66,8 +66,8 @@ public class Ingredient implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Ingredient [idx=" + idx + ", name=" + name + ", amount=" + amount + ", price=" + price + ", due=" + due
-				+ "]";
+		//return "Ingredient [idx=" + idx + ", name=" + name + ", amount=" + amount + ", price=" + price + ", due=" + due+ "]";
+		return " [ 식자재  " + idx + " | 이름 : " + name + " | 수량 :" + amount + " | 가격 :" + price + "원 | 유통기한:" + due + " ]";
 	}
 
 	
