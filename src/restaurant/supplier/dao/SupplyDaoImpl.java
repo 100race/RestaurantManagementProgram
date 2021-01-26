@@ -129,6 +129,7 @@ public class SupplyDaoImpl implements RefrigeratorDao{
 	/**
 	 * 식자재의 이름을 받아 삭제하는 메서드
 	 */
+	@Override
 	public void deleteByName(String name) {
 		for(int i = 0 ; i< ingredients.size(); i++) {
 			if(ingredients.get(i).getName().equals(name))
@@ -200,16 +201,12 @@ public class SupplyDaoImpl implements RefrigeratorDao{
 	}
 
 	@Override
-	public Ingredient searchByIdx(int idx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void deleteByIdx(int idx) {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 
 }

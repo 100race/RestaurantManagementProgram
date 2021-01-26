@@ -130,7 +130,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	}
 
 
-	@Override
+
 	public void deleteByIdx(int idx) {
 		// TODO Auto-generated method stub
 //		유통기한만료, 재료 소진시 식자재 삭제
@@ -176,7 +176,7 @@ public void stop() {
 	}
 }
 
-@Override
+
 public Ingredient searchByIdx(int idx) {
 	Ingredient in = selectAllIng().get(idx);
 	if (in == null) {
@@ -185,6 +185,12 @@ public Ingredient searchByIdx(int idx) {
 	}else {
 		return in;	
 	}
+}
+
+@Override
+public void deleteByName(String name) {
+	// TODO Auto-generated method stub
+	
 }
 
 
