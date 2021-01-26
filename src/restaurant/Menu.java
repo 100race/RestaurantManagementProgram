@@ -33,7 +33,7 @@ public class Menu {
 		boolean flag = true;
 		while (flag) {
 			System.out.println("============= [메인 메뉴] ============");
-			System.out.println("[1 요리 관리] [2 냉장고 관리] [3 주문 관리]  [4 공급처 관리]  [5 매출 관리] [6 프로그램종료]");
+			System.out.println("[1 요리 관리] [2 냉장고 관리] [3 주문 관리]  [4 공급처 관리]  [5 매출 관리] [6 프로그램 종료]");
 			int m = sc.nextInt();
 			switch (m) {
 			case 1:
