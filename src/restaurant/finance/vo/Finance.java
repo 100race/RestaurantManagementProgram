@@ -21,6 +21,16 @@ public class Finance implements Serializable{
 		this.message = message;
 	}
 	
+	
+	
+	public Finance(LocalDate date, int amount, String message) {
+		this.date = date;
+		this.amount = amount;
+		this.message = message;
+	}
+
+
+
 	public LocalDate getDate() {
 		return date;
 	}

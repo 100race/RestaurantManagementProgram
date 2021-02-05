@@ -13,10 +13,17 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import conn.DbConnect;
 import restaurant.finance.vo.Finance;
+import restaurant.food.vo.Ingredient;
 
 /**
  * 
@@ -29,16 +36,12 @@ import restaurant.finance.vo.Finance;
  */
 public class FinanceDaoImpl implements FinanceDao {
 
-	private static final String RECORD_FILE_PATH = "src/restaurant/files/finance_records.dat";
-	private static final String MONEY_FILE_PATH = "src/restaurant/files/total_money.dat";
-	private ArrayList<Finance> financeRecords;
 	private static FinanceDaoImpl daoImpl = new FinanceDaoImpl();
+	private DbConnect db;
 
 	private FinanceDaoImpl() {
-		financeRecords = new ArrayList<Finance>(); 
-		start();
+		db = DbConnect.getInstance();
 		initTotalMoney();
-		
 	}
 	
 	public static FinanceDaoImpl getInstance() {
@@ -51,9 +54,27 @@ public class FinanceDaoImpl implements FinanceDao {
 	@Override
 	public void input(int amount, String message) {
 		int oriAmount = Finance.getTOTAL_MONEY();
-		Finance.setTOTAL_MONEY(oriAmount+amount);
-		financeRecords.add(new Finance(amount, message));
-		save();
+		Finance.setTOTAL_MONEY(oriAmount+amount);	
+		
+		Connection conn = db.conn();
+		String sql = "insert into finance values(seq_finance.nextval,?,?,?,sysdate)";
+		int cnt = 0;
+		PreparedStatement pstmt;
+		try {
+		    pstmt = conn.prepareStatement(sql); //자바에서 sql문장을 실행
+			pstmt.setInt(1, Finance.getTOTAL_MONEY()); 
+			pstmt.setInt(2, amount);
+			pstmt.setString(3, message);
+			cnt = pstmt.executeUpdate();
+		} catch (SQLException e) {	
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -63,13 +84,53 @@ public class FinanceDaoImpl implements FinanceDao {
 	public void output(int amount, String message) {
 		int oriAmount = Finance.getTOTAL_MONEY();
 		Finance.setTOTAL_MONEY(oriAmount-amount);
-		financeRecords.add(new Finance(-amount, message));
-		save();
+		
+		Connection conn = db.conn();
+		String sql = "insert into finance values(seq_finance.nextval,?,?,?,sysdate)";
+		int cnt = 0;
+		PreparedStatement pstmt;
+		try {
+		    pstmt = conn.prepareStatement(sql); //자바에서 sql문장을 실행
+			pstmt.setInt(1, Finance.getTOTAL_MONEY()); 
+			pstmt.setInt(2, amount);
+			pstmt.setString(3, message);
+			cnt = pstmt.executeUpdate();
+		} catch (SQLException e) {	
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	@Override
 	public ArrayList<Finance> getAllfinanceRecords() {
-		return financeRecords;
+		ArrayList<Finance> list = new ArrayList<>();
+		Connection conn = db.conn();
+		String sql = "select * from finance";
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(new Finance(rs.getDate(5).toLocalDate(),rs.getInt(3),rs.getString(4)));
+				//순서맞는지 확인
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
 	}
 
 	/**
@@ -77,82 +138,31 @@ public class FinanceDaoImpl implements FinanceDao {
 	 */
 	@Override
 	public void start() {
-		File rf = new File(RECORD_FILE_PATH);
-		boolean isExists = rf.exists();
-		if(rf.exists()) {
-		try {
-			FileInputStream fi = new FileInputStream(RECORD_FILE_PATH);
-			ObjectInputStream oi = new ObjectInputStream(fi);
-			//unchecked warning 뜸
-			financeRecords = (ArrayList<Finance>) oi.readObject();
-			oi.close();
-			fi.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("restaurant.finance.DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("restaurnat.finance.DaoImpl start() Error: 초기화 파일을 불러오지 못했습니다.");
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-	}
-	}
 	
 	
 	/**
-	 * 파일 종료시, 입출금 시 파일에 입출금기록 저장
-	 */
-	@Override
-	public void save() {
-		try {
-			//객체로 써주기
-			FileOutputStream fo = new FileOutputStream(RECORD_FILE_PATH);
-			ObjectOutputStream oo = new ObjectOutputStream(fo);
-			oo.writeObject(financeRecords);
-			
-			//문자열로 써주기
-			FileWriter fw = new FileWriter(MONEY_FILE_PATH);
-			fw.write(String.valueOf(Finance.getTOTAL_MONEY()));
-			
-			oo.close();
-			fo.close();
-			fw.close();
-			}
-		catch (IOException e) {
-			System.out.println("restaurant.finance DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 프로그램 처음 초기화시 초기금액설정 ( 이전금액 불러오기 / 파일 없을 시 100만원으로 초기화 )
+	 * 프로그램 처음 초기화시 초기금액설정 ( 이전금액 불러오기  )
 	 */
 	public void initTotalMoney() {
-		int total =0;
-		File rf = new File(MONEY_FILE_PATH);
-		boolean isExists = rf.exists();
-		if(isExists){
+
+		Connection conn = db.conn();
+		String sql = "select total_money from (select * from finance order by day desc) where rownum = 1";
+		PreparedStatement pstmt;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Finance.setTOTAL_MONEY(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				
-				Path path = Paths.get(MONEY_FILE_PATH);
-				List<String> lines = Files.readAllLines(path);
-				total = Integer.parseInt(lines.get(0));
-				
-			} catch (FileNotFoundException e) {
-				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
-				e.printStackTrace();
-			} catch (NumberFormatException e) {
-				System.out.println("restaurant.finance.DaoImpl initTotalMoney() Error: 초기화 파일을 불러오지 못했습니다.");
+				conn.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			Finance.setTOTAL_MONEY(total);
-		}else{
-			Finance.setTOTAL_MONEY(1000000);
 		}
 			
 		}

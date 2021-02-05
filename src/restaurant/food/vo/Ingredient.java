@@ -30,7 +30,6 @@ public class Ingredient implements Serializable{
 		this.due = due;
 	}
 
-
 	public String getName() {
 		return name;
 	}
