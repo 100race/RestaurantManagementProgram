@@ -100,10 +100,10 @@ public class Menu {
 				food_service.addFood(sc);
 				break;
 			case 2:
-				food_service.printAllFood();
+				food_service.getAllFood();
 				break;
 			case 3:
-				food_service.changePriceByIdx(sc);
+				food_service.changePriceByName(sc);
 				break;
 			case 4:
 				food_service.changeFoodNameByIdx(sc);

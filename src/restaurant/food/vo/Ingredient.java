@@ -10,6 +10,7 @@ import restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl;
 * 기본 포멧인 yyyy-MM-dd 형태의 문자열을 parse() 메소드에 넘길 수 있습니다.
 */
 
+//이 클래스는 식당 냉장고가 가지고 있는 재료 VO입니다.
 public class Ingredient implements Serializable{
 	
 	private static final long serialVersionUID = 4896343328864682183L;

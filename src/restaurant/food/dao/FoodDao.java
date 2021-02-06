@@ -18,6 +18,4 @@ public interface FoodDao {
 	void updatePrice(int idx, int price);
 	void updateName(int idx, String name);
 	ArrayList<Food> getAllFood();
-	void start();
-	void stop();
 }

@@ -23,9 +23,7 @@ public class FoodServiceImpl implements FoodService {
 	private SupplyServiceImpl supply_service = new SupplyServiceImpl(); //수정함
 	ArrayList<Ingredient> suppList = restaurant.supplier.dao.SupplyDaoImpl.getInstance().getIngredients();
 	
-	public FoodServiceImpl() {
-	}
-	
+	public FoodServiceImpl() {}
 	
 	public FoodDao getDao() {
 		return dao;
@@ -37,60 +35,12 @@ public class FoodServiceImpl implements FoodService {
 	 */
 	@Override
 	public void addFood(Scanner sc) {
-		ArrayList<Ingredient> ingredients;
 		System.out.println("========= 요리 등록 =========");
 		System.out.print("요리 이름 : ");
 		String foodName = sc.next();
 		System.out.print("가격 : ");
 		int price = sc.nextInt();
-		boolean flag = true;
-		String ingName = null;
-		int tempName;
-		int ingCnt;
-		Map<String, Integer> temp = new HashMap<>();
-		while(flag) {
-			System.out.print("1.재료 입력 2. 입력 종료");
-			int num = sc.nextInt();
-			switch (num) {
-			case 1:
-				//재료 리스트 보여주고 선택
-				supply_service.getAllIng();
-				System.out.println("재료 번호 : ");
-				tempName = sc.nextInt();
-				// 예외처리 : 배열의 길이를 넘어갈경우
-				try { 
-					if(tempName == suppList.get(tempName-1).getIdx());
-				}catch (IndexOutOfBoundsException e) {
-					System.out.println("없는 재료입니다. 다시 선택해주세요");
-					break;
-				}
-				//유효성검증 : 냉장고에 있는 재료와 입력받은 재료가 같으면 수량을 받음
-				if(tempName == suppList.get(tempName-1).getIdx()) {
-					ingName = suppList.get(tempName-1).getName();
-					System.out.println("필요 수량 : ");
-					ingCnt = sc.nextInt();
-					if(ingCnt > 0) {
-						temp.put(ingName, ingCnt);
-						System.out.println("재료를 입력하였습니다!");
-					}else {
-						System.out.println("수량이 없습니다!");
-					}
-				}else{
-					System.out.println("없는 재료입니다. 다시 선택해주세요.");
-				}
-				break;
-			case 2:
-				flag = false;
-				break;
-			default:
-				System.out.println("번호를 정확히 입력해주세요!");
-				break;
-			}
-		}
-		Food f = new Food(foodName, price, temp);
-		//ArrayList로 하면 재료 개수가 등록이 안된다.
-		//만약 개수를 등록하려면 Ingredient 필드에 카운트를 추가해야된다.
-		//설계상 그건 별로인 것 같다.
+		Food f = new Food(foodName, price);
 		dao.insert(f);
 	}
 
@@ -117,7 +67,7 @@ public class FoodServiceImpl implements FoodService {
 	public ArrayList<Food> getAllFood() {
 		ArrayList<Food> foods = dao.getAllFood();
 		if(foods != null) {
-			return dao.getAllFood();
+			return foods;
 		}else {
 			System.out.println("등록된 요리가 하나도 없습니다.");
 		}
@@ -142,29 +92,16 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	/**
-	 * void : 모든 음식을 출력
-	 */
-	@Override
-	public void printAllFood() {
-		ArrayList<Food> foods = this.getAllFood();
-		if(foods != null) {
-			for(Food f : foods) {
-				System.out.println(f);
-			}
-		}
-	}
-
-	/**
 	 * @param : scanner로 음식 번호/음식 가격 입력 받음
 	 * void : 입력받은 번호의 음식의 가격을 변경
 	 */
 	@Override
-	public void changePriceByIdx(Scanner sc) {
+	public void changePriceByName(Scanner sc) {
 		System.out.println("========= 요리 가격 수정 =========");
-		this.printAllFood();
+		this.getAllFood();
 		System.out.println("========= ========= =========");
-		System.out.print("수정할 요리 번호: ");
-		int num = sc.nextInt();
+		System.out.print("요리 이름: ");
+		String name = sc.nextLine();
 		if(num > getDao().getAllFood().size() || num <=0) {
 			System.out.println("입력 번호를 다시 확인해주세요.");
 		}else {

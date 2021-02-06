@@ -7,12 +7,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import board.vo.Board;
+import conn.DbConnect;
 import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
 import restaurant.order.vo.Order;
@@ -23,13 +29,11 @@ import restaurant.order.vo.Order;
  *
  */
 public class FoodDaoImpl implements FoodDao {
-	private static ArrayList<Food> foods; // 수정함
-	public static final String FOOD_FILE_PATH = "src/restaurant/files/foods.dat";
-
+	private DbConnect foodDb;
+	
+	//싱글톤
 	public FoodDaoImpl() {
-		foods = new ArrayList<>();
-		//init();
-		start();
+		foodDb = DbConnect.getInstance();
 	}
 	
 	/**
@@ -37,30 +41,28 @@ public class FoodDaoImpl implements FoodDao {
 	 */
 	@Override
 	public ArrayList<Food> getAllFood() {
-		return foods;
-	}
-
-	public static ArrayList<Food> getFoods() {
-		return foods;
-	}
-
-	/**
-	 * void : FOOD_FILE_PATH를 읽어 foods에 저장
-	 */
-	public void start() {
+		ArrayList<Food> list = new ArrayList<>();
+		ResultSet rs = null;
+		String sql = "select * from foods order by idx";
+		//연결
+		Connection conn = foodDb.conn();
 		try {
-			FileInputStream fis = new FileInputStream(FOOD_FILE_PATH);
-			ObjectInputStream ons = new ObjectInputStream(fis);
-			foods = (ArrayList<Food>) ons.readObject();
-			ons.close();
-			fis.close();
-		} catch (EOFException e) {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Food f = new Food(rs.getString(2), rs.getInt(3));
+				list.add(f);
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return list;
 	}
 
 	/**
@@ -68,7 +70,29 @@ public class FoodDaoImpl implements FoodDao {
 	 */
 	@Override
 	public void insert(Food food) {
-		foods.add(food);
+		Connection conn = foodDb.conn(); //db 연결
+		String sql = "insert into foods values(?,?,?)";
+		
+		int cnt = 0;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);//실행할 sql문으로 preparedstatement 객체 생성
+			//물음표 매칭
+			pstmt.setString(2, food.getFoodName());
+			pstmt.setInt(3, food.getPrice());
+			
+			//sql 실행 - executeUpdate(): 쓰기작업(insert, update, delete) 실행 => 적용된 줄수 반환(int)
+			cnt = pstmt.executeUpdate();
+										
+			System.out.println(cnt + "줄 insert 됨");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		System.out.println("요리 추가 완료!");
 	}
 
@@ -97,6 +121,30 @@ public class FoodDaoImpl implements FoodDao {
 	 */
 	@Override
 	public Food searchByName(String name) {
+		ResultSet rs = null;
+		String sql = "select * from foods where foodname=?";
+		Connection conn = foodDb.conn();
+		Food f = null;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				f = new Food(rs.getInt(1), rs.getString(2), rs.getInt(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return b;
+		
 		Food f = new Food();
 		f.setFoodName(name);
 		// foods에 f가 존재하면 f의 인덱스를 리턴, 없으면 -1 리턴
@@ -238,74 +286,6 @@ public class FoodDaoImpl implements FoodDao {
 		} else {
 			System.out.println("없는 번호 입니다. 다시 확인해주세요!");
 		}
-	}
-
-	/**
-	 * void : foods의 객체를 FOOD_FILE_PATH에 저장
-	 */
-	public void stop() {
-		try {
-			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH); // true : 기존자료에 이어서 쓰기 옵션
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(foods);
-			oos.close();
-			fos.close();
-		} catch (IOException e) {
-			System.out.println("DaoImpl stop() Error: 파일을 저장하지 못했습니다.");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 첫 실행시만 파일에 초기화. 이후 주석처리
-	 */
-	public void init() {
-		Map<String, Integer> il1 = new HashMap<>();
-		il1.put("김", 1);
-		il1.put("단무지", 1);
-		il1.put("쌀", 3);
-		il1.put("햄", 1);
-		il1.put("계란", 1);
-		Map<String, Integer> il2 = new HashMap<>();
-		il2.put("면사리", 1);
-		il2.put("어묵", 2);
-		il2.put("대파", 2);
-		il2.put("쑥갓", 1);
-		il2.put("유부", 2);
-		Map<String, Integer> il3 = new HashMap<>();
-		il3.put("면사리", 2);
-		il3.put("어묵", 5);
-		il3.put("대파", 3);
-		il3.put("떡", 3);
-		il3.put("치즈", 2);
-		Map<String, Integer> il4 = new HashMap<>();
-		il4.put("돼지고기", 2);
-		il4.put("계란", 1);
-		il4.put("밀가루", 3);
-		il4.put("빵가루", 3);
-		Map<String, Integer> il5 = new HashMap<>();
-		il5.put("김치", 4);
-		il5.put("쌀", 5);
-		il5.put("계란", 2);
-		il5.put("햄", 2);
-		il5.put("대파", 1);
-		foods.add(new Food("김밥", 3000, il1));
-		foods.add(new Food("우동", 3500, il2));
-		foods.add(new Food("라볶이", 5500, il3));
-		foods.add(new Food("돈까스", 8000, il4));
-		foods.add(new Food("김치볶음밥", 7000, il5));
-
-		try {
-			FileOutputStream fos = new FileOutputStream(FOOD_FILE_PATH);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(foods);
-			oos.close();
-			fos.close();
-		} catch (IOException e) {
-			System.out.println("restaurant.supplier DaoImpl init() Error: 초기화 파일을 불러오지 못했습니다.");
-			e.printStackTrace();
-		}
-
 	}
 
 }
