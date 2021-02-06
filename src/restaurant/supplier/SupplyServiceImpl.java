@@ -96,7 +96,7 @@ public class SupplyServiceImpl implements SupplyService {
 			System.out.println("잔액이 부족하여 구매 불가");
 				
 			}
-		save();
+		//save();
 		}
 
 
@@ -127,8 +127,8 @@ public class SupplyServiceImpl implements SupplyService {
 
 	}
 
-	// 파일에 데이터 저장
-	public void save() {
-		sdao.save();
-	}
+//	// 파일에 데이터 저장
+//	public void save() {
+//		sdao.save();
+//	}
 }
