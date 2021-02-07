@@ -13,7 +13,6 @@ import restaurant.supplier.dao.SupplyDaoImpl;
 
 public class RefrigeratorServiceImpl implements RefrigeratorService {
 
-	
 		private RestaurantRefrigeratorDaoImpl rRDao;
 		private SupplyDaoImpl sRDao;
 		private ArrayList<Ingredient> supplyIngredients;
@@ -22,7 +21,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 			
 	public RefrigeratorServiceImpl() {
 		
-		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
+//		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance(); //싱글톤 객체를 받아온다
 		this.supplyIngredients = supplyIngredients;
 		sRDao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 		fDao = restaurant.finance.dao.FinanceDaoImpl.getInstance();
@@ -49,7 +48,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 
 		ArrayList<Ingredient> rIng = rRDao.searchByName(name);
 		// int price = rRDao.selectAllIng().get(0).getPrice();
-		int price = sRDao.searchByName(name).get(0).getPrice();
+		int price = rRDao.searchByName(name).get(0).getPrice();
 
 		if (Finance.getTOTAL_MONEY() - price * amount >= 0) {
 			Finance.setTOTAL_MONEY(Finance.getTOTAL_MONEY() - price);
@@ -148,9 +147,14 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 		// TODO Auto-generated method stub
 		System.out.println("폐기할 식자재 번호를 입력하세요");
 		int idx = sc.nextInt();
-		rRDao.deleteByIdx(idx);
-		System.out.println(idx+"이 폐기되었습니다");
-		
+	
+		ArrayList<Ingredient> in = rRDao.searchByIdx(idx);
+		if (in != null) {
+			rRDao.deleteByIdx(idx);
+			System.out.println("식자재 폐기 완료하였습니다.");
+		} else {
+			System.out.println("없는 번호입니다. 다시 확인해주세요");
+		}
 		
 	}
 
@@ -219,12 +223,7 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 	}
 
 
-	
 
-	public void stop() {
-		rRDao.stop();
-		}
-	
 
 	/*
 	 * 유효성체크
