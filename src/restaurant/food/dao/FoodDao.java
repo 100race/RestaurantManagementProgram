@@ -7,15 +7,15 @@ import restaurant.food.vo.Food;
 import restaurant.food.vo.Ingredient;
 
 public interface FoodDao {
-	void insert(Food food);
-	void deleteByIdx(int idx);
-	void deleteByName(String foodName);
+	//insert
+	void insert(String name, int price);
+	//select
 	Food searchByIdx(int idx);
 	Food searchByName(String name);
-	void insertIng(int idx, Map<String, Integer> ingredient);
-	void deleteIng(int idx, String ingName);
-	void changeIngCnt(int idx, String key, int value);
-	void updatePrice(int idx, int price);
-	void updateName(int idx, String name);
 	ArrayList<Food> getAllFood();
+	//update
+	void changePrice(Food food);
+	void changeName(Food food);
+	//delete
+	void deleteByIdx(int idx);
 }

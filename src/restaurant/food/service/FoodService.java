@@ -6,15 +6,18 @@ import java.util.Scanner;
 import restaurant.food.vo.Food;
 
 public interface FoodService {
-	boolean checking(String name);
+	boolean checking(int num);
+	//print
+	void printAll(ArrayList<Food> food);
+	void printFoodByIdx(Scanner sc);
+	//insert
 	void addFood(Scanner sc);
+	//select
 	Food getFoodByIdx(int idx);
 	ArrayList<Food> getAllFood();
-	void printFoodByIdx(Scanner sc);
-	void changePriceByName(Scanner sc);
-	Map<String, Integer> addIng(Scanner sc);
-	void addIngByIdx(Scanner sc);
-	void delIngByIdx(Scanner sc);
+	//update
+	void changePriceByIdx(Scanner sc);
 	void changeFoodNameByIdx(Scanner sc);
+	//delete
 	void delFoodByIdx(Scanner sc);
 }

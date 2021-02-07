@@ -10,10 +10,28 @@ public class Food{
 	private String foodName;
 	private int price;
 	
-	
 	public Food() {}
+	
+	public Food(int idx, int price) {
+		this.idx = idx;
+		this.price = price;
+	}
+	
+	public Food(int idx, String foodName) {
+		this.idx = idx;
+		this.foodName = foodName;
+	}
+	
 	public Food(String foodName, int price) {
-		this.idx = FoodDaoImpl.getFoods().size()+1; //변경함
+		//this.idx = idx;
+		//this.idx = FoodDaoImpl.().size()+1; //변경함
+		this.foodName = foodName;
+		this.price = price;
+	}
+	
+	public Food(int idx, String foodName, int price) {
+		this.idx = idx;
+		//this.idx = FoodDaoImpl.().size()+1; //변경함
 		this.foodName = foodName;
 		this.price = price;
 	}
@@ -42,11 +60,9 @@ public class Food{
 //	public void setIngredient(Map<String, Integer> ingredients) {
 //		this.ingredients = ingredients;
 //	}
-	
-//	@Override
-//	public String toString() {
-//		return " [요리 명 : " + foodName + " | 가격 :" + price + "원 ]";
-//	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "요리 [번호=" + idx + ", 메뉴=" + foodName + ", 가격=" + price + "]";
+	}
 }

@@ -9,7 +9,7 @@ public class FoodIngredient {
 	public FoodIngredient() {}
 
 	public FoodIngredient(int idx, String name, int amount) {
-		//this.idx = idx; 다시 작성하기!
+		this.idx = idx;
 		this.name = name;
 		this.amount = amount;
 	}
@@ -38,10 +38,10 @@ public class FoodIngredient {
 		this.amount = amount;
 	}
 
-//	@Override
-//	public String toString() {
-//		return " [요리 번호 : " + idx + " | 재료 명 :" + name + " | 필요 수량 :" + amount + "]";
-//	}
-//	
+	@Override
+	public String toString() {
+		return " [요리 번호 : " + idx + " | 재료 명 :" + name + " | 필요 수량 :" + amount + "]";
+	}
+	
 	
 }

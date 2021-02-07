@@ -127,6 +127,17 @@ public class SupplyServiceImpl implements SupplyService {
 
 	}
 
+	//한응 추가
+	@Override
+	public Ingredient getByName(String name) {
+		ArrayList<Ingredient> list = sdao.searchByName(name);
+		if(list.size() > 0) {
+			return list.get(0);
+		}else {
+			return null;
+		}
+	}
+
 //	// 파일에 데이터 저장
 //	public void save() {
 //		sdao.save();

@@ -2,10 +2,13 @@ package restaurant;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import restaurant.finance.service.FinanceServiceImpl;
+import restaurant.food.service.FoodIngServiceImpl;
 import restaurant.food.service.FoodServiceImpl;
+import restaurant.food.vo.Food;
 import restaurant.order.service.OrderServiceImpl;
 import restaurant.refrigerator.RefrigeratorServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
@@ -17,6 +20,7 @@ public class Menu {
 	private FinanceServiceImpl finance_service;
 	private SupplyServiceImpl supply_service;
 	private FoodServiceImpl food_service;
+	private FoodIngServiceImpl foodIng_service;
 	private OrderServiceImpl order_service;
 	private RefrigeratorServiceImpl refrigerator_Service;
 	
@@ -24,6 +28,7 @@ public class Menu {
 		finance_service = new FinanceServiceImpl();
 		supply_service = new SupplyServiceImpl();
 		food_service = new FoodServiceImpl();
+		foodIng_service = new FoodIngServiceImpl();
 		order_service = new OrderServiceImpl();
 		refrigerator_Service = new RefrigeratorServiceImpl();
 	}
@@ -90,9 +95,10 @@ public class Menu {
 	
 	public void run_f(Scanner sc2) {
 		boolean flag = true;
+		ArrayList<Food> list = null;
 		while(flag) {
 			System.out.println("============= [요리 관리] ============");
-			System.out.println("1.요리 추가하기 2.요리 전체 보기 3.요리 가격 변경하기 4.요리 이름 변경하기 5.요리 재료 추가하기 6.요리 재료 삭제하기 7.요리 삭제 하기 8.뒤로가기");
+			System.out.println("1.요리 추가하기 2.요리 전체 보기 3.요리 가격 변경하기 4.요리 이름 변경하기 5.요리 재료 추가하기 6.요리 재료 수량 변경하기 7.요리 재료 삭제하기 8.요리 삭제 하기 9.뒤로가기");
 			Scanner sc = new Scanner(System.in);
 			int menu = sc.nextInt();
 			switch(menu) {
@@ -100,25 +106,28 @@ public class Menu {
 				food_service.addFood(sc);
 				break;
 			case 2:
-				food_service.getAllFood();
+				list = food_service.getAllFood();
+				food_service.printAll(list);
 				break;
 			case 3:
-				food_service.changePriceByName(sc);
+				food_service.changePriceByIdx(sc);
 				break;
 			case 4:
 				food_service.changeFoodNameByIdx(sc);
 				break;
 			case 5:
-				food_service.addIngByIdx(sc);
+				foodIng_service.addIngByIdx(sc);
 				break;
 			case 6:
-				food_service.delIngByIdx(sc);
+				foodIng_service.changeAmountByIdx(sc);
 				break;
 			case 7:
-				food_service.delFoodByIdx(sc);
+				foodIng_service.delIngByIdx(sc);
 				break;
 			case 8:
-				food_service.getDao().stop(); //프로그램 종료시 저장
+				food_service.delFoodByIdx(sc);
+				break;
+			case 9:
 				flag = false;
 				break;
 			default:
@@ -140,7 +149,7 @@ public class Menu {
 			switch(m) {
 				case 1:	
 						System.out.println("주문음식선택");
-					    food_service.printAllFood();
+					   // food_service.printAllFood();
 					    
 						int foodIdx = sc.nextInt();
 						
