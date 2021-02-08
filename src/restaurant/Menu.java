@@ -2,6 +2,7 @@ package restaurant;
 
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +10,6 @@ import restaurant.finance.service.FinanceServiceImpl;
 import restaurant.food.service.FoodIngServiceImpl;
 import restaurant.food.service.FoodServiceImpl;
 import restaurant.food.vo.Food;
-import restaurant.food.vo.FoodIngredient;
 import restaurant.order.service.OrderServiceImpl;
 import restaurant.refrigerator.RefrigeratorServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;

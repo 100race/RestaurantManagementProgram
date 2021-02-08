@@ -71,7 +71,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		ArrayList<Ingredient> ingredients = new ArrayList<>();
 //      식자재 검색 및 확인
 		
-		String sql = "select idx, name, amount, price, due from restaurant_ingredients where name=?";
+		String sql = "select name, amount, price, due from restaurant_ingredients where name=?";
 		Connection conn = db.conn();
 		int cnt = 0;
 		PreparedStatement pstmt;
@@ -113,7 +113,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		ArrayList<Ingredient> ingredients = new ArrayList<>();
 		
 		
-		String sql = "select idx, name, amount, price, due from restaurant_ingredients where idx=?";
+		String sql = "select name, amount, price, due from restaurant_ingredients where idx=?";
 		Connection conn = db.conn();
 		int cnt = 0;
 		PreparedStatement pstmt;
@@ -164,7 +164,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				
-				Ingredient i= new Ingredient(rs.getString(1),rs.getInt(2),rs.getInt(3),rs.getDate(4).toLocalDate());
+				Ingredient i= new Ingredient(rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getDate(5).toLocalDate());
 //				System.out.println("idx"+idx1+"name"+name+"amount"+amount+"price"+price+"due"+due);
 				list.add(i);
 			}

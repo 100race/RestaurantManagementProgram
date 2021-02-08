@@ -1,17 +1,9 @@
 package restaurant.supplier;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import restaurant.Main;
 import restaurant.finance.dao.FinanceDaoImpl;
 import restaurant.finance.vo.Finance;
 import restaurant.food.vo.Ingredient;
@@ -29,7 +21,7 @@ public class SupplyServiceImpl implements SupplyService {
 	public SupplyServiceImpl() {
 		sdao = restaurant.supplier.dao.SupplyDaoImpl.getInstance();
 		refService = new RefrigeratorServiceImpl();
-		//rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance();
+		rRDao = restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance();
 		fDao = restaurant.finance.dao.FinanceDaoImpl.getInstance();
 	}
 
