@@ -11,6 +11,7 @@ public interface FoodIngDao {
 	ArrayList<FoodIngredient> getAllIng();
 	FoodIngredient getIngByName(String name);
 	FoodIngredient getIngByIdx(int idx);
+	ArrayList<FoodIngredient> getFoodIngByIdx(int idx); //추가 PSJ
 	//update
 	void changeIngAmount(int idx, String name, int value);
 	void deleteIng(int idx, String ingName);

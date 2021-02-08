@@ -1,16 +1,16 @@
 package restaurant.food.service;
 import java.util.ArrayList;
-import java.util.Map;
+
+
+
 import java.util.Scanner;
-import restaurant.food.dao.FoodDao;
-import restaurant.food.dao.FoodDaoImpl;
 import restaurant.food.dao.FoodIngDao;
 import restaurant.food.dao.FoodIngDaoImpl;
 import restaurant.food.vo.Food;
 import restaurant.food.vo.FoodIngredient;
 import restaurant.food.vo.Ingredient;
 import restaurant.supplier.SupplyServiceImpl;
-import sun.security.jca.GetInstance.Instance;
+//import sun.security.jca.GetInstance.Instance;
 
 public class FoodIngServiceImpl implements FoodIngService {
 	public FoodIngDao foodIngDao = FoodIngDaoImpl.getInstance();

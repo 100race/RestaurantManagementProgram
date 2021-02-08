@@ -1,23 +1,28 @@
 package restaurant.refrigerator.dao;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import conn.DbConncect;
+import conn.DbConnect;
+import restaurant.finance.dao.FinanceDaoImpl;
 import restaurant.food.vo.Ingredient;
 
 public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 
-	private DbConncect db;
+	private DbConnect db;
 
 
 	private static RestaurantRefrigeratorDaoImpl RestaurantRefrigeratordaoImpl = new RestaurantRefrigeratorDaoImpl();
 	
-	private RestaurantRefrigeratorDaoImpl() {
+	public static RestaurantRefrigeratorDaoImpl getInstance() {
+		return RestaurantRefrigeratordaoImpl;
+	}
+	public RestaurantRefrigeratorDaoImpl() {
 		
 		this.db = db.getInstance();
 //		File rf = new File(FILE_PATH);
@@ -90,12 +95,12 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 				int amount = rs.getInt(3);
 				int price = rs.getInt(4);
 				LocalDate due = rs.getDate(5).toLocalDate();//convertSqldate
-
-				System.out.println("idx" + idx);
+				ing = new Ingredient(name1,amount,price,due); // PSJ
+			/*	System.out.println("idx" + idx);
 				System.out.println("name" + name1);
 				System.out.println("amount"+amount);
 				System.out.println("price"+price);
-				System.out.println("due"+due);
+				System.out.println("due"+due);*/
 				
 				ingredients.add(ing);//ArrayList에 넣기
 			}
@@ -179,7 +184,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 				int amount = rs.getInt(3);
 				int price = rs.getInt(4);
 				LocalDate due = rs.getDate(5).toLocalDate();
-				
+				ing = new Ingredient(name,amount,price,due);
 				System.out.println("idx"+idx1+"name"+name+"amount"+amount+"price"+price+"due"+due);
 				list.add(ing);
 			}
@@ -241,10 +246,11 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
-			System.out.println(name+"10개 update 완료");
+			pstmt.setInt(1, amount);
+			pstmt.setString(2, name);
+			/*System.out.println(name+"    " +amount+ " 개 update 완료");*/
 			int r = pstmt.executeUpdate();
-			System.out.println(r+"개 update 완료");
+			/*System.out.println(r+"개 update 완료");*/
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

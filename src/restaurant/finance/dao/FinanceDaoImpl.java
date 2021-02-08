@@ -111,7 +111,7 @@ public class FinanceDaoImpl implements FinanceDao {
 	public ArrayList<Finance> getAllfinanceRecords() {
 		ArrayList<Finance> list = new ArrayList<>();
 		Connection conn = db.conn();
-		String sql = "select * from finance";
+		String sql = "select * from finance order by idx asc";
 		PreparedStatement pstmt;
 		try {
 			pstmt = conn.prepareStatement(sql);

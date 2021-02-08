@@ -9,6 +9,7 @@ import restaurant.finance.service.FinanceServiceImpl;
 import restaurant.food.service.FoodIngServiceImpl;
 import restaurant.food.service.FoodServiceImpl;
 import restaurant.food.vo.Food;
+import restaurant.food.vo.FoodIngredient;
 import restaurant.order.service.OrderServiceImpl;
 import restaurant.refrigerator.RefrigeratorServiceImpl;
 import restaurant.supplier.SupplyServiceImpl;
@@ -141,39 +142,56 @@ public class Menu {
 		boolean flag = true;
 
 		while(flag) {
-			order_service.start();
 			System.out.println("============= [주문 관리] ============");
-			System.out.println("1.주문추가 2.주문목록 3.주문취소 4.뒤로가기");
+			System.out.println("1.주문추가 2.주문목록 3.주문완료 4.주문취소 5.뒤로가기");
 			int m= sc.nextInt();
 			
 			switch(m) {
 				case 1:	
 						System.out.println("주문음식선택");
-					   // food_service.printAllFood();
-					    
-						int foodIdx = sc.nextInt();
-						
-						if(order_service.checkIngr(foodIdx)) {
-							System.out.println("주문수량");
-							int foodAmount=sc.nextInt();
-							order_service.addOrder(foodAmount);
-						} else {
-							System.out.println("재고없음");
+						for(Food f : food_service.getAllFood()) {
+							System.out.println(f);
 						}
-						order_service.orderSave();
+						int orderNum= sc.nextInt();
+						if(food_service.checking(orderNum)) {
+							System.out.println("수량 입력");
+							int orderAmount= sc.nextInt();
+							if(order_service.checkIngr(food_service.getFoodByIdx(orderNum).getIdx(), orderAmount)) {
+								System.out.println("주문접수 완료");
+								order_service.addOrder(orderAmount);
+							} else {
+								System.out.println("재고확인 필요");
+							}
+							
+						}
+							
+						/* 수량 선택 
+						 * 재료 조회 idx = orderNum
+						 * food_service.getFoodByIdx(orderNum).getIdx()
+						 */
+						
+						System.out.println();
+						
 						break;
 				
 				case 2:
 						order_service.printAllOrder();
 						break;
-						
 				case 3: 
+						System.out.println("완료주문 선택");
+						order_service.printAllOrder();
+						int finishOrder= sc.nextInt();
+						order_service.finishOrder(finishOrder);
+						
+						break;
+				case 4: 
 						System.out.println("취소주문 선택");
 						order_service.printAllOrder();
 						int calcelOrder= sc.nextInt();
-						order_service.finishOrder(calcelOrder);
+						order_service.cancelOrder(calcelOrder);
+						System.out.println("취소완료");
 						break;
-				case 4:
+				case 5:
 						flag=false;
 						break;
 			}
@@ -206,7 +224,7 @@ public class Menu {
 					refrigerator_Service.getAllIng();
 					break;
 				case 6:
-					restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance().stop();
+					//restaurant.refrigerator.dao.RestaurantRefrigeratorDaoImpl.getInstance().stop();
 					flag=false;
 					break;
 			}

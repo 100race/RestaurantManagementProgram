@@ -1,172 +1,136 @@
 package restaurant.order.dao;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import restaurant.order.vo.Order; 
+import conn.DbConnect;
+import restaurant.order.vo.Order;
 
+public class OrderDAOImpl implements OrderDAO {
 
-/**
- * 
- * @author SeongJin Park
- *
- */
-public class OrderDAOImpl implements OrderDAO{
 	
-	public static final String FILE_PATH = "src/restaurant/files"; //test
-	private String fileName = FILE_PATH+"/order_list";
-	ArrayList<Order> ord;
+	private DbConnect db;
+	private String sql="";
 	
 	public OrderDAOImpl() {
-		ord=new ArrayList<>();
+		db =  DbConnect.getInstance();
 	}
 	
-	public void start() {
-			
+	@Override
+	public void insert(Order o) {
+		Connection conn=db.conn();
+		sql="insert into food_order values(seq_order.nextval,?,?,?)";
 		try {
-	
-			FileInputStream fi = new FileInputStream(fileName);
-			BufferedInputStream bi = new BufferedInputStream(fi);
-			ObjectInputStream in = new ObjectInputStream(bi);
-			
-			
-			ord = (ArrayList<Order>)in.readObject();
-			
-			//System.out.println(ord);
-			
-			 in.close();
-		} catch(FileNotFoundException e) {
-			
-		} catch(EOFException e) {
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void orderSave() {
-		try {
-			
-			FileOutputStream fo = new FileOutputStream(fileName);
-			BufferedOutputStream bo = new BufferedOutputStream(fo);
-			ObjectOutputStream out = new ObjectOutputStream(bo);
-			
-			
-			out.writeObject(ord);
-			out.flush();
-			out.close();
-			
-			
-		}catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, o.getFood_idx());
+			pstmt.setNString(2, o.getFoodname());
+			pstmt.setInt(3,o.getAmount());
+			pstmt.executeUpdate();
 
-	
-	public void insert(Order orders) {
-		try {
-		FileInputStream fi = new FileInputStream(fileName);
-		BufferedInputStream bi = new BufferedInputStream(fi);
-		ObjectInputStream in = new ObjectInputStream(bi);
-		
-		ArrayList<Order> fileRead = new ArrayList<>();
-		fileRead = (ArrayList<Order>)in.readObject();
-		
-		int max=0;
-		for(Order rs : fileRead) { 
-			if(rs.getNum()>max) {
-				max=rs.getNum();		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		orders.setNum(++max); // 이전 주문 불러와서 주문번호 +1 해주기
-		} catch(IOException e){
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		ord.add(orders);
 	}
-	
 
+	@Override
 	public void delete(int num) {
-		
+		Connection conn=db.conn();
+		sql="delete from food_order where num=?";
 		try {
-			FileOutputStream fo = new FileOutputStream(fileName);
-			BufferedOutputStream bo = new BufferedOutputStream(fo);
-			ObjectOutputStream out = new ObjectOutputStream(bo);
-	
-	
-			
-			for(Order rs : ord) {
-				if (rs.getNum()==num) {
-						ord.remove(rs);
-						break;
-				}
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		
-			out.writeObject(ord);
-			out.flush();
-			out.close();
-		
-		} catch(IOException e) {
-			
-		} 
+		}
 
-		
 	}
 
 	@Override
 	public ArrayList<Order> getAllOrder() {
 		
-		return ord;
+		Connection conn=db.conn();
+		ArrayList<Order> list = new ArrayList<>();
+		ResultSet rs = null;
+		sql="select * from food_order order by num asc";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				Order o = new Order();
+				o.setNum(rs.getInt(1));
+				o.setFoodname(rs.getString(3));
+				o.setAmount(rs.getInt(4));
+				list.add(o);
+
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 
 	@Override
-	public void complete(int num) {
-		// TODO Auto-generated method stub
+	public Order selectByNum(int num) {
+		Order o = new Order();
+		Connection conn=db.conn();
+	
+		ResultSet rs = null;
+		sql="select * from food_order where num=?";
 		try {
-			FileOutputStream fo = new FileOutputStream(fileName);
-			BufferedOutputStream bo = new BufferedOutputStream(fo);
-			ObjectOutputStream out = new ObjectOutputStream(bo);
-	
-	
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
 			
-			for(Order rs : ord) {
-				if (rs.getNum()==num) {
-						ord.remove(rs);
-						break;
-				}
+			rs.next();
+			o.setNum(rs.getInt(1));
+			o.setFoodname(rs.getString(3));
+			o.setAmount(rs.getInt(4));
+
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		
-			out.writeObject(ord);
-			out.flush();
-			out.close();
-		
-		} catch(IOException e) {
-			
-		} 
-		
+		}
+		return o;
 	}
-	
-	
-	
+
 }

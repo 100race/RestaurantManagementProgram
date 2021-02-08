@@ -9,7 +9,5 @@ public interface OrderDAO {
 	void insert(Order o);
 	void delete(int num);
 	ArrayList<Order> getAllOrder();
-	void orderSave();
-	void start();
-	void complete(int num);
+	Order selectByNum(int num);
 }

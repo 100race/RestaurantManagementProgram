@@ -194,4 +194,33 @@ public class FoodIngDaoImpl implements FoodIngDao {
 		}
 	}
 	
+	//추가 PSJ
+	@Override
+	public ArrayList<FoodIngredient> getFoodIngByIdx(int idx) {
+		ArrayList<FoodIngredient> list = new ArrayList<>();
+		ResultSet rs = null;
+		String sql = "select * from food_ingredients where idx=?";
+		//연결
+		Connection conn = foodIngDb.conn();
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				FoodIngredient i = new FoodIngredient(rs.getInt(1), rs.getString(2), rs.getInt(3));
+				list.add(i);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	
 }
