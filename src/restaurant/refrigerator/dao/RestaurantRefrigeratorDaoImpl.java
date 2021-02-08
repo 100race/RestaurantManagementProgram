@@ -7,22 +7,23 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import conn.DbConncect;
+import conn.DbConnect;//오타수정
 import restaurant.food.vo.Ingredient;
 
 public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 
-	private DbConncect db;
-
+	private DbConnect db;
 
 	private static RestaurantRefrigeratorDaoImpl RestaurantRefrigeratordaoImpl = new RestaurantRefrigeratorDaoImpl();
+	
+	public static RestaurantRefrigeratorDaoImpl getInstance() {
+		return RestaurantRefrigeratordaoImpl;
+	}//getinstance
 	
 	private RestaurantRefrigeratorDaoImpl() {
 		
 		this.db = db.getInstance();
-//		File rf = new File(FILE_PATH);
-//		boolean isExists = rf.exists();
-//		if(isExists)
+
 	}
 	
 
@@ -43,6 +44,8 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 
 			cnt = pstmt.executeUpdate();
 			System.out.println(cnt + "줄 insert 됨");
+			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,45 +62,34 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		
 //		ingredients.add(ing);
 ////		식자재 입고(name, amount, price, due)
-//		stop();
 
-//	}
-//	
-//	public static ArrayList<Ingredient> getIng(){
-//		return ingredients;
 	}
-
-
 
 	@Override
 	public ArrayList<Ingredient> searchByName(String name) {
 
-		ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+		ArrayList<Ingredient> ingredients = new ArrayList<>();
 //      식자재 검색 및 확인
 		
-		ResultSet rs = null;
 		String sql = "select idx, name, amount, price, due from restaurant_ingredients where name=?";
 		Connection conn = db.conn();
-		Ingredient ing = null;//검색결과 값 담기
+		int cnt = 0;
+		PreparedStatement pstmt;
+		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
-			rs = pstmt.executeQuery();
+			ResultSet rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				int idx = rs.getInt(1);
-				String name1 = rs.getString(2);
-				int amount = rs.getInt(3);
-				int price = rs.getInt(4);
-				LocalDate due = rs.getDate(5).toLocalDate();//convertSqldate
-
-				System.out.println("idx" + idx);
-				System.out.println("name" + name1);
-				System.out.println("amount"+amount);
-				System.out.println("price"+price);
-				System.out.println("due"+due);
+				Ingredient i= new Ingredient(rs.getString(1),rs.getInt(2),rs.getInt(3),rs.getDate(4).toLocalDate());
+				ingredients.add(i);//ArrayList에 넣기
+//				System.out.println("idx" + idx);
+//				System.out.println("name" + name1);
+//				System.out.println("amount"+amount);
+//				System.out.println("price"+price);
+//				System.out.println("due"+due);
 				
-				ingredients.add(ing);//ArrayList에 넣기
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -118,30 +110,29 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	
 	public ArrayList<Ingredient> searchByIdx(int idx) {
 		
-		ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+		ArrayList<Ingredient> ingredients = new ArrayList<>();
 		
-		ResultSet rs = null;
+		
 		String sql = "select idx, name, amount, price, due from restaurant_ingredients where idx=?";
 		Connection conn = db.conn();
-		Ingredient ing = null;//검색결과 값 담기
+		int cnt = 0;
+		PreparedStatement pstmt;
+		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
 			pstmt.setInt(1, idx);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				int idx1 = rs.getInt(1);
-				String name = rs.getString(2);
-				int amount = rs.getInt(3);
-				int price = rs.getInt(4);
-				LocalDate due = rs.getDate(5).toLocalDate();//convertSqldate
-
-				System.out.println("idx" + idx1);
-				System.out.println("name" + name);
-				System.out.println("amount"+amount);
-				System.out.println("price"+price);
-				System.out.println("due"+due);
+	
+			while(rs.next()) {
+				Ingredient i= new Ingredient(rs.getString(1),rs.getInt(2),rs.getInt(3), rs.getDate(4).toLocalDate());
+				ingredients.add(i);//ArrayList에 넣기
 				
-				ingredients.add(ing);//ArrayList에 넣기
+//				System.out.println("idx" + idx1);
+//				System.out.println("name" + name);
+//				System.out.println("amount"+amount);
+//				System.out.println("price"+price);
+//				System.out.println("due"+due);
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -164,24 +155,18 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		// TODO Auto-generated method stub
 //		식자재 목록 확인
 		
-		ArrayList<Ingredient> list = new ArrayList<Ingredient>();
-		ResultSet rs = null;
+		ArrayList<Ingredient> list = new ArrayList<>();
 		String sql = "select*from restaurant_ingredients order by idx";
 		Connection conn = db.conn();
-		Ingredient ing = null;
+		int cnt = 0;
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				
-				int idx1 = rs.getInt(1);
-				String name = rs.getString(2);
-				int amount = rs.getInt(3);
-				int price = rs.getInt(4);
-				LocalDate due = rs.getDate(5).toLocalDate();
-				
-				System.out.println("idx"+idx1+"name"+name+"amount"+amount+"price"+price+"due"+due);
-				list.add(ing);
+				Ingredient i= new Ingredient(rs.getString(1),rs.getInt(2),rs.getInt(3),rs.getDate(4).toLocalDate());
+//				System.out.println("idx"+idx1+"name"+name+"amount"+amount+"price"+price+"due"+due);
+				list.add(i);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -241,8 +226,10 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
-			System.out.println(name+"10개 update 완료");
+			pstmt.setInt(1, amount);
+			pstmt.setString(2, name);
+			
+			System.out.println(name+amount+"개 update 완료");
 			int r = pstmt.executeUpdate();
 			System.out.println(r+"개 update 완료");
 			
@@ -263,7 +250,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		
 		
 	}
-
+	
 	public void deleteByIdx(int idx) {
 		// TODO Auto-generated method stub
 //		유통기한만료, 재료 소진시 식자재 삭제
@@ -303,10 +290,10 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 
 
 	public static void main(String[] args) {//test용
-		RefrigeratorDao refrigeratorDao = new RestaurantRefrigeratorDaoImpl();
+//		RefrigeratorDao refrigeratorDao = new RestaurantRefrigeratorDaoImpl();
 //		RestaurantRefrigeratorDaoImpl RDaoImpl = new RestaurantRefrigeratorDaoImpl();
 		
-		//insert확인용
+//		insert확인용
 //		Ingredient ingredient = new Ingredient("계란", 10, 200, LocalDate.now().plusDays(3));
 //		ingredient.setIdx(8);
 //		refrigeratorDao.addIng(ingredient);
@@ -314,7 +301,7 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 		//serchbyname 확인용
 //		refrigeratorDao.searchByName("면사리");
 		//setchbyidx 확인용
-//		RDaoImpl.searchByIdx(2);
+//		RDaoImpl.searchByIdx(3);
 		//selectAll 확인용
 //		RDaoImpl.selectAllIng();
 		//updatedue 확인용
@@ -322,6 +309,6 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 //		updateamount 확인용
 //		refrigeratorDao.updateAmount("김", 0);
 //		delete 확인용
-		refrigeratorDao.deleteByIdx(2);
+//		refrigeratorDao.deleteByIdx(2);
 	}
 }
