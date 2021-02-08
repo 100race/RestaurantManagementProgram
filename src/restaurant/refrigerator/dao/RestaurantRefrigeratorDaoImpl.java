@@ -285,7 +285,28 @@ public class RestaurantRefrigeratorDaoImpl implements RefrigeratorDao {
 	@Override
 	public void deleteByName(String name) {
 		// TODO Auto-generated method stub
-		//냉장고에선 사용하지 않는 기능
+		Connection conn = db.conn(); // db 연결
+		String sql = "delete restaurant_ingredients where name=?";
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			System.out.println(name+"가 삭제되었습니다.");
+			int r = pstmt.executeUpdate();
+			System.out.println(r + "줄 delete 됨");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
 
 

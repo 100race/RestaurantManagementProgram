@@ -146,10 +146,10 @@ public class RefrigeratorServiceImpl implements RefrigeratorService {
 	@Override
 	public void deleteIng(Scanner sc) {
 		// TODO Auto-generated method stub
-		System.out.println("폐기할 식자재 번호를 입력하세요");
-		int idx = sc.nextInt();
-		rRDao.deleteByIdx(idx);
-		System.out.println(idx+"이 폐기되었습니다");
+		System.out.println("폐기할 식자재 이름을 입력하세요");
+		String name = sc.next();
+		rRDao.deleteByName(name);
+		System.out.println(name+"이 폐기되었습니다");
 		
 		
 	}
